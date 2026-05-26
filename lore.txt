@@ -1,0 +1,1954 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Lore Archive — Elucidate RPG Wiki</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Merriweather:ital,wght@0,300;0,400;0,700;0,900;1,300;1,400&family=Cinzel:wght@400;600;700;900&family=Crimson+Text:ital,wght@0,400;0,600;1,400&display=swap');
+
+:root {
+  --bg-deepest:    #080608;
+  --bg-dark:       #0e0b0f;
+  --bg-mid:        #140f16;
+  --bg-surface:    #1c1520;
+  --bg-elevated:   #221829;
+  --bg-card:       #1a1220;
+  --border-faint:  rgba(180,140,80,0.12);
+  --border-dim:    rgba(180,140,80,0.25);
+  --border-gold:   rgba(180,140,80,0.55);
+  --gold:          #b8922a;
+  --gold-bright:   #d4a83c;
+  --gold-pale:     #e8c96a;
+  --gold-muted:    #8a6a1e;
+  --crimson:       #8b1a1a;
+  --crimson-bright:#b02020;
+  --caligo:        #3a1a5c;
+  --caligo-bright: #5a2e8a;
+  --caligo-pale:   #8b5cbf;
+  --lumen:         #c8a84a;
+  --text-primary:  #e8dcc8;
+  --text-secondary:#c8b898;
+  --text-muted:    #9a8a72;
+  --text-dim:      #706050;
+  --white:         #f2ead8;
+  --shadow-deep: 0 8px 40px rgba(0,0,0,0.8);
+  --shadow-card: 0 4px 20px rgba(0,0,0,0.6);
+  --glow-gold: 0 0 20px rgba(184,146,42,0.3);
+  --glow-caligo: 0 0 20px rgba(90,46,138,0.4);
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: 'Merriweather', 'Cambria', Georgia, serif;
+  background: var(--bg-deepest);
+  color: var(--text-primary);
+  font-size: 14px;
+  line-height: 1.7;
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.03'/%3E%3C/svg%3E");
+  pointer-events: none;
+  z-index: 0;
+  opacity: 0.4;
+}
+
+a { color: var(--gold); text-decoration: none; transition: color 0.2s; }
+a:hover { color: var(--gold-pale); }
+
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: var(--bg-deepest); }
+::-webkit-scrollbar-thumb { background: var(--gold-muted); border-radius: 3px; }
+
+/* ════ HEADER ════ */
+.site-header {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  z-index: 1000;
+  background: rgba(8,6,8,0.96);
+  border-bottom: 1px solid var(--border-gold);
+  backdrop-filter: blur(12px);
+  height: 56px;
+  display: flex;
+  align-items: center;
+  padding: 0 20px;
+  gap: 16px;
+  box-shadow: 0 2px 30px rgba(0,0,0,0.8);
+}
+
+.header-logo-wrap {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-shrink: 0;
+}
+
+.site-logo {
+  width: 36px; height: 36px;
+  border: 1px solid var(--border-gold);
+  border-radius: 4px;
+  background: var(--bg-elevated);
+  padding: 3px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 20px;
+}
+
+.header-site-name {
+  font-family: 'Cinzel', serif;
+  font-size: 13px; font-weight: 600;
+  color: var(--gold-pale);
+  letter-spacing: 1.5px;
+  line-height: 1.2;
+  text-transform: uppercase;
+}
+.header-site-name span {
+  display: block;
+  font-size: 9px; color: var(--text-muted);
+  letter-spacing: 2px; font-weight: 400;
+}
+
+.header-nav {
+  display: flex; gap: 4px; align-items: center;
+  margin-left: 12px; flex: 1;
+}
+.header-nav a {
+  font-family: 'Cinzel', serif;
+  font-size: 10px; letter-spacing: 1px;
+  color: var(--text-secondary);
+  padding: 5px 10px;
+  border: 1px solid transparent; border-radius: 2px;
+  transition: all 0.2s; text-transform: uppercase; white-space: nowrap;
+}
+.header-nav a:hover {
+  color: var(--gold-pale); border-color: var(--border-dim);
+  background: rgba(184,146,42,0.08);
+}
+.header-nav a.active {
+  color: var(--gold-pale); border-color: var(--border-gold);
+  background: rgba(184,146,42,0.1);
+}
+
+.header-right {
+  display: flex; align-items: center; gap: 10px;
+  margin-left: auto; flex-shrink: 0;
+}
+
+.search-wrap {
+  display: flex; align-items: center;
+  border: 1px solid var(--border-dim); border-radius: 3px;
+  overflow: hidden; background: var(--bg-mid);
+  transition: border-color 0.2s;
+}
+.search-wrap:focus-within { border-color: var(--gold); box-shadow: 0 0 8px rgba(184,146,42,0.2); }
+.search-wrap input {
+  background: transparent; border: none; outline: none;
+  color: var(--text-primary); font-family: 'Merriweather', serif;
+  font-size: 11px; padding: 6px 10px; width: 180px;
+}
+.search-wrap input::placeholder { color: var(--text-dim); }
+.search-wrap button {
+  background: var(--bg-elevated); border: none;
+  border-left: 1px solid var(--border-dim);
+  color: var(--gold); padding: 6px 10px;
+  cursor: pointer; font-size: 12px; transition: background 0.2s;
+}
+.search-wrap button:hover { background: rgba(184,146,42,0.15); }
+
+#search-results-overlay {
+  display: none; position: fixed;
+  top: 57px; right: 20px;
+  width: 340px; max-height: 400px;
+  overflow-y: auto;
+  background: var(--bg-elevated);
+  border: 1px solid var(--border-gold);
+  border-radius: 4px; z-index: 999;
+  box-shadow: var(--shadow-deep);
+}
+#search-results-overlay.visible { display: block; }
+.search-result-item {
+  padding: 10px 14px;
+  border-bottom: 1px solid var(--border-faint);
+  cursor: pointer; transition: background 0.15s;
+}
+.search-result-item:hover { background: rgba(184,146,42,0.1); }
+.search-result-item .sr-title {
+  font-family: 'Cinzel', serif; font-size: 11px;
+  color: var(--gold-pale); letter-spacing: 0.5px;
+}
+.search-result-item .sr-excerpt {
+  font-size: 11px; color: var(--text-muted);
+  margin-top: 2px; line-height: 1.5;
+}
+.search-no-result {
+  padding: 14px; font-size: 12px;
+  color: var(--text-muted); font-style: italic; text-align: center;
+}
+.search-highlight {
+  background: rgba(184,146,42,0.25); color: var(--gold-pale);
+  border-radius: 2px; padding: 0 1px;
+}
+
+/* ════ LAYOUT ════ */
+.wiki-layout {
+  display: grid;
+  grid-template-columns: 210px 1fr;
+  min-height: 100vh;
+  padding-top: 56px;
+}
+
+/* ════ SIDEBAR ════ */
+.sidebar {
+  background: var(--bg-dark);
+  border-right: 1px solid var(--border-faint);
+  position: sticky; top: 56px;
+  height: calc(100vh - 56px);
+  overflow-y: auto; padding: 16px 0; z-index: 100;
+}
+.sidebar-logo-mini {
+  padding: 0 14px 14px;
+  border-bottom: 1px solid var(--border-faint);
+  margin-bottom: 12px; text-align: center;
+}
+.sidebar-logo-mini .sb-title {
+  font-family: 'Cinzel', serif; font-size: 11px;
+  color: var(--gold); letter-spacing: 2px; text-transform: uppercase;
+}
+.sidebar-logo-mini .sb-sub {
+  font-size: 9px; color: var(--text-muted);
+  letter-spacing: 1px; margin-top: 2px;
+}
+.sidebar-heading {
+  font-family: 'Cinzel', serif; font-size: 9px;
+  letter-spacing: 2px; text-transform: uppercase;
+  color: var(--text-muted); padding: 6px 14px 4px;
+  border-top: 1px solid var(--border-faint);
+}
+.sidebar ul { list-style: none; }
+.sidebar ul li a {
+  display: flex; align-items: center; gap: 8px;
+  padding: 6px 14px 6px 16px;
+  color: var(--text-secondary); font-size: 12px;
+  font-family: 'Crimson Text', serif;
+  border-left: 2px solid transparent;
+  transition: all 0.2s; letter-spacing: 0.3px;
+}
+.sidebar ul li a .sb-icon {
+  width: 14px; text-align: center; font-size: 12px; opacity: 0.7;
+}
+.sidebar ul li a:hover {
+  background: rgba(184,146,42,0.07);
+  border-left-color: var(--gold-muted); color: var(--gold-pale);
+}
+.sidebar ul li a.active-nav {
+  background: rgba(184,146,42,0.12);
+  border-left-color: var(--gold); color: var(--gold-pale); font-weight: 600;
+}
+.sidebar-divider { height: 1px; background: var(--border-faint); margin: 8px 12px; }
+.sidebar-ms-widget {
+  margin: 12px 14px; padding: 10px 12px;
+  background: var(--bg-elevated);
+  border: 1px solid var(--border-faint); border-radius: 3px;
+}
+.sidebar-ms-widget .ms-label {
+  font-family: 'Cinzel', serif; font-size: 9px;
+  color: var(--text-muted); letter-spacing: 1.5px;
+  text-transform: uppercase; margin-bottom: 6px;
+}
+.ms-bar-track {
+  height: 4px; background: var(--bg-mid);
+  border-radius: 2px; overflow: hidden; margin-bottom: 4px;
+}
+.ms-bar-fill {
+  height: 100%; width: 35%;
+  background: linear-gradient(90deg, var(--caligo), var(--caligo-bright));
+  border-radius: 2px;
+  animation: ms-pulse 3s ease-in-out infinite alternate;
+}
+@keyframes ms-pulse { from { opacity: 0.6; } to { opacity: 1; } }
+.ms-bar-text { font-size: 9px; color: var(--text-dim); text-align: right; }
+
+/* ════ MAIN CONTENT ════ */
+.main-content { background: var(--bg-deepest); position: relative; overflow: hidden; }
+section { position: relative; z-index: 1; }
+
+/* ════ LORE HERO ════ */
+.lore-hero {
+  min-height: 52vh;
+  display: flex; flex-direction: column;
+  justify-content: center; align-items: flex-start;
+  padding: 80px 60px 60px;
+  position: relative; overflow: hidden;
+  background:
+    radial-gradient(ellipse 80% 70% at 70% 40%, rgba(58,26,92,0.4) 0%, transparent 65%),
+    radial-gradient(ellipse 50% 50% at 10% 80%, rgba(139,26,26,0.18) 0%, transparent 60%),
+    radial-gradient(ellipse 100% 80% at 50% 50%, rgba(20,15,22,0.9) 0%, transparent 100%),
+    var(--bg-deepest);
+}
+.lore-hero::before {
+  content: '';
+  position: absolute; top: 0; left: 0; right: 0; height: 1px;
+  background: linear-gradient(90deg, transparent, var(--gold), transparent);
+  opacity: 0.5;
+}
+.hero-bg-stars { position: absolute; inset: 0; pointer-events: none; }
+.star {
+  position: absolute; width: 1px; height: 1px;
+  background: var(--gold-pale); border-radius: 50%;
+  animation: twinkle var(--d, 4s) ease-in-out infinite alternate;
+  opacity: var(--o, 0.4);
+}
+@keyframes twinkle {
+  from { opacity: 0.1; transform: scale(0.8); }
+  to   { opacity: 0.7; transform: scale(1.4); }
+}
+.hero-tag {
+  font-family: 'Cinzel', serif; font-size: 10px;
+  letter-spacing: 4px; text-transform: uppercase;
+  color: var(--gold-muted); margin-bottom: 18px;
+  display: flex; align-items: center; gap: 12px;
+}
+.hero-tag::before, .hero-tag::after {
+  content: ''; display: block; height: 1px; width: 40px;
+  background: var(--gold-muted); opacity: 0.6;
+}
+.hero-title {
+  font-family: 'Cinzel', serif;
+  font-size: clamp(32px, 4.5vw, 58px); font-weight: 900;
+  line-height: 1.1; color: var(--white); letter-spacing: 2px;
+  text-shadow: 0 4px 40px rgba(184,146,42,0.3);
+  margin-bottom: 6px; max-width: 700px;
+  animation: fadeInUp 0.8s ease both;
+}
+.hero-title .accent-word {
+  color: var(--gold-pale);
+  text-shadow: 0 0 30px rgba(212,168,60,0.5), 0 4px 40px rgba(184,146,42,0.4);
+}
+.hero-subtitle-line {
+  width: 80px; height: 2px;
+  background: linear-gradient(90deg, var(--gold), transparent);
+  margin: 16px 0;
+}
+.hero-subtitle {
+  font-family: 'Crimson Text', serif; font-size: 18px;
+  font-style: italic; color: var(--text-secondary);
+  max-width: 560px; line-height: 1.7; margin-bottom: 8px;
+}
+.hero-lore-quote {
+  font-family: 'Merriweather', serif; font-size: 12px;
+  color: var(--text-muted); font-style: italic;
+  max-width: 480px; line-height: 1.8; margin-bottom: 0;
+  padding-left: 14px; border-left: 2px solid var(--gold-muted);
+}
+@keyframes fadeInUp {
+  from { opacity: 0; transform: translateY(24px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* ════ SECTION DIVIDER ════ */
+.section-divider {
+  display: flex; align-items: center; gap: 16px;
+  padding: 0 60px; margin: 0;
+}
+.section-divider .div-line {
+  flex: 1; height: 1px;
+  background: linear-gradient(90deg, transparent, var(--border-gold), transparent);
+}
+.section-divider .div-icon { color: var(--gold-muted); font-size: 14px; flex-shrink: 0; }
+
+.section-header { text-align: center; margin-bottom: 44px; }
+.section-tag {
+  font-family: 'Cinzel', serif; font-size: 9px;
+  letter-spacing: 4px; color: var(--gold-muted);
+  text-transform: uppercase; display: block; margin-bottom: 10px;
+}
+.section-title {
+  font-family: 'Cinzel', serif; font-size: 26px; font-weight: 700;
+  color: var(--white); letter-spacing: 1px;
+  text-shadow: 0 2px 20px rgba(184,146,42,0.2);
+}
+.section-title .gold { color: var(--gold-pale); }
+.section-title .caligo-c { color: var(--caligo-pale); }
+.section-desc {
+  font-family: 'Crimson Text', serif; font-size: 15px;
+  font-style: italic; color: var(--text-muted);
+  max-width: 640px; margin: 10px auto 0; line-height: 1.7;
+}
+
+/* ════ ELUCIDATE WORD SECTION ════ */
+.elucidate-section {
+  padding: 80px 60px;
+  background:
+    radial-gradient(ellipse 60% 60% at 50% 50%, rgba(58,26,92,0.12) 0%, transparent 70%),
+    var(--bg-dark);
+}
+.elucidate-container {
+  max-width: 960px; margin: 0 auto;
+}
+.elucidate-word-display {
+  text-align: center; margin-bottom: 50px;
+}
+.elucidate-word {
+  font-family: 'Cinzel', serif;
+  font-size: clamp(52px, 8vw, 96px); font-weight: 900;
+  letter-spacing: 12px; text-transform: uppercase;
+  color: transparent;
+  background: linear-gradient(135deg, var(--gold-muted), var(--gold-pale), var(--gold-muted));
+  -webkit-background-clip: text; background-clip: text;
+  text-shadow: none;
+  position: relative; display: inline-block;
+  animation: glow-word 4s ease-in-out infinite alternate;
+}
+@keyframes glow-word {
+  from { filter: drop-shadow(0 0 8px rgba(184,146,42,0.2)); }
+  to   { filter: drop-shadow(0 0 22px rgba(232,201,106,0.45)); }
+}
+.elucidate-phonetic {
+  font-family: 'Crimson Text', serif; font-size: 16px;
+  font-style: italic; color: var(--text-dim);
+  letter-spacing: 2px; margin-top: 8px; display: block;
+}
+.elucidate-definition-block {
+  display: grid; grid-template-columns: 1fr 1fr;
+  gap: 32px; margin-bottom: 40px;
+}
+.def-panel {
+  background: var(--bg-elevated); border: 1px solid var(--border-faint);
+  border-top: 2px solid; padding: 28px 26px;
+  transition: all 0.3s;
+}
+.def-panel:hover { transform: translateY(-3px); box-shadow: var(--shadow-card); }
+.def-panel.literal  { border-top-color: var(--gold-muted); }
+.def-panel.in-world { border-top-color: var(--caligo-bright); }
+.def-panel.symbolic { border-top-color: var(--crimson); }
+.def-panel.connection{ border-top-color: #4a7a6a; }
+.def-panel-label {
+  font-family: 'Cinzel', serif; font-size: 8px;
+  letter-spacing: 3px; text-transform: uppercase;
+  color: var(--text-dim); margin-bottom: 10px;
+}
+.def-panel.literal   .def-panel-label { color: var(--gold-muted); }
+.def-panel.in-world  .def-panel-label { color: var(--caligo-pale); }
+.def-panel.symbolic  .def-panel-label { color: #d46060; }
+.def-panel.connection .def-panel-label { color: #6baa97; }
+.def-panel-title {
+  font-family: 'Cinzel', serif; font-size: 14px; font-weight: 700;
+  margin-bottom: 12px; color: var(--white);
+}
+.def-panel-body {
+  font-size: 13px; color: var(--text-secondary); line-height: 1.85;
+}
+.def-panel-body em { color: var(--gold-pale); font-style: italic; }
+.def-panel-body strong { color: var(--white); font-weight: 600; }
+
+.elucidate-philosophical {
+  background: var(--bg-surface);
+  border: 1px solid var(--border-faint);
+  padding: 36px 40px; position: relative;
+  max-width: 960px; margin: 0 auto;
+}
+.elucidate-philosophical::before,
+.elucidate-philosophical::after {
+  content: '✦'; position: absolute; top: -9px;
+  font-size: 14px; color: var(--gold);
+  background: var(--bg-dark); padding: 0 6px;
+}
+.elucidate-philosophical::before { left: 40px; }
+.elucidate-philosophical::after  { right: 40px; }
+.elucidate-philosophical p {
+  font-family: 'Merriweather', serif; font-size: 13.5px;
+  line-height: 2; color: var(--text-secondary);
+  margin-bottom: 18px;
+}
+.elucidate-philosophical p:last-child { margin-bottom: 0; }
+.elucidate-philosophical p strong { color: var(--gold-pale); font-weight: 600; }
+.elucidate-philosophical p em { color: var(--caligo-pale); font-style: italic; }
+
+/* ════ PRIMARY FORCES ════ */
+.forces-section {
+  padding: 80px 60px;
+  background:
+    radial-gradient(ellipse 80% 50% at 0% 50%, rgba(139,26,26,0.06) 0%, transparent 50%),
+    radial-gradient(ellipse 80% 50% at 100% 50%, rgba(58,26,92,0.1) 0%, transparent 50%),
+    var(--bg-deepest);
+}
+.forces-container { max-width: 1060px; margin: 0 auto; }
+.force-card {
+  background: var(--bg-card); border: 1px solid var(--border-faint);
+  padding: 40px 36px; margin-bottom: 28px;
+  position: relative; overflow: hidden; transition: all 0.3s;
+}
+.force-card:hover { transform: translateY(-3px); box-shadow: 0 8px 32px rgba(0,0,0,0.6); }
+.force-card.lumen-force {
+  border-top: 2px solid var(--gold);
+  background: linear-gradient(135deg, rgba(184,146,42,0.04) 0%, var(--bg-card) 40%);
+}
+.force-card.caligo-force {
+  border-top: 2px solid var(--caligo-bright);
+  background: linear-gradient(135deg, rgba(58,26,92,0.12) 0%, var(--bg-card) 40%);
+}
+.force-card.subject-force {
+  border-top: 2px solid var(--crimson);
+  background: linear-gradient(135deg, rgba(139,26,26,0.08) 0%, var(--bg-card) 40%);
+}
+.force-card::after {
+  content: ''; position: absolute; bottom: 0; left: 0; right: 0; height: 1px;
+}
+.lumen-force::after  { background: linear-gradient(90deg, transparent, var(--gold-muted), transparent); opacity: 0.4; }
+.caligo-force::after { background: linear-gradient(90deg, transparent, var(--caligo-bright), transparent); opacity: 0.4; }
+.subject-force::after{ background: linear-gradient(90deg, transparent, var(--crimson), transparent); opacity: 0.4; }
+
+.force-header {
+  display: flex; align-items: flex-start; gap: 20px; margin-bottom: 24px;
+}
+.force-symbol {
+  width: 70px; height: 70px; flex-shrink: 0;
+  border: 1px solid; border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 32px; transition: all 0.3s;
+}
+.lumen-force  .force-symbol { border-color: var(--border-gold); background: rgba(184,146,42,0.08); }
+.caligo-force .force-symbol { border-color: rgba(90,46,138,0.5); background: rgba(58,26,92,0.25); }
+.subject-force .force-symbol { border-color: rgba(139,26,26,0.5); background: rgba(139,26,26,0.12); }
+.force-card:hover .force-symbol { transform: scale(1.08); }
+.lumen-force:hover  .force-symbol { box-shadow: var(--glow-gold); }
+.caligo-force:hover .force-symbol { box-shadow: var(--glow-caligo); }
+.subject-force:hover .force-symbol { box-shadow: 0 0 20px rgba(139,26,26,0.3); }
+
+.force-header-text {}
+.force-name {
+  font-family: 'Cinzel', serif; font-size: 22px; font-weight: 700;
+  letter-spacing: 1px; margin-bottom: 4px;
+}
+.lumen-force  .force-name  { color: var(--gold-pale); }
+.caligo-force .force-name  { color: var(--caligo-pale); }
+.subject-force .force-name { color: #d46060; }
+.force-subtitle {
+  font-family: 'Crimson Text', serif; font-size: 13px;
+  font-style: italic; color: var(--text-muted);
+}
+
+.force-stats-row {
+  display: grid; grid-template-columns: repeat(4, 1fr);
+  gap: 16px; margin-bottom: 24px;
+}
+.force-stat {
+  background: var(--bg-surface); border: 1px solid var(--border-faint);
+  padding: 12px 14px;
+}
+.force-stat-label {
+  font-family: 'Cinzel', serif; font-size: 8px;
+  letter-spacing: 2px; text-transform: uppercase;
+  margin-bottom: 5px;
+}
+.lumen-force  .force-stat-label { color: var(--gold-muted); }
+.caligo-force .force-stat-label { color: var(--caligo-pale); opacity: 0.7; }
+.subject-force .force-stat-label { color: #9a4040; }
+.force-stat-val {
+  font-size: 12px; color: var(--text-secondary); line-height: 1.5;
+}
+
+.force-body {
+  font-size: 13.5px; color: var(--text-secondary); line-height: 1.9;
+}
+.force-body p { margin-bottom: 14px; }
+.force-body p:last-child { margin-bottom: 0; }
+.force-body em { color: var(--gold-pale); font-style: italic; }
+.caligo-force .force-body em { color: var(--caligo-pale); }
+.subject-force .force-body em { color: #d46060; }
+.force-body strong { color: var(--white); }
+
+/* ════ FACTIONS ════ */
+.factions-section {
+  padding: 80px 60px;
+  background:
+    radial-gradient(ellipse 80% 50% at 50% 0%, rgba(184,146,42,0.04) 0%, transparent 60%),
+    var(--bg-mid);
+}
+.factions-container { max-width: 1060px; margin: 0 auto; }
+.factions-major-grid {
+  display: grid; grid-template-columns: 1fr 1fr; gap: 28px;
+  margin-bottom: 28px;
+}
+.factions-minor-grid {
+  display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px;
+}
+
+.faction-card {
+  background: var(--bg-elevated); border: 1px solid var(--border-faint);
+  padding: 32px 28px; position: relative; overflow: hidden;
+  transition: all 0.3s;
+}
+.faction-card::after {
+  content: ''; position: absolute; bottom: 0; left: 0; right: 0; height: 2px;
+}
+.faction-lumen::after   { background: linear-gradient(90deg, transparent, var(--gold), transparent); }
+.faction-caligo::after  { background: linear-gradient(90deg, transparent, var(--caligo-bright), transparent); }
+.faction-walled::after  { background: linear-gradient(90deg, transparent, #7abce8, transparent); }
+.faction-guild::after   { background: linear-gradient(90deg, transparent, var(--gold-muted), transparent); }
+.faction-church::after  { background: linear-gradient(90deg, transparent, #d4c070, transparent); }
+.faction-cult::after    { background: linear-gradient(90deg, transparent, var(--caligo-bright), transparent); }
+.faction-tribe::after   { background: linear-gradient(90deg, transparent, #6baa97, transparent); }
+.faction-assassin::after{ background: linear-gradient(90deg, transparent, var(--crimson), transparent); }
+.faction-card:hover { transform: translateY(-3px); box-shadow: 0 8px 32px rgba(0,0,0,0.6); }
+.faction-lumen:hover   { border-color: var(--border-gold); }
+.faction-caligo:hover  { border-color: rgba(90,46,138,0.4); }
+.faction-walled:hover  { border-color: rgba(122,188,232,0.35); }
+.faction-guild:hover   { border-color: var(--border-dim); }
+.faction-church:hover  { border-color: rgba(212,192,112,0.4); }
+.faction-cult:hover    { border-color: rgba(90,46,138,0.3); }
+.faction-tribe:hover   { border-color: rgba(107,170,151,0.35); }
+.faction-assassin:hover{ border-color: rgba(139,26,26,0.4); }
+
+.faction-header { display: flex; align-items: center; gap: 14px; margin-bottom: 16px; }
+.faction-logo-wrap {
+  width: 60px; height: 60px; flex-shrink: 0;
+  border: 1px solid; border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  overflow: hidden; transition: all 0.3s;
+}
+.faction-lumen   .faction-logo-wrap { border-color: var(--border-gold); background: rgba(184,146,42,0.1); }
+.faction-caligo  .faction-logo-wrap { border-color: rgba(90,46,138,0.5); background: rgba(58,26,92,0.3); }
+.faction-walled  .faction-logo-wrap { border-color: rgba(122,188,232,0.3); background: rgba(90,160,220,0.08); }
+.faction-guild   .faction-logo-wrap { border-color: var(--border-dim); background: rgba(184,146,42,0.06); }
+.faction-church  .faction-logo-wrap { border-color: rgba(212,192,112,0.3); background: rgba(200,168,70,0.08); }
+.faction-cult    .faction-logo-wrap { border-color: rgba(90,46,138,0.35); background: rgba(58,26,92,0.2); }
+.faction-tribe   .faction-logo-wrap { border-color: rgba(107,170,151,0.3); background: rgba(107,170,151,0.06); }
+.faction-assassin .faction-logo-wrap { border-color: rgba(139,26,26,0.4); background: rgba(139,26,26,0.1); }
+.faction-card:hover .faction-logo-wrap { transform: scale(1.08); }
+.faction-lumen:hover  .faction-logo-wrap { box-shadow: var(--glow-gold); }
+.faction-caligo:hover .faction-logo-wrap { box-shadow: var(--glow-caligo); }
+
+.faction-logo-placeholder {
+  width: 38px; height: 38px; object-fit: contain; opacity: 0.7;
+  font-size: 24px; display: flex; align-items: center; justify-content: center;
+}
+.faction-logo-img {
+  width: 100%; height: 100%; object-fit: contain; opacity: 0.75; border-radius: 50%;
+}
+
+.faction-name {
+  font-family: 'Cinzel', serif; font-size: 15px; font-weight: 700;
+  letter-spacing: 0.8px; margin-bottom: 2px;
+}
+.faction-lumen   .faction-name { color: var(--gold-pale); }
+.faction-caligo  .faction-name { color: var(--caligo-pale); }
+.faction-walled  .faction-name { color: #7abce8; }
+.faction-guild   .faction-name { color: var(--gold-pale); }
+.faction-church  .faction-name { color: #d4c070; }
+.faction-cult    .faction-name { color: var(--caligo-pale); }
+.faction-tribe   .faction-name { color: #6baa97; }
+.faction-assassin .faction-name { color: #d46060; }
+.faction-tagline {
+  font-family: 'Crimson Text', serif; font-style: italic;
+  font-size: 11px; color: var(--text-muted);
+}
+.faction-body {
+  font-size: 12.5px; color: var(--text-secondary); line-height: 1.8; margin-bottom: 14px;
+}
+.faction-stats { display: flex; flex-direction: column; gap: 5px; }
+.faction-stat-row { display: flex; gap: 8px; font-size: 11px; }
+.faction-stat-lbl {
+  font-family: 'Cinzel', serif; font-size: 8.5px; letter-spacing: 1px;
+  color: var(--text-dim); text-transform: uppercase; width: 72px; flex-shrink: 0;
+}
+.faction-stat-v { color: var(--text-secondary); }
+
+/* Minor faction cards */
+.faction-minor {
+  background: var(--bg-card); border: 1px solid var(--border-faint);
+  padding: 22px 18px; position: relative; overflow: hidden; transition: all 0.3s;
+}
+.faction-minor::after {
+  content: ''; position: absolute; bottom: 0; left: 0; right: 0; height: 1px;
+}
+.faction-minor:hover { transform: translateY(-3px); box-shadow: var(--shadow-card); }
+.faction-minor .faction-logo-wrap {
+  width: 46px; height: 46px; margin-bottom: 12px;
+  border: 1px solid var(--border-faint);
+  background: var(--bg-surface);
+}
+.faction-minor .faction-name { font-size: 12px; margin-bottom: 8px; }
+.faction-minor .faction-body { font-size: 11.5px; }
+
+/* ════ TERMINOLOGY ════ */
+.terminology-section {
+  padding: 80px 60px;
+  background:
+    radial-gradient(ellipse 70% 50% at 50% 100%, rgba(58,26,92,0.1) 0%, transparent 60%),
+    var(--bg-deepest);
+}
+.terminology-container { max-width: 1060px; margin: 0 auto; }
+.terms-filter-bar {
+  display: flex; gap: 10px; margin-bottom: 36px; flex-wrap: wrap;
+}
+.term-filter-btn {
+  font-family: 'Cinzel', serif; font-size: 9px;
+  letter-spacing: 1.5px; text-transform: uppercase;
+  color: var(--text-muted); background: var(--bg-elevated);
+  border: 1px solid var(--border-faint); padding: 6px 16px;
+  cursor: pointer; transition: all 0.2s;
+}
+.term-filter-btn:hover,
+.term-filter-btn.active {
+  color: var(--gold-pale); border-color: var(--border-gold);
+  background: rgba(184,146,42,0.1);
+}
+.terms-grid {
+  display: grid; grid-template-columns: 1fr 1fr; gap: 20px;
+}
+.term-card {
+  background: var(--bg-card); border: 1px solid var(--border-faint);
+  border-left: 3px solid; padding: 24px 22px;
+  transition: all 0.25s; cursor: default;
+}
+.term-card:hover { transform: translateX(4px); box-shadow: var(--shadow-card); border-color: var(--border-dim); }
+.term-card.cat-mind    { border-left-color: var(--caligo-pale); }
+.term-card.cat-caligo  { border-left-color: var(--caligo-bright); }
+.term-card.cat-lumen   { border-left-color: var(--gold); }
+.term-card.cat-world   { border-left-color: #6baa97; }
+.term-card.cat-horror  { border-left-color: var(--crimson); }
+
+.term-tag {
+  font-family: 'Cinzel', serif; font-size: 7.5px; letter-spacing: 2px;
+  text-transform: uppercase; margin-bottom: 6px; display: inline-block;
+  padding: 2px 8px; border: 1px solid; border-radius: 1px;
+}
+.cat-mind    .term-tag { color: var(--caligo-pale); border-color: rgba(139,92,191,0.3); background: rgba(58,26,92,0.15); }
+.cat-caligo  .term-tag { color: var(--caligo-pale); border-color: rgba(90,46,138,0.35); background: rgba(58,26,92,0.2); }
+.cat-lumen   .term-tag { color: var(--gold); border-color: var(--border-dim); background: rgba(184,146,42,0.08); }
+.cat-world   .term-tag { color: #6baa97; border-color: rgba(107,170,151,0.3); background: rgba(107,170,151,0.06); }
+.cat-horror  .term-tag { color: #d46060; border-color: rgba(139,26,26,0.3); background: rgba(139,26,26,0.08); }
+
+.term-name {
+  font-family: 'Cinzel', serif; font-size: 16px; font-weight: 700;
+  color: var(--white); letter-spacing: 0.5px; margin-bottom: 10px;
+}
+.term-definition {
+  font-size: 13px; color: var(--text-secondary); line-height: 1.85;
+  margin-bottom: 12px;
+}
+.term-definition strong { color: var(--gold-pale); }
+.term-context-label {
+  font-family: 'Cinzel', serif; font-size: 8px; letter-spacing: 1.5px;
+  text-transform: uppercase; color: var(--text-dim); margin-bottom: 5px;
+}
+.term-context {
+  font-size: 12px; font-style: italic; color: var(--text-muted); line-height: 1.75;
+  padding-left: 12px; border-left: 1px solid var(--border-faint);
+}
+.term-example {
+  margin-top: 10px; font-size: 11.5px; color: var(--text-dim);
+  font-style: italic; line-height: 1.7;
+}
+.term-example::before {
+  content: '— '; color: var(--gold-muted);
+}
+
+/* ════ LORE CONNECTIONS ════ */
+.connections-section {
+  padding: 80px 60px;
+  background: var(--bg-dark);
+  border-top: 1px solid var(--border-faint);
+  border-bottom: 1px solid var(--border-faint);
+}
+.connections-container { max-width: 1060px; margin: 0 auto; }
+.connection-thread {
+  background: var(--bg-elevated); border: 1px solid var(--border-faint);
+  padding: 32px 30px; margin-bottom: 20px;
+  position: relative; transition: all 0.3s; overflow: hidden;
+}
+.connection-thread:hover { border-color: var(--border-dim); box-shadow: var(--shadow-card); }
+.connection-thread::before {
+  content: ''; position: absolute; left: 0; top: 0; bottom: 0;
+  width: 3px;
+}
+.thread-orphanage::before { background: linear-gradient(180deg, var(--gold), var(--caligo-bright)); }
+.thread-ms::before        { background: linear-gradient(180deg, var(--caligo-pale), var(--crimson)); }
+.thread-factions::before  { background: linear-gradient(180deg, var(--gold-muted), var(--caligo-bright)); }
+.thread-fragments::before { background: linear-gradient(180deg, var(--crimson), var(--caligo-pale)); }
+
+.connection-title {
+  font-family: 'Cinzel', serif; font-size: 14px; font-weight: 700;
+  color: var(--gold-pale); letter-spacing: 0.8px; margin-bottom: 12px;
+}
+.connection-body {
+  font-size: 13px; color: var(--text-secondary); line-height: 1.85;
+}
+.connection-body strong { color: var(--white); }
+.connection-body em { color: var(--gold-pale); font-style: italic; }
+.caligo-em { color: var(--caligo-pale) !important; }
+.connection-flow {
+  display: flex; align-items: center; flex-wrap: wrap; gap: 8px;
+  margin-top: 16px;
+}
+.cf-node {
+  font-family: 'Cinzel', serif; font-size: 10px;
+  letter-spacing: 1px; padding: 5px 12px;
+  border: 1px solid; border-radius: 2px;
+}
+.cf-node.gold-n  { color: var(--gold-pale); border-color: var(--border-dim); background: rgba(184,146,42,0.08); }
+.cf-node.caligo-n{ color: var(--caligo-pale); border-color: rgba(90,46,138,0.35); background: rgba(58,26,92,0.15); }
+.cf-node.crimson-n{ color: #d46060; border-color: rgba(139,26,26,0.3); background: rgba(139,26,26,0.08); }
+.cf-node.teal-n  { color: #6baa97; border-color: rgba(107,170,151,0.3); background: rgba(107,170,151,0.06); }
+.cf-arrow { color: var(--text-dim); font-size: 16px; }
+
+/* ════ WORLD ORIGIN SECTION ════ */
+.origin-section {
+  padding: 80px 60px;
+  background:
+    radial-gradient(ellipse 80% 60% at 50% 100%, rgba(58,26,92,0.14) 0%, transparent 65%),
+    var(--bg-mid);
+}
+.origin-container { max-width: 1060px; margin: 0 auto; }
+.origin-flow {
+  display: flex; flex-direction: column; align-items: stretch;
+  gap: 0;
+}
+.origin-step {
+  display: grid; grid-template-columns: 48px 1fr;
+  gap: 0; align-items: stretch;
+}
+.origin-spine {
+  display: flex; flex-direction: column; align-items: center;
+}
+.origin-dot {
+  width: 14px; height: 14px; border-radius: 50%;
+  border: 2px solid; flex-shrink: 0; margin-top: 4px;
+  z-index: 1;
+}
+.origin-dot.gold-d   { border-color: var(--gold); background: rgba(184,146,42,0.2); }
+.origin-dot.caligo-d { border-color: var(--caligo-bright); background: rgba(58,26,92,0.3); }
+.origin-dot.red-d    { border-color: var(--crimson); background: rgba(139,26,26,0.2); }
+.origin-dot.teal-d   { border-color: #4a7a6a; background: rgba(107,170,151,0.1); }
+.origin-line {
+  flex: 1; width: 1px; background: var(--border-faint); margin: 4px 0;
+}
+.origin-content {
+  background: var(--bg-elevated); border: 1px solid var(--border-faint);
+  padding: 20px 24px; margin-bottom: 2px; transition: all 0.3s;
+}
+.origin-content:hover { border-color: var(--border-dim); }
+.origin-era {
+  font-family: 'Cinzel', serif; font-size: 8px; letter-spacing: 2.5px;
+  text-transform: uppercase; color: var(--text-dim); margin-bottom: 5px;
+}
+.origin-step-title {
+  font-family: 'Cinzel', serif; font-size: 13px; font-weight: 700;
+  color: var(--white); letter-spacing: 0.5px; margin-bottom: 8px;
+}
+.origin-step-body {
+  font-size: 12.5px; color: var(--text-secondary); line-height: 1.8;
+}
+.origin-step-body em { color: var(--gold-pale); font-style: italic; }
+.origin-step-body .caligo-em { color: var(--caligo-pale); }
+
+/* ════ FOOTER ════ */
+.site-footer {
+  background: var(--bg-dark); border-top: 1px solid var(--border-faint);
+  padding: 32px 60px;
+}
+.footer-inner {
+  max-width: 1100px; margin: 0 auto;
+  display: flex; justify-content: space-between;
+  align-items: center; flex-wrap: wrap; gap: 16px;
+}
+.footer-logo-title {
+  font-family: 'Cinzel', serif; font-size: 13px; font-weight: 700;
+  color: var(--gold-pale); letter-spacing: 2px; text-transform: uppercase;
+}
+.footer-logo-sub { font-size: 10px; color: var(--text-dim); margin-top: 3px; letter-spacing: 0.5px; }
+.footer-links { display: flex; gap: 20px; flex-wrap: wrap; }
+.footer-links a {
+  font-family: 'Cinzel', serif; font-size: 9px;
+  letter-spacing: 1.5px; color: var(--text-muted);
+  text-transform: uppercase; transition: color 0.2s;
+}
+.footer-links a:hover { color: var(--gold); }
+.footer-copy { font-size: 10px; color: var(--text-muted); letter-spacing: 0.5px; }
+.footer-copy span { color: var(--text-secondary); }
+.footer-ornament {
+  text-align: center; margin-top: 20px; padding-top: 16px;
+  border-top: 1px solid var(--border-faint);
+  font-family: 'Cinzel', serif; font-size: 9px;
+  letter-spacing: 3px; color: var(--text-muted); text-transform: uppercase;
+}
+
+/* ════ COLLAPSE TOGGLE ════ */
+.collapse-toggle {
+  background: none; border: 1px solid var(--border-faint);
+  color: var(--text-muted); font-family: 'Cinzel', serif;
+  font-size: 9px; letter-spacing: 1.5px; text-transform: uppercase;
+  padding: 4px 12px; cursor: pointer; transition: all 0.2s;
+  display: inline-flex; align-items: center; gap: 6px;
+  float: right; margin-top: -4px;
+}
+.collapse-toggle:hover { border-color: var(--border-gold); color: var(--gold-pale); }
+.collapse-toggle .arrow { transition: transform 0.3s; font-size: 8px; }
+.collapse-toggle.collapsed .arrow { transform: rotate(-90deg); }
+.collapsible-body { overflow: hidden; transition: max-height 0.4s ease; }
+.collapsible-body.collapsed { max-height: 0 !important; }
+
+/* ════ SCROLL REVEAL ════ */
+.reveal { transition: opacity 0.5s ease, transform 0.5s ease; }
+
+/* ════ RESPONSIVE ════ */
+@media (max-width: 1100px) {
+  .elucidate-definition-block { grid-template-columns: 1fr; }
+  .factions-major-grid { grid-template-columns: 1fr; }
+  .factions-minor-grid { grid-template-columns: 1fr 1fr; }
+  .terms-grid { grid-template-columns: 1fr; }
+  .force-stats-row { grid-template-columns: 1fr 1fr; }
+}
+@media (max-width: 800px) {
+  .wiki-layout { grid-template-columns: 1fr; }
+  .sidebar { display: none; }
+  .lore-hero, .elucidate-section, .forces-section, .factions-section,
+  .terminology-section, .connections-section, .origin-section { padding: 50px 24px; }
+  .section-divider { padding: 0 24px; }
+  .factions-minor-grid { grid-template-columns: 1fr 1fr; }
+  .origin-step { grid-template-columns: 32px 1fr; }
+}
+</style>
+</head>
+<body>
+
+<!-- ══════════════ HEADER ══════════════ -->
+<header class="site-header">
+  <div class="header-logo-wrap">
+    <div class="site-logo">⚔</div>
+    <div class="header-site-name">
+      Elucidate RPG
+      <span>DLC · Official Wiki</span>
+    </div>
+  </div>
+
+  <nav class="header-nav">
+    <a href="index.html">Home</a>
+    <a href="characters.html">Characters</a>
+    <a href="npcs.html">NPCs</a>
+    <a href="items.html">Items</a>
+    <a href="environments.html">Environments</a>
+    <a href="lore.html" class="active">Lore</a>
+    <a href="developers.html">Developers</a>
+    <a href="fanart.html">Fan Art</a>
+    <a href="download.html">Download</a>
+  </nav>
+
+  <div class="header-right">
+    <div class="search-wrap">
+      <input type="text" id="search-input" placeholder="Search lore…" autocomplete="off"/>
+      <button>🔍</button>
+    </div>
+  </div>
+</header>
+
+<div id="search-results-overlay"></div>
+
+<!-- ══════════════ LAYOUT ══════════════ -->
+<div class="wiki-layout">
+
+  <!-- SIDEBAR -->
+  <aside class="sidebar">
+    <div class="sidebar-logo-mini">
+      <div class="sb-title">Elucidate RPG</div>
+      <div class="sb-sub">DLC Wiki · v1.0</div>
+    </div>
+
+    <div class="sidebar-section">
+      <div class="sidebar-heading">Navigation</div>
+      <ul>
+        <li><a href="index.html"><span class="sb-icon">🏠</span>Home</a></li>
+        <li><a href="characters.html"><span class="sb-icon">⚔</span>Characters</a></li>
+        <li><a href="npcs.html"><span class="sb-icon">🗣</span>NPCs</a></li>
+        <li><a href="items.html"><span class="sb-icon">🎒</span>Items</a></li>
+        <li><a href="environments.html"><span class="sb-icon">🗺</span>Environments</a></li>
+        <li><a href="lore.html" class="active-nav"><span class="sb-icon">📖</span>Lore</a></li>
+        <li><a href="developers.html"><span class="sb-icon">🛠</span>Developers</a></li>
+        <li><a href="fanart.html"><span class="sb-icon">🎨</span>Fan Art</a></li>
+        <li><a href="download.html"><span class="sb-icon">⬇</span>Download</a></li>
+      </ul>
+    </div>
+
+    <div class="sidebar-divider"></div>
+
+    <div class="sidebar-section">
+      <div class="sidebar-heading">On This Page</div>
+      <ul>
+        <li><a href="#elucidate-anchor"><span class="sb-icon">✦</span>Elucidate</a></li>
+        <li><a href="#forces-anchor"><span class="sb-icon">☀</span>Primary Forces</a></li>
+        <li><a href="#factions-anchor"><span class="sb-icon">⚑</span>Factions</a></li>
+        <li><a href="#terminology-anchor"><span class="sb-icon">📚</span>Terminology</a></li>
+        <li><a href="#connections-anchor"><span class="sb-icon">🔗</span>Connections</a></li>
+        <li><a href="#origin-anchor"><span class="sb-icon">🌐</span>World Origin</a></li>
+      </ul>
+    </div>
+
+    <div class="sidebar-divider"></div>
+
+    <div class="sidebar-ms-widget">
+      <div class="ms-label">Mind State</div>
+      <div class="ms-bar-track"><div class="ms-bar-fill"></div></div>
+      <div class="ms-bar-text">Stable</div>
+    </div>
+  </aside>
+
+  <!-- MAIN CONTENT -->
+  <main class="main-content">
+
+    <!-- ══════════════ LORE HERO ══════════════ -->
+    <section class="lore-hero">
+      <div class="hero-bg-stars" id="stars-container"></div>
+      <div class="hero-tag">Official Lore Archive</div>
+      <h1 class="hero-title">
+        The <span class="accent-word">Lore</span> of<br>Elucidate
+      </h1>
+      <div class="hero-subtitle-line"></div>
+      <p class="hero-subtitle">
+        A complete archive of the world's history, its cosmic forces, its factions, and the terminology of the broken system that produced them all.
+      </p>
+      <p class="hero-lore-quote">
+        "The distance between what you were told and what is true — that distance is everything."
+      </p>
+    </section>
+
+    <!-- ══════════════ DIVIDER ══════════════ -->
+    <div class="section-divider"><div class="div-line"></div><div class="div-icon">✦</div><div class="div-line"></div></div>
+
+    <!-- ══════════════ SECTION 1: ELUCIDATE ══════════════ -->
+    <section class="elucidate-section" id="elucidate-anchor">
+      <div class="elucidate-container">
+        <div class="section-header">
+          <span class="section-tag">Core Concept · Foundation</span>
+          <h2 class="section-title">The Word: <span class="gold">Elucidate</span></h2>
+          <p class="section-desc">Every concept in this world flows from a single word. Before anything else is understood, this must be.</p>
+        </div>
+
+        <div class="elucidate-word-display">
+          <div class="elucidate-word">Elucidate</div>
+          <span class="elucidate-phonetic">/ ɪˈluːsɪdeɪt /  &nbsp;·&nbsp; verb &nbsp;·&nbsp; from Latin <em>elucidare</em> — to illuminate, to make clear</span>
+        </div>
+
+        <div class="elucidate-definition-block">
+          <div class="def-panel literal">
+            <div class="def-panel-label">Literal Meaning</div>
+            <div class="def-panel-title">To Make Clear</div>
+            <div class="def-panel-body">
+              In its most direct sense, to <em>elucidate</em> is to shed light upon something that was previously obscured — to clarify, to explain, to bring into the open what was concealed by shadow or silence. It is an act of illumination applied not to physical space, but to <strong>understanding</strong>. A thing is elucidated when it can no longer be misread.
+              <br><br>
+              The Latin root, <em>elucidare</em>, joins <em>ex-</em> (thoroughly out) and <em>lucidus</em> (bright, clear). Note this carefully: the word <strong>Lucidus</strong> — the name given to Subject I-3 by the Church — is extracted from the same root. They named him after clarity. They gave him a name that means "clear" because they intended him to be uncomplicated. The cruelty is not accidental.
+            </div>
+          </div>
+          <div class="def-panel in-world">
+            <div class="def-panel-label">Meaning Within the Game World</div>
+            <div class="def-panel-title">To See What the World Hides</div>
+            <div class="def-panel-body">
+              Within the world of the DLC, to elucidate is the central act of every playable character's story. Each character begins in a state of <em>enforced obscurity</em> — they have been deliberately prevented from understanding who they are, where they come from, and why the world is in the condition it is in. The game is about the process of elucidation: the painful, costly, irrevocable act of learning the truth.
+              <br><br>
+              <strong>Ignis cannot elucidate without losing the identity built on falsehood.</strong> Funeris cannot elucidate without confronting what she was created to be. Father Calum cannot elucidate without admitting what he has spent thirty years refusing to feel. The word is both the goal of every protagonist and the source of every devastation in the story.
+            </div>
+          </div>
+          <div class="def-panel symbolic">
+            <div class="def-panel-label">Symbolic Interpretation</div>
+            <div class="def-panel-title">The Cost of Light</div>
+            <div class="def-panel-body">
+              Symbolically, the act of elucidation in this world carries <em>price</em>. Light is not free. Every revelation in the game's narrative costs something: a relationship, an identity, a certainty, a peace of mind once held. The Church promises clarity through Lumen, but its clarity is the clarity of control — knowing what you are permitted to know and calling that knowledge sufficient.
+              <br><br>
+              True elucidation — the kind that the game's characters pursue across three paths each — is <strong>not the same as peace</strong>. It is the opposite. It destabilizes. It makes the Mind State climb. It forces choices that cannot be unmade. The game asserts something radical: that <em>understanding the truth is more dangerous than ignorance</em>, and that it is nonetheless the only thing worth pursuing.
+            </div>
+          </div>
+          <div class="def-panel connection">
+            <div class="def-panel-label">Connection to Core Themes</div>
+            <div class="def-panel-title">Knowledge · Truth · Perception · Reality</div>
+            <div class="def-panel-body">
+              <strong>Knowledge:</strong> In this world, knowledge is weaponized. The Church controls information. The Cult guards it through ritual. The Merchant collects it at personal cost. To know something is to become dangerous — and dangerous people are either eliminated or used.
+              <br><br>
+              <strong>Truth:</strong> Truth is distinguished from fact throughout the narrative. The Church presents facts: dates, names, mission parameters. Truth is what lies beneath the facts — the reason the orphanage existed, the reason a child was called a designation rather than a name.
+              <br><br>
+              <strong>Perception &amp; Reality:</strong> The Mind State system literalizes this theme. As perception degrades, <em>reality itself changes for the character</em>. Eldritch Horrors look different at different Mind State thresholds. The game treats the question of what is real as a variable — something that shifts based on who is looking and in what condition they are looking.
+            </div>
+          </div>
+        </div>
+
+        <div class="elucidate-philosophical">
+          <p>
+            There is a question that runs underneath every conversation in this game, never asked directly, never answered cleanly: <strong>is it better to know?</strong> The Church would say no — that clarity is given, not found, and that the institution's job is to protect its people from the unbearable clarity of certain truths. Father Calum has organized his entire life around this principle. He believed, for thirty years, that what he was doing was an act of mercy.
+          </p>
+          <p>
+            The Merchant would say yes — that not knowing is its own form of corruption, and that the silence of witnesses is the foundational material from which institutions of harm are built. He walked past that orphanage fence at sixteen years old and understood something terrible, and then he kept walking, and he has been trying to walk back ever since. The cost of his eventual courage is a measure of how much his earlier silence cost him.
+          </p>
+          <p>
+            <em>Elucidate</em> — the word, the act, the theme — sits at the exact point where these two positions meet and refuse to resolve. The game does not conclude that knowing is good. It concludes that <strong>not knowing is not neutral</strong>. Ignorance, in this world, is always manufactured. The choice is not between knowing and not knowing. The choice is between pursuing elucidation at cost, or accepting the comfortable arrangement someone else has built around your permanent blindness. The orphanage children could not have known what they were walking into. But the adults who watched them go — and said nothing — made a choice. Every silence in this world is a choice. Every elucidation is a rebellion.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ══════════════ DIVIDER ══════════════ -->
+    <div class="section-divider"><div class="div-line"></div><div class="div-icon">⚔</div><div class="div-line"></div></div>
+
+    <!-- ══════════════ SECTION 2: PRIMARY FORCES ══════════════ -->
+    <section class="forces-section" id="forces-anchor">
+      <div class="forces-container">
+        <div class="section-header">
+          <span class="section-tag">Cosmic Foundations</span>
+          <h2 class="section-title">The <span class="gold">Primary Forces</span></h2>
+          <p class="section-desc">Before nations, before religions, before any of the five characters drew breath — these forces shaped the nature of existence itself.</p>
+        </div>
+
+        <!-- VINDICATION LUMEN -->
+        <div class="force-card lumen-force reveal">
+          <div class="force-header">
+            <div class="force-symbol">☀</div>
+            <div class="force-header-text">
+              <div class="force-name">Vindication Lumen</div>
+              <div class="force-subtitle">The Principle of Order, Light, and Clarity — and the institution built in its name</div>
+            </div>
+          </div>
+
+          <div class="force-stats-row">
+            <div class="force-stat">
+              <div class="force-stat-label">Origin</div>
+              <div class="force-stat-val">Cosmic equilibrium; one of two primordial poles of existence</div>
+            </div>
+            <div class="force-stat">
+              <div class="force-stat-label">Nature</div>
+              <div class="force-stat-val">Order, structure, light, clarity — neither wholly good nor evil in its pure form</div>
+            </div>
+            <div class="force-stat">
+              <div class="force-stat-label">Symbol</div>
+              <div class="force-stat-val">The clear eye; the bright horizon; the document that names what it sees</div>
+            </div>
+            <div class="force-stat">
+              <div class="force-stat-label">Corruption</div>
+              <div class="force-stat-val">Weaponized into political and military doctrine by the Church of Lumen</div>
+            </div>
+          </div>
+
+          <div class="force-body">
+            <p>
+              In the beginning, <em>Lumen</em> existed in balance with Caligo — two poles of a cosmic equilibrium that neither required worship nor sought dominance. Lumen was the principle that held shape, that set the edge of things, that allowed a person to look at the world and recognize its contours. It was the force that made naming possible: without Lumen, there are no edges to name. Without edges, there is no separation between self and other, between now and then, between truth and lie.
+            </p>
+            <p>
+              The Church of Lumen did not create this principle. It found it, named it, wrapped doctrine around it, and spent several centuries transforming a genuine cosmic truth into an instrument of <strong>political control</strong>. The Lumen faith as practiced in the Theocratic Capital is not a corruption of the original principle — it is a deliberate perversion of it. True Lumen would illuminate everything equally, without hierarchy, without selection. The Church's Lumen illuminates only what the Church permits. The rest is kept in the dark by policy and by violence.
+            </p>
+            <p>
+              What makes the Church's use of Lumen philosophically devastating is that it corrupts the very mechanism of elucidation. An institution built on the principle of clarity has made the systematic suppression of truth its primary operational function. Father Calum's name — and his role as <em>Subject C-1</em>, the first successful experiment, the model upon which all subsequent soldiers were built — is the final proof: the Church didn't just use Lumen as a symbol. It used Lumen as a lens to select which children would survive the process of being broken and remade.
+            </p>
+          </div>
+        </div>
+
+        <!-- CALIGO -->
+        <div class="force-card caligo-force reveal">
+          <div class="force-header">
+            <div class="force-symbol">🌑</div>
+            <div class="force-header-text">
+              <div class="force-name">Caligo</div>
+              <div class="force-subtitle">The Formless — the ambient darkness that predates all human reckoning</div>
+            </div>
+          </div>
+
+          <div class="force-stats-row">
+            <div class="force-stat">
+              <div class="force-stat-label">Origin</div>
+              <div class="force-stat-val">Before recorded history; predates the Church by centuries</div>
+            </div>
+            <div class="force-stat">
+              <div class="force-stat-label">Nature</div>
+              <div class="force-stat-val">Formless, without intention; exists like weather — without purpose, with consequence</div>
+            </div>
+            <div class="force-stat">
+              <div class="force-stat-label">Influence</div>
+              <div class="force-stat-val">Seeps into zones of imbalance; warps reality, mind, and perception at threshold exposure</div>
+            </div>
+            <div class="force-stat">
+              <div class="force-stat-label">The Crucial Point</div>
+              <div class="force-stat-val">Does not respond to prayer; does not desire worship; does not know you exist</div>
+            </div>
+          </div>
+
+          <div class="force-body">
+            <p>
+              <em>Caligo</em> — the Latin for mist, darkness, fog — is neither evil nor benevolent. This is the most important and most frequently misunderstood fact about it. The Church describes Caligo as a malevolent force in need of containment. The Cult worships Caligo as a transcendent power that grants attunement to those sensitive enough to receive it. Both descriptions are wrong in ways that are philosophically indistinguishable from each other.
+            </p>
+            <p>
+              Caligo exists <strong>the way weather exists</strong>: without intention, but with terrible consequence. A storm does not hate the village it floods. It does not choose the houses it collapses. It is a pattern of forces operating without reference to human presence. Caligo's influence on the world — the corruption of the Zones of Terrors, the emergence of Eldritch Horrors, the destabilization of the Mind States of those exposed to it — is not an act of hostility. It is the natural consequence of proximity to something vast and indifferent whose operational scale simply exceeds human comprehension.
+            </p>
+            <p>
+              The <em>Fragments of Caligo</em> are physical manifestations of Caligo's influence made tangible — pieces of something that was never meant to be a piece of anything. Both the Church and the Cult seek to possess them, for reasons that — as a recovered document in the Theocratic Capital archive reveals — share more methodology than either party would publicly admit. The war between Church and Cult, framed as a war between order and chaos, is revealed on closer examination to be a war between two institutions that both want a monopoly on the same source of power. <em>The principle they claim to represent was the first casualty.</em>
+            </p>
+          </div>
+        </div>
+
+        <!-- SUBJECT I-3 -->
+        <div class="force-card subject-force reveal">
+          <div class="force-header">
+            <div class="force-symbol">👁</div>
+            <div class="force-header-text">
+              <div class="force-name">Subject I-3 — Ignis</div>
+              <div class="force-subtitle">The most stable experiment; the point where Lumen and Caligo intersect in human form</div>
+            </div>
+          </div>
+
+          <div class="force-stats-row">
+            <div class="force-stat">
+              <div class="force-stat-label">True Name</div>
+              <div class="force-stat-val">Ignis — Latin for "fire." Suppressed. Replaced by designation "Lucidus."</div>
+            </div>
+            <div class="force-stat">
+              <div class="force-stat-label">Classification</div>
+              <div class="force-stat-val">Subject I-3. Stable integration. Enhanced physical capacity. Identity anchor suppressed.</div>
+            </div>
+            <div class="force-stat">
+              <div class="force-stat-label">Connection to Lumen</div>
+              <div class="force-stat-val">Built by the Church; designed to function in Zones of Terrors; deployed as a weapon of Lumen doctrine</div>
+            </div>
+            <div class="force-stat">
+              <div class="force-stat-label">Connection to Caligo</div>
+              <div class="force-stat-val">Conditioned to resist Caligo's ambient influence; paradoxically, the closest to Caligo's zones of any Church soldier</div>
+            </div>
+          </div>
+
+          <div class="force-body">
+            <p>
+              Subject I-3 occupies a unique position in the world's cosmology: he is the product of the Church's attempt to create a human instrument that can operate at the intersection of Lumen's ordered purpose and Caligo's corrupting presence. The fact that his true name, <em>Ignis</em>, means fire — and that fire is itself the intersection of order and chaos, of controlled destruction and uncontrolled spread — is not coincidental. The game has seeded this etymology into the character's identity from the beginning.
+            </p>
+            <p>
+              He is the proof of concept that makes the entire Church experiment program meaningful to Father Calum. Every child that broke, every subject that failed, every experiment that ended in expulsion or worse — all of it was justified, in Calum's internal architecture, by the existence of <strong>Subject I-3</strong>: the one who survived, who integrated, who became what they intended. When Ignis elucidates his own origin, the reversal is complete: the Church's greatest achievement becomes the instrument of its destruction, or its judgment, depending on which path is chosen. He does not escape the forces of Lumen and Caligo. He becomes the site where they are finally, honestly examined.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ══════════════ DIVIDER ══════════════ -->
+    <div class="section-divider"><div class="div-line"></div><div class="div-icon">⚑</div><div class="div-line"></div></div>
+
+    <!-- ══════════════ SECTION 3: FACTIONS ══════════════ -->
+    <section class="factions-section" id="factions-anchor">
+      <div class="factions-container">
+        <div class="section-header">
+          <span class="section-tag">Organizations · Powers · Groups</span>
+          <h2 class="section-title">Factions &amp; <span class="gold">Powers</span></h2>
+          <p class="section-desc">Every faction in the world of Elucidate is a corruption of something that was once true. The institutions did not begin as instruments of harm — they became them.</p>
+        </div>
+
+        <!-- Major Factions -->
+        <div class="factions-major-grid">
+
+          <!-- LUMEN ORGANIZATION -->
+          <div class="faction-card faction-lumen reveal">
+            <div class="faction-header">
+              <div class="faction-logo-wrap">
+                <img src="placeholder-logo.png" alt="Lumen Logo" class="faction-logo-img" onerror="this.style.display='none';this.parentNode.innerHTML='☀';">
+              </div>
+              <div>
+                <div class="faction-name">Lumen Organization</div>
+                <div class="faction-tagline">The Church of Lumen · Theocratic Capital</div>
+              </div>
+            </div>
+            <div class="faction-body">
+              The Church of Lumen was founded on a genuine cosmic principle: the concept of order, light, and clarity as the natural counterbalance to formless darkness. What began as an honest attempt to organize human society around this principle was transformed, over generations of institutional growth and the ambitions of those who led it, into something that uses the language of illumination to justify the systematic suppression of truth. It controls armies, directs policy across multiple nations, runs secret underground laboratories, and pursues the collection of all three Fragments of Caligo — not to contain Caligo's influence, as it publicly claims, but to achieve a monopoly over it.
+              <br><br>
+              The Church's most defining characteristic is its relationship with information. It does not destroy truth — it curates it. Father Calum does not lie about the experiments in the conventional sense; he frames them in language so administratively clean that the violence is made invisible. The Church's power rests on the gap between what it says and what it does, maintained by the fact that most people never have access to the full picture.
+            </div>
+            <div class="faction-stats">
+              <div class="faction-stat-row">
+                <span class="faction-stat-lbl">Seat of Power</span>
+                <span class="faction-stat-v">Theocratic Capital — Grand Cathedral and Administrative Wing</span>
+              </div>
+              <div class="faction-stat-row">
+                <span class="faction-stat-lbl">Agenda</span>
+                <span class="faction-stat-v">Collect all three Fragments; achieve absolute control over Caligo's influence</span>
+              </div>
+              <div class="faction-stat-row">
+                <span class="faction-stat-lbl">Methods</span>
+                <span class="faction-stat-v">Military force, child experimentation, information suppression, assassination</span>
+              </div>
+              <div class="faction-stat-row">
+                <span class="faction-stat-lbl">Core Tension</span>
+                <span class="faction-stat-v">Claims to represent Lumen — operates in violation of everything Lumen actually means</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- CULT OF CALIGO -->
+          <div class="faction-card faction-caligo reveal">
+            <div class="faction-header">
+              <div class="faction-logo-wrap">
+                <img src="placeholder-logo.png" alt="Cult Logo" class="faction-logo-img" onerror="this.style.display='none';this.parentNode.innerHTML='🌑';">
+              </div>
+              <div>
+                <div class="faction-name">Cult of Caligo</div>
+                <div class="faction-tagline">The Discarded · Cultist Island</div>
+              </div>
+            </div>
+            <div class="faction-body">
+              The Cult of Caligo was not founded on ideology. It was formed by accident — the slow gravitational accumulation of people the Church threw away. Children expelled from the experiment program as "defects," survivors of Zones of Terrors exposure who developed what the Church called aberrant sensitivities, and dissidents who fled the Theocratic Capital's reach: these are the building blocks of the Cult's membership. The Cult Leader gave their shared experience a name, a framework, and a purpose. He told them their sensitivity to Caligo was attunement, not defect. He told them the Fragments were sacred. He told them they were not the problem — the Church was.
+              <br><br>
+              Much of this is true. The Cult's origin story is legitimate. Its critique of the Church is accurate. But the Cult makes its own version of the Church's original error: it takes a genuine principle — that Caligo is not evil, that sensitivity to darkness is not a disease — and constructs around it a structure of control, ritual obligation, and hierarchical authority that serves the Cult Leader's purposes rather than its members' liberation. Both institutions are cages. The bars are different colors.
+            </div>
+            <div class="faction-stats">
+              <div class="faction-stat-row">
+                <span class="faction-stat-lbl">Seat of Power</span>
+                <span class="faction-stat-v">Cultist Island — outside the Church's territorial reach</span>
+              </div>
+              <div class="faction-stat-row">
+                <span class="faction-stat-lbl">Agenda</span>
+                <span class="faction-stat-v">Guard the largest Fragment; achieve ritual completion; "transcendence" through Caligo's influence</span>
+              </div>
+              <div class="faction-stat-row">
+                <span class="faction-stat-lbl">Membership</span>
+                <span class="faction-stat-v">Failed Church experiments, expelled subjects, survivors, outcasts, dissidents</span>
+              </div>
+              <div class="faction-stat-row">
+                <span class="faction-stat-lbl">Core Tension</span>
+                <span class="faction-stat-v">Born from rejection — recreates the same structure of control it was rejected by</span>
+              </div>
+            </div>
+          </div>
+        </div><!-- /factions-major-grid -->
+
+        <!-- Walled City Authority + Merchant Guild -->
+        <div class="factions-major-grid" style="margin-bottom:28px;">
+
+          <div class="faction-card faction-walled reveal">
+            <div class="faction-header">
+              <div class="faction-logo-wrap">
+                <img src="placeholder-logo.png" alt="Walled City Logo" class="faction-logo-img" onerror="this.style.display='none';this.parentNode.innerHTML='🏛';">
+              </div>
+              <div>
+                <div class="faction-name">Walled City Authority</div>
+                <div class="faction-tagline">Military Administration · Walled City</div>
+              </div>
+            </div>
+            <div class="faction-body">
+              The Walled City Authority is the administrative arm of Church military governance at the regional level. It does not question the orders it receives from the Theocratic Capital — it processes them. Draft officers, garrison soldiers, and supply chains flow through the Authority without ever having to understand the purpose behind what they are facilitating. The Walled City is a Safe Zone not because it is peaceful, but because the Authority has organized its violence into a system so routine that it no longer registers as violence to those inside it.
+              <br><br>
+              The Notice Board in the city's central square is one of the game's most quietly devastating details: recruitment notices for "volunteers" — where the word "subjects" has been crossed out in a different handwriting — sit alongside cult warnings and missing children's cases, all treated with equal bureaucratic neutrality. The Authority is the face of the Church that most people see. It is specifically designed to look like ordinary governance.
+            </div>
+            <div class="faction-stats">
+              <div class="faction-stat-row"><span class="faction-stat-lbl">Function</span><span class="faction-stat-v">Military drafting, armory supply, civilian oversight, Church directive enforcement</span></div>
+              <div class="faction-stat-row"><span class="faction-stat-lbl">Role in Events</span><span class="faction-stat-v">Mercenary's starting point; first contact with Church institutional power</span></div>
+            </div>
+          </div>
+
+          <div class="faction-card faction-guild reveal">
+            <div class="faction-header">
+              <div class="faction-logo-wrap">
+                <img src="placeholder-logo.png" alt="Merchant Guild Logo" class="faction-logo-img" onerror="this.style.display='none';this.parentNode.innerHTML='⚖';">
+              </div>
+              <div>
+                <div class="faction-name">Merchant Guild</div>
+                <div class="faction-tagline">Commerce · Information · Port City</div>
+              </div>
+            </div>
+            <div class="faction-body">
+              The Merchant Guild operates out of Port City and maintains contracts with the Church for the movement of goods across the region. On the surface, it is a commercial institution. Beneath the surface, it is one of the few places where information can move without Church control — because commercial secrecy is a protection the Church tacitly allows, since disrupting trade would undermine its own supply chains. Konrad has used this protection for twenty years to build his case.
+              <br><br>
+              The Guild Master knows what Konrad knows. He chooses institutional survival over moral action. His conversation with Konrad is one of the game's clearest portraits of how complicity is rationalized: not through cruelty, but through the slow, reasonable-sounding calculation of consequences that keeps good people silent long enough for harm to become permanent.
+            </div>
+            <div class="faction-stats">
+              <div class="faction-stat-row"><span class="faction-stat-lbl">Function</span><span class="faction-stat-v">Regional trade, Church procurement, information brokerage (unofficial)</span></div>
+              <div class="faction-stat-row"><span class="faction-stat-lbl">Role in Events</span><span class="faction-stat-v">Konrad's base of operations; the fulcrum of Path B for multiple characters</span></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Minor Factions -->
+        <div class="factions-minor-grid">
+
+          <div class="faction-minor faction-church reveal">
+            <div class="faction-logo-wrap">
+              <img src="placeholder-logo.png" alt="Church Logo" class="faction-logo-img" onerror="this.style.display='none';this.parentNode.innerHTML='✝';">
+            </div>
+            <div class="faction-name" style="color:#d4c070;">The Church</div>
+            <div class="faction-body">
+              The administrative-religious body that controls the Theocratic Capital and the majority of the world's political structure. Its public doctrine promises clarity and order. Its private operations include underground experimentation on orphaned children, suppression of historical records, and strategic assassination. Father Calum is its highest-ranked operative — and its first successful experimental product.
+            </div>
+          </div>
+
+          <div class="faction-minor faction-cult reveal">
+            <div class="faction-logo-wrap">
+              <img src="placeholder-logo.png" alt="Cultists Logo" class="faction-logo-img" onerror="this.style.display='none';this.parentNode.innerHTML='🕯';">
+            </div>
+            <div class="faction-name" style="color:var(--caligo-pale);">Cultists</div>
+            <div class="faction-body">
+              The rank-and-file members of the Cult of Caligo: the expelled, the sensitive, the discarded. Many are former Church experiment subjects who survived rejection and found the Cult's community the first place that did not punish them for what they are. Their loyalty to the Cult is sincere, built on genuine experience of being given back an identity the Church tried to erase. Their tragedy is that the structure they found to protect them recreates the same dynamics that produced their suffering.
+            </div>
+          </div>
+
+          <div class="faction-minor faction-tribe reveal">
+            <div class="faction-logo-wrap">
+              <img src="placeholder-logo.png" alt="Tribe Logo" class="faction-logo-img" onerror="this.style.display='none';this.parentNode.innerHTML='🌿';">
+            </div>
+            <div class="faction-name" style="color:#6baa97;">Tribal Communities</div>
+            <div class="faction-body">
+              The Tribe exists at the margins of both Church and Cult territory — neither affiliated nor entirely free. They have protected the Shaman Pluvia for her entire life, understanding that her Foresight ability is the most significant piece of intelligence either major faction would want to control. Their twelve remaining fighters represent the cost of that decision. They give freely what the Church and Cult take by force, which makes them unique in the world's moral landscape.
+            </div>
+          </div>
+
+          <div class="faction-minor faction-assassin reveal">
+            <div class="faction-logo-wrap">
+              <img src="placeholder-logo.png" alt="Assassin Logo" class="faction-logo-img" onerror="this.style.display='none';this.parentNode.innerHTML='🗡';">
+            </div>
+            <div class="faction-name" style="color:#d46060;">Assassin Orders</div>
+            <div class="faction-body">
+              The Church maintains a class of specialized operatives distinct from its regular military force: assassins trained for precise, targeted elimination of threats too politically sensitive for open military action. They are faster, harder to detect, and deployed specifically when the Church needs someone dead without the appearance of institutional involvement. Their presence signals that the Church has moved past containment into elimination. One such operative is sent directly to kill Pluvia during the Tribe assault.
+            </div>
+          </div>
+
+        </div><!-- /factions-minor-grid -->
+      </div>
+    </section>
+
+    <!-- ══════════════ DIVIDER ══════════════ -->
+    <div class="section-divider"><div class="div-line"></div><div class="div-icon">📖</div><div class="div-line"></div></div>
+
+    <!-- ══════════════ SECTION 4: TERMINOLOGY ══════════════ -->
+    <section class="terminology-section" id="terminology-anchor">
+      <div class="terminology-container">
+        <div class="section-header">
+          <span class="section-tag">Official Glossary · Terms &amp; Definitions</span>
+          <h2 class="section-title">Terminology <span class="gold">Archive</span></h2>
+          <p class="section-desc">Each term in this archive is both a mechanical concept and a narrative one. Understanding how they connect is understanding how the world works.</p>
+        </div>
+
+        <div class="terms-filter-bar">
+          <button class="term-filter-btn active" data-filter="all">All Terms</button>
+          <button class="term-filter-btn" data-filter="cat-mind">Mind &amp; Psyche</button>
+          <button class="term-filter-btn" data-filter="cat-caligo">Caligo &amp; Dark</button>
+          <button class="term-filter-btn" data-filter="cat-lumen">Lumen &amp; Order</button>
+          <button class="term-filter-btn" data-filter="cat-world">World &amp; Place</button>
+          <button class="term-filter-btn" data-filter="cat-horror">Entities &amp; Horrors</button>
+        </div>
+
+        <div class="terms-grid" id="terms-grid">
+
+          <!-- MIND STATE -->
+          <div class="term-card cat-mind reveal" data-searchable="Mind State Corruption psychological stability meter threshold">
+            <span class="term-tag">Mind &amp; Psyche</span>
+            <div class="term-name">Mind State</div>
+            <div class="term-definition">
+              The primary mechanical and narrative system measuring a character's <strong>psychological stability</strong>. Represented as a value from 0 to 100, where 0 is complete stability and 100 is total identity collapse. Mind State rises through exposure to Caligo influence, combat trauma, revelation shock, and environmental corruption. It falls through rest, Blue Gem consumption, and specific companion interactions.
+            </div>
+            <div class="term-context-label">Narrative Context</div>
+            <div class="term-context">
+              The Mind State system is the game's central argument about the relationship between knowledge and psychological cost. Every act of elucidation — every truth revealed — raises Mind State. The system does not punish knowledge as wrong; it acknowledges that knowledge has weight, and that weight accumulates. Characters with higher MS resistance (Father Calum, 5/5) have spent years or decades building suppression mechanisms. Characters with lower resistance (Funeris, 1/5; Pluvia, 1/5) feel the weight of the world's truth immediately and without buffer.
+            </div>
+            <div class="term-example">
+              At MS 100, identity collapses. Caligo's ambient influence fills the void left by a shattered sense of self. Not a dramatic monster death — a quiet disappearance into darkness.
+            </div>
+          </div>
+
+          <!-- CORRUPTION -->
+          <div class="term-card cat-caligo reveal" data-searchable="Corruption Caligo ambient influence deterioration zones">
+            <span class="term-tag">Caligo &amp; Dark</span>
+            <div class="term-name">Corruption</div>
+            <div class="term-definition">
+              The ambient deterioration of physical reality, biological structure, and psychological coherence caused by proximity to <strong>Caligo's influence</strong>. Corruption is not a supernatural attack — it is the natural consequence of exposure to something whose operational scale exceeds what physical and mental structures were built to accommodate. It does not intend harm; it simply is, and contact with it distorts what it touches.
+            </div>
+            <div class="term-context-label">Narrative Context</div>
+            <div class="term-context">
+              Both the Church and the Cult have been shaped by Corruption in ways they fail to recognize. The Church's institutional violence is a form of social corruption — the deterioration of the principle it claims to represent. The Cult's obsessive rituals around Caligo exposure are a different form of the same deterioration. Corruption in this world is not limited to the Zones of Terrors. It is also present in every institution that claims to manage it while secretly replicating its effects in different language.
+            </div>
+            <div class="term-example">
+              The most subtle corruption in the game is administrative language: "let them rest" for "acknowledge the fatality." The words rot before the bodies do.
+            </div>
+          </div>
+
+          <!-- ENLIGHTENMENT -->
+          <div class="term-card cat-lumen reveal" data-searchable="Enlightenment Lumen clarity truth understanding revelation">
+            <span class="term-tag">Lumen &amp; Order</span>
+            <div class="term-name">Enlightenment</div>
+            <div class="term-definition">
+              In Church doctrine, Enlightenment is the state of complete alignment with Lumen's principles: clarity of purpose, suppression of doubt, unwavering service to the institution's order. In practice, this is a state the Church manufactures through conditioning, identity suppression, and the careful management of information access. True Enlightenment — in the philosophical sense the word suggests — would be incompatible with the Church's continued operation, as it would require seeing the institution clearly.
+            </div>
+            <div class="term-context-label">Narrative Context</div>
+            <div class="term-context">
+              The game reframes Enlightenment as an act of rebellion rather than compliance. Every character who achieves true self-knowledge does so against the Church's explicit design. Ignis's Path B ending — in which he destroys the institution that built him and reclaims the name they buried — is the game's closest approximation of what genuine Enlightenment would look like: not peace, but clarity; not comfort, but truth.
+            </div>
+          </div>
+
+          <!-- FRAGMENTS -->
+          <div class="term-card cat-caligo reveal" data-searchable="Fragments Caligo physical manifestation three shards power">
+            <span class="term-tag">Caligo &amp; Dark</span>
+            <div class="term-name">Fragments of Caligo</div>
+            <div class="term-definition">
+              Physical manifestations of Caligo's influence made tangible — pieces of something that was never meant to be fragmentable. Three exist in the game world. The first is held by the Tribe and passed to whoever rescues the Shaman. The second is in the Merchant Guild's possession in Port City. The largest is guarded at the heart of Cultist Island by the Cult Leader himself. All five playable characters are, in one way or another, entangled in their fate.
+            </div>
+            <div class="term-context-label">Narrative Context</div>
+            <div class="term-context">
+              The Fragments function as the game's MacGuffin and its central thematic object simultaneously. The Church wants them for control. The Cult treats them as sacred. Neither perspective is wrong about their power; both are catastrophically wrong about what that power should be used for. A recovered document in the Theocratic Capital archive reveals that Church containment protocols and Cult ritual use of the Fragments "share more methodology than either party would admit."
+            </div>
+            <div class="term-example">
+              Pluvia gives the Fragment to the Mercenary with the words: "I give it to you because my Foresight tells me that you will use it better than either of them, and worse than you should, and it will cost you something. That is still the best outcome I can see."
+            </div>
+          </div>
+
+          <!-- NEXUS POINTS -->
+          <div class="term-card cat-world reveal" data-searchable="Nexus Points Zones geography high concentration Caligo">
+            <span class="term-tag">World &amp; Place</span>
+            <div class="term-name">Nexus Points</div>
+            <div class="term-definition">
+              Specific geographic locations within the Zones of Terrors where Caligo's influence is most concentrated — places where the ambient pressure of proximity to the Formless has accumulated to such a degree that the boundary between ordinary reality and Caligo's influence becomes functionally permeable. At Nexus Points, <strong>Caligo Manifestations</strong> are present, Mind State rises at accelerated rates (+15), and the physical environment distorts in ways that go beyond standard Zone corruption.
+            </div>
+            <div class="term-context-label">Narrative Context</div>
+            <div class="term-context">
+              Funeris's encounter with a Caligo Manifestation at a Nexus Point produces one of the game's most philosophically precise observations: the Manifestation is not hostile, not conscious, not responsive. It simply expands and contracts. The cultists who survive the Zones of Terrors are the ones who understand this — not the ones who pray to it, but the ones who learned to move around it without disturbing it. Faith directed at something indifferent is not answered. But indifferent things can still be navigated.
+            </div>
+          </div>
+
+          <!-- ZONES OF TERROR -->
+          <div class="term-card cat-world reveal" data-searchable="Zones of Terrors high risk areas Caligo corruption uninhabitable">
+            <span class="term-tag">World &amp; Place</span>
+            <div class="term-name">Zones of Terrors</div>
+            <div class="term-definition">
+              Areas of the world where Caligo's ambient corruption has reached a density sufficient to make normal habitation impossible and sustained exposure psychologically lethal. Defined by accelerated Mind State increase rates (+3/min passive), unpredictable Eldritch Horror spawning, and the visual distortion of environment and entity appearance based on the character's current MS. The Church built its experiment program specifically to create soldiers who could operate in these zones without losing coherence.
+            </div>
+            <div class="term-context-label">Narrative Context</div>
+            <div class="term-context">
+              The Zones are the world's most honest spaces. They do not pretend. The corruption is visible, measurable, honest in its danger. By contrast, the Theocratic Capital is a Safe Zone in which far more damage is done in far more concealed ways. The game's use of Zone classification — Safe, High-Risk, Dual-State — is a structural irony: the safe places are often where the most harm is administered. The dangerous places are simply dangerous in ways you can see.
+            </div>
+          </div>
+
+          <!-- LUMEN ENERGY -->
+          <div class="term-card cat-lumen reveal" data-searchable="Lumen Energy order light clarity Church principle cosmic">
+            <span class="term-tag">Lumen &amp; Order</span>
+            <div class="term-name">Lumen Energy</div>
+            <div class="term-definition">
+              The ambient presence of Lumen's cosmic principle in the world: the force of order, structure, and clarity that defines edges, names things, makes language and recognition possible. In its pure form, Lumen Energy is genuinely stabilizing — it anchors Mind State, clarifies perception, and reinforces a character's sense of self and purpose. In Church-mediated form, it is carefully dosed: enough to maintain loyalty and coherence, not enough to enable independent evaluation.
+            </div>
+            <div class="term-context-label">Narrative Context</div>
+            <div class="term-context">
+              The Chapel of Lumen encounter in the Walled City illustrates the difference precisely. At low Mind State, interacting with the altar provides stable, comforting lore about the Lumen faith. At high Mind State, the text begins to distort: words repeat, sentences reverse, the Mercenary's hands shake on the page. Lumen Energy is not corrupted by the Mind State — but the ability to receive it clearly is. The Church uses this to its advantage: soldiers in controlled psychological states absorb Lumen doctrine without friction. The experiment program is, in part, a system for manufacturing and maintaining that controlled state permanently.
+            </div>
+          </div>
+
+          <!-- CALIGO INFLUENCE -->
+          <div class="term-card cat-caligo reveal" data-searchable="Caligo Influence ambient corruption Mind State horrors formless">
+            <span class="term-tag">Caligo &amp; Dark</span>
+            <div class="term-name">Caligo Influence</div>
+            <div class="term-definition">
+              The ambient permeation of Caligo's presence into physical space, biological matter, and psychological architecture. Unlike Lumen Energy, Caligo Influence does not require proximity to a formal source — it exists as background radiation in any space where the balance between order and chaos has been significantly disrupted. It is most concentrated in the Zones of Terrors and at Nexus Points, but traces are measurable everywhere, including in the Theocratic Capital's Underground Laboratory. The experiment program was built to make subjects resistant to it. Some subjects became more <em>sensitive</em> instead — and were classified as failures.
+            </div>
+            <div class="term-context-label">Narrative Context</div>
+            <div class="term-context">
+              Funeris's "defect" — her heightened Caligo sensitivity — reframes the entire moral architecture of the experiment program. The Church discarded her because she could feel too much. The Cult recruited her because she could feel too much. Neither institution understood that her sensitivity was not a malfunction in the design; it was the design's most complete outcome. A person who can feel the wrongness of the world before they can name it is not broken. They are paying attention.
+            </div>
+            <div class="term-example">
+              "The Church built labs and procedures to make soldiers who could survive this. And they threw me away for being too sensitive to it." — Funeris, entering a Zone of Terrors
+            </div>
+          </div>
+
+          <!-- ELDRITCH HORROR -->
+          <div class="term-card cat-horror reveal" data-searchable="Eldritch Horror entity Mind State appearance changes humanoid">
+            <span class="term-tag">Entities &amp; Horrors</span>
+            <div class="term-name">Eldritch Horrors</div>
+            <div class="term-definition">
+              Entities that manifest in regions of high Caligo Influence, particularly in the Zones of Terrors and the Home Village. Humanoid in general shape, they are <strong>wrong in proportion</strong> — the wrongness itself varying in degree with the observer's Mind State. At low MS, they appear as something between a man and a shadow. At mid-range MS, proportions shift: too many joints, too few edges. At high MS, they become something else entirely — massive, amalgamated, moving in ways that feel like a violation of what movement is supposed to be.
+            </div>
+            <div class="term-context-label">Narrative Context</div>
+            <div class="term-context">
+              The Eldritch Horrors are the game's most explicit statement about the Mind State system: what you see depends on who you are when you're looking. They do not change. The player's perception of them does. This mechanic teaches, through gameplay, that the horror of the world is not a fixed external quantity — it is proportional to how much of your own stability you have retained. The experiment program's purpose was to create people who could see these entities at full clarity without breaking. Most of the orphanage children could not do this. Subject I-3 could. That is, in a precise technical sense, what the Church means when it describes him as their "finest instrument."
+            </div>
+          </div>
+
+          <!-- FORESIGHT -->
+          <div class="term-card cat-mind reveal" data-searchable="Foresight Pluvia Shaman ability future vision visions MS cost">
+            <span class="term-tag">Mind &amp; Psyche</span>
+            <div class="term-name">Foresight</div>
+            <div class="term-definition">
+              Pluvia's unique ability to perceive possible futures — short windows of time ranging from seconds (tactical) to weeks (strategic) ahead of the present moment. Active Foresight is player-triggered and reveals enemy positions, traps, and hidden information at a cost of MS +10 per use. Passive Foresight triggers automatically at story events, showing short clips of possible futures. Both become less reliable and more psychologically costly as Mind State rises, eventually becoming indistinguishable from hallucination.
+            </div>
+            <div class="term-context-label">Narrative Context</div>
+            <div class="term-context">
+              Foresight is described by Pluvia as leaning into a river current rather than against it. The metaphor is precise: the current is always moving, always pushing. Using Foresight means moving with forces that exist regardless of whether you engage them. The cost is that the more you lean into the current, the more you forget which way the flow runs — the more the future begins to replace the present as your primary experience of reality. Pluvia's Path C ending, in which she can no longer locate the boundary between what is and what might be, is the logical conclusion of a gift with no sustainable off switch.
+            </div>
+          </div>
+
+          <!-- ORPHANAGE -->
+          <div class="term-card cat-world reveal" data-searchable="Orphanage origin all characters unifying thread experiments children">
+            <span class="term-tag">World &amp; Place</span>
+            <div class="term-name">The Orphanage</div>
+            <div class="term-definition">
+              The single location that connects all five playable characters before any of them are consciously aware of the connection. A Church-run institution that served as the primary supply point for the underground experiment program: children with no family, no one to ask questions, no one to come looking. The Church selected specifically for this absence of connection — they chose children nobody would miss, and then they ensured that any connection the children formed with each other was systematically removed before deployment.
+            </div>
+            <div class="term-context-label">Narrative Context</div>
+            <div class="term-context">
+              The Orphanage is referenced in dialogue before it is visited. The note in the Walled City armory — "Ask about the orphanage" — is the game's invitation to pay attention to a thread it has been laying since the first scene. When the Mercenary finally walks through the ruins of the Home Village and hears the memory fragments playing from the well and the dormitory walls, the horror is not that the place was terrible. It is that it was mundane. Administrative. Clean on the surface. The horror the Church is best at is the kind that looks, from the outside, exactly like an ordinary charitable institution doing ordinary charitable work.
+            </div>
+          </div>
+
+          <!-- MIND STATE RESISTANCE -->
+          <div class="term-card cat-mind reveal" data-searchable="MS Resistance Mind State baseline character suppression capacity">
+            <span class="term-tag">Mind &amp; Psyche</span>
+            <div class="term-name">Mind State Resistance</div>
+            <div class="term-definition">
+              Each playable character has an inherent MS Resistance rating from 1/5 to 5/5, representing their baseline capacity to absorb psychological pressure without deterioration. This is not courage or intelligence — it is <strong>suppression architecture</strong>: the set of mechanisms, habits, conditioning, and self-deception strategies each character has built over time. Father Calum (5/5) has the highest resistance not because he is the strongest character morally, but because he has had the most practice not feeling things he should feel. Funeris (1/5) has the lowest because she was expelled before that architecture could be fully built.
+            </div>
+            <div class="term-context-label">Narrative Context</div>
+            <div class="term-context">
+              The resistance ratings invert conventional heroism. The character with the most psychological fortitude by the game's mechanical standards is also the character who has done the most harm over the longest period of time. Funeris's vulnerability is inseparable from her sensitivity — the same quality that makes her break faster also makes her feel more accurately. The game suggests, quietly, that high MS resistance is not an asset to be aspired to. It is a description of damage sustained and buried, not damage avoided.
+            </div>
+          </div>
+
+        </div><!-- /terms-grid -->
+      </div>
+    </section>
+
+    <!-- ══════════════ DIVIDER ══════════════ -->
+    <div class="section-divider"><div class="div-line"></div><div class="div-icon">🔗</div><div class="div-line"></div></div>
+
+    <!-- ══════════════ SECTION 5: LORE CONNECTIONS ══════════════ -->
+    <section class="connections-section" id="connections-anchor">
+      <div class="connections-container">
+        <div class="section-header">
+          <span class="section-tag">Narrative Architecture · Interconnections</span>
+          <h2 class="section-title">Lore <span class="gold">Connections</span></h2>
+          <p class="section-desc">Every element in this world references and reinforces every other. The following threads trace how the major concepts bind together into a single cohesive narrative.</p>
+        </div>
+
+        <div class="connection-thread thread-orphanage reveal">
+          <div class="connection-title">Thread I — The Orphanage as Origin System</div>
+          <div class="connection-body">
+            All five characters trace their origin to the same orphanage. This is not a narrative coincidence — it is the game's central argument about <strong>systemic harm</strong>. The Church did not harm five individuals; it ran a system. The orphanage was the intake point of a production pipeline that sorted children into three categories: <em>viable subjects</em> (enhanced and deployed, like Ignis), <em>failed subjects</em> (expelled, like Funeris), and <em>witnesses</em> (untested bystanders, like Konrad). Father Calum himself was Category One, Subject C-1 — the first child the system worked on, who then became the system's administrator. The cycle is not metaphorical. It is literal and institutional.
+          </div>
+          <div class="connection-flow">
+            <span class="cf-node gold-n">The Orphanage</span>
+            <span class="cf-arrow">→</span>
+            <span class="cf-node crimson-n">Church Experiment Program</span>
+            <span class="cf-arrow">→</span>
+            <span class="cf-node gold-n">Ignis (Success)</span>
+            <span class="cf-arrow">+</span>
+            <span class="cf-node caligo-n">Funeris (Expelled)</span>
+            <span class="cf-arrow">+</span>
+            <span class="cf-node crimson-n">Father Calum (Administrator)</span>
+            <span class="cf-arrow">→</span>
+            <span class="cf-node teal-n">All story paths</span>
+          </div>
+        </div>
+
+        <div class="connection-thread thread-ms reveal">
+          <div class="connection-title">Thread II — Caligo Influence and the Mind State System</div>
+          <div class="connection-body">
+            <em class="caligo-em">Caligo</em> does not attack characters directly. It is ambient — present, pervasive, proportional to proximity. The <strong>Mind State system</strong> is the mechanical translation of this: the closer a character gets to Caligo's concentrated influence (Zones of Terrors, Nexus Points, Cultist Island), the faster their psychological stability deteriorates. But the system's most sophisticated detail is that Mind State also rises through <em>revelation</em>: understanding the truth about the experiment program, confronting one's own origin, recognizing that both major factions are variants of the same institutional harm. Caligo does not need to break characters directly. It simply ensures that the truth is unbearable enough to do the work on its own. The experiment program was designed to make characters who could absorb this without breaking. The irony is that the very process of being experimented on provides the revelations that most directly accelerate MS.
+          </div>
+          <div class="connection-flow">
+            <span class="cf-node caligo-n">Caligo Influence</span>
+            <span class="cf-arrow">→</span>
+            <span class="cf-node crimson-n">MS Rising</span>
+            <span class="cf-arrow">+</span>
+            <span class="cf-node teal-n">Revelations about origin</span>
+            <span class="cf-arrow">→</span>
+            <span class="cf-node crimson-n">MS Rising faster</span>
+            <span class="cf-arrow">→</span>
+            <span class="cf-node caligo-n">Identity collapse at 100</span>
+          </div>
+        </div>
+
+        <div class="connection-thread thread-factions reveal">
+          <div class="connection-title">Thread III — Church and Cult as Mirror Institutions</div>
+          <div class="connection-body">
+            The game's most important structural revelation — available only if the player investigates the <em>Ancient Paper</em> in the Theocratic Capital archive — is that the Church and the Cult share more methodology than either would publicly acknowledge. The Librarian Scholar in the Theocratic Capital puts it precisely: <strong>"The question our more honest historians ask is whether the Church is trying to stop Caligo, or simply trying to be the only institution permitted to touch it."</strong> The Cult's note in the Library of Caligo mirrors this: "The Church uses Lumen the way a cage uses bars. The Cult uses Caligo the same way. Both are still cages." The war between them is not between good and evil — it is between two institutions fighting over the same monopoly, using the same language of sacred mission to justify the same violence. Every character who achieves their B ending does so by refusing both cages simultaneously.
+          </div>
+          <div class="connection-flow">
+            <span class="cf-node gold-n">Church of Lumen</span>
+            <span class="cf-arrow">↔</span>
+            <span class="cf-node caligo-n">Cult of Caligo</span>
+            <span class="cf-arrow">→</span>
+            <span class="cf-node crimson-n">Same structural violence</span>
+            <span class="cf-arrow">→</span>
+            <span class="cf-node teal-n">Different ideological branding</span>
+            <span class="cf-arrow">→</span>
+            <span class="cf-node gold-n">Both produce orphans</span>
+          </div>
+        </div>
+
+        <div class="connection-thread thread-fragments reveal">
+          <div class="connection-title">Thread IV — The Three Fragments and the Five Characters</div>
+          <div class="connection-body">
+            The three Fragments of Caligo connect all five characters through a single chain of possession and purpose. <em>Fragment One</em> is held by the Tribe and given to whoever rescues the Shaman — connecting Pluvia's story to the Mercenary's. <em>Fragment Two</em> passes through the Merchant Guild in Port City — connecting Konrad's investigation to the central conflict. <em>Fragment Three</em> — the largest — is guarded by the Cult Leader on Cultist Island, making it the convergence point of both the Mercenary's mission (Path A: retrieve it; Path B: contest its purpose) and Funeris's story (Path A: defend it; Path B: betray its guardian). Father Calum wants all three not to contain Caligo, but to be the sole arbiter of how its power is used — the same ambition that transformed the genuine cosmic principle of Lumen into a doctrine of control centuries before.
+          </div>
+          <div class="connection-flow">
+            <span class="cf-node teal-n">Fragment 1 (Tribe)</span>
+            <span class="cf-arrow">+</span>
+            <span class="cf-node gold-n">Fragment 2 (Port City)</span>
+            <span class="cf-arrow">+</span>
+            <span class="cf-node caligo-n">Fragment 3 (Cultist Island)</span>
+            <span class="cf-arrow">→</span>
+            <span class="cf-node crimson-n">Church's monopoly plan</span>
+            <span class="cf-arrow">OR</span>
+            <span class="cf-node teal-n">Five characters' separate reckoning</span>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ══════════════ DIVIDER ══════════════ -->
+    <div class="section-divider"><div class="div-line"></div><div class="div-icon">🌐</div><div class="div-line"></div></div>
+
+    <!-- ══════════════ SECTION 6: WORLD ORIGIN ══════════════ -->
+    <section class="origin-section" id="origin-anchor">
+      <div class="origin-container">
+        <div class="section-header">
+          <span class="section-tag">Historical Record · Chronological Flow</span>
+          <h2 class="section-title">World <span class="gold">Origin</span> &amp; <span class="caligo-c">History</span></h2>
+          <p class="section-desc">From cosmic equilibrium to a world consumed by institutional war — the sequence of events that brought everything to the state it is in when the player arrives.</p>
+        </div>
+
+        <div class="origin-flow">
+
+          <div class="origin-step reveal">
+            <div class="origin-spine"><div class="origin-dot gold-d"></div><div class="origin-line"></div></div>
+            <div class="origin-content">
+              <div class="origin-era">Before Recorded History</div>
+              <div class="origin-step-title">Cosmic Equilibrium — Lumen and Caligo in Balance</div>
+              <div class="origin-step-body">
+                In the beginning, the world existed in fragile balance between <em>Lumen</em> and <em class="caligo-em">Caligo</em> — order and chaos, light and formless darkness. Neither was wholly good nor evil. They were two poles of existence. When balance held, the world prospered. When it was broken, the world decayed. No human institution existed yet to worship or weaponize either principle. They simply were. This is the state the game implies has been irrecoverable since the Church's founding.
+              </div>
+            </div>
+          </div>
+
+          <div class="origin-step reveal">
+            <div class="origin-spine"><div class="origin-dot gold-d"></div><div class="origin-line"></div></div>
+            <div class="origin-content">
+              <div class="origin-era">Ancient Era</div>
+              <div class="origin-step-title">The Church of Lumen Rises</div>
+              <div class="origin-step-body">
+                Human ambition found the principle of Lumen and built an institution around it. The Church began as an honest attempt to organize human society around order and clarity. Over generations, institutional growth, political ambition, and the accumulated small compromises of men and women who told themselves their decisions were for the greater good transformed it into something that uses the language of illumination to justify the systematic suppression of truth. <em>The doctrine is not Lumen. The doctrine is a perversion of it.</em> Lumen itself remains as real and present as it ever was. The Church simply holds a monopoly on who is permitted to access it, and at what cost.
+              </div>
+            </div>
+          </div>
+
+          <div class="origin-step reveal">
+            <div class="origin-spine"><div class="origin-dot caligo-d"></div><div class="origin-line"></div></div>
+            <div class="origin-content">
+              <div class="origin-era">Period of Expansion</div>
+              <div class="origin-step-title">Caligo's Ambient Corruption Spreads</div>
+              <div class="origin-step-body">
+                As the Church's institutional disruption of the world's balance grew — as Lumen was taken out of equilibrium and turned into a weapon — Caligo's passive influence began seeping into zones of imbalance, warping reality. This was not Caligo choosing to respond to the Church. It was the natural consequence of disrupting a balance: when one pole is redirected, the other expands into the space left behind. The <em class="caligo-em">Zones of Terrors</em> are the material record of this displacement — geographical evidence of a cosmic imbalance that has been building since the first time a man said a holy principle belonged to his institution and not to the world.
+              </div>
+            </div>
+          </div>
+
+          <div class="origin-step reveal">
+            <div class="origin-spine"><div class="origin-dot caligo-d"></div><div class="origin-line"></div></div>
+            <div class="origin-content">
+              <div class="origin-era">The Founding of the Cult</div>
+              <div class="origin-step-title">Survivors and Outcasts Gather Under Caligo's Influence</div>
+              <div class="origin-step-body">
+                The Church's experiment program produced two categories of output: successful soldiers and discarded failures. The failures — children expelled, marked as defective, abandoned at city edges with nothing but the damage the program had done to them — found each other slowly, over years and distance, drawn by the same Caligo sensitivity that had made the Church reject them. The Cult of Caligo was not founded on ideology. It was built from shared experience of rejection, and then given ideology by a leader who understood that people who have been told they are broken need, more than anything, to be told they are not. <em>The war that followed between Church and Cult was not between two opposing principles. It was between two expressions of the same institutional failure.</em>
+              </div>
+            </div>
+          </div>
+
+          <div class="origin-step reveal">
+            <div class="origin-spine"><div class="origin-dot red-d"></div><div class="origin-line"></div></div>
+            <div class="origin-content">
+              <div class="origin-era">Present Era — The World at Game Start</div>
+              <div class="origin-step-title">Nations at War. The Orphanage Produces Five Outcomes.</div>
+              <div class="origin-step-body">
+                At the moment the player enters the world, the war between Church and Cult has been consuming nations for years. The Zones of Terrors have spread to the point where entire regions are uninhabitable. The Theocratic Capital operates as a fortress of institutional hypocrisy, running its underground program beneath the same cathedral where it preaches clarity. The Cultist Island guards its Fragment and its population of the discarded. Five characters — products of the same orphanage, shaped by the same program in its success and its failure — are about to converge on the same set of truths from five different directions. The world is already broken. The question the game asks is what you do when you understand exactly how it was broken, and by whom, and why — and what that understanding is going to cost you.
+              </div>
+            </div>
+          </div>
+
+          <div class="origin-step reveal">
+            <div class="origin-spine"><div class="origin-dot teal-d"></div></div>
+            <div class="origin-content">
+              <div class="origin-era">Player Entry Point</div>
+              <div class="origin-step-title">Five Stories. One System. Every Path Leads to the Same Archive.</div>
+              <div class="origin-step-body">
+                The player enters through five simultaneous character perspectives, each beginning in a different location, each unaware of the full scope of the system that shaped them. <em>Ignis</em> begins with a mission. <em>Funeris</em> begins with a ceremony. <em>Pluvia</em> begins with a vision of a soldier she has not yet met. <em>Konrad</em> begins with twenty years of evidence and a decision he has been postponing. <em>Father Calum</em> begins with a field report and a suppression mechanism so well-built he may never fully dismantle it. All five paths lead eventually to the same orphanage, the same ruins, the same files in the same archive. The lore is not hidden. It is waiting. The distance between the player and the truth is the entire length of the game.
+              </div>
+            </div>
+          </div>
+
+        </div><!-- /origin-flow -->
+      </div>
+    </section>
+
+    <!-- ══════════════ FOOTER ══════════════ -->
+    <footer class="site-footer">
+      <div class="footer-inner">
+        <div class="footer-logo-block">
+          <div class="footer-logo-title">Elucidate RPG</div>
+          <div class="footer-logo-sub">Pamantasan ng Lungsod ng Maynila · BS Information Technology</div>
+        </div>
+        <div class="footer-links">
+          <a href="characters.html">Characters</a>
+          <a href="lore.html">Lore</a>
+          <a href="items.html">Items</a>
+          <a href="environments.html">Environments</a>
+          <a href="developers.html">Developers</a>
+        </div>
+        <div class="footer-copy">
+          <span>©2026. Elucidate RPG DLC. All Rights Reserved.<br>Made by Group WOZ. · Powered by FGC UNAUX</span>
+        </div>
+      </div>
+      <div class="footer-ornament">
+        ✦ &nbsp; Between what you were told and what is true — that distance is everything &nbsp; ✦
+      </div>
+    </footer>
+
+  </main>
+</div><!-- /wiki-layout -->
+
+<!-- ════════════════════════════════════
+     JAVASCRIPT
+════════════════════════════════════ -->
+<script>
+(function generateStars() {
+  const container = document.getElementById('stars-container');
+  if (!container) return;
+  for (let i = 0; i < 80; i++) {
+    const s = document.createElement('div');
+    s.className = 'star';
+    s.style.cssText = `
+      left: ${Math.random() * 100}%;
+      top:  ${Math.random() * 100}%;
+      --d:  ${3 + Math.random() * 5}s;
+      --o:  ${0.2 + Math.random() * 0.5};
+      animation-delay: ${Math.random() * 6}s;
+      width:  ${Math.random() < 0.15 ? 2 : 1}px;
+      height: ${Math.random() < 0.15 ? 2 : 1}px;
+    `;
+    container.appendChild(s);
+  }
+})();
+
+/* ─── SEARCH ─── */
+const loreSearchIndex = [
+  { title: 'Elucidate — The Word', section: 'Lore Foundation', excerpt: 'Latin root elucidare: to illuminate, to make clear. The name Lucidus is extracted from this root — the Church named him after clarity to make him uncomplicated.', id: 'elucidate-anchor' },
+  { title: 'Vindication Lumen', section: 'Primary Forces', excerpt: 'Order, structure, and light as cosmic principle. Corrupted by the Church into political control. Real; its doctrine is a perversion.', id: 'forces-anchor' },
+  { title: 'Caligo the Formless', section: 'Primary Forces', excerpt: 'Predates the Church by centuries. No intention, no prayer response. Exists like weather — without purpose, with terrible consequence.', id: 'forces-anchor' },
+  { title: 'Subject I-3 — Ignis', section: 'Primary Forces', excerpt: 'The most stable experiment. True name Ignis, Latin for fire. Identity anchor suppressed. Called Lucidus. Proof of concept for the entire experiment program.', id: 'forces-anchor' },
+  { title: 'Church of Lumen (Faction)', section: 'Factions', excerpt: 'Ancient order founded on genuine cosmic principle. Corrupted into political control. Runs underground child experiments. Father Calum leads.', id: 'factions-anchor' },
+  { title: 'Cult of Caligo (Faction)', section: 'Factions', excerpt: 'Born from failed Church experiments. Protects the largest Fragment. Claims Caligo sensitivity is attunement, not defect.', id: 'factions-anchor' },
+  { title: 'Walled City Authority', section: 'Factions', excerpt: 'Military arm of Church governance. Processes orders without questioning. The face of Church power that most people see.', id: 'factions-anchor' },
+  { title: 'Merchant Guild', section: 'Factions', excerpt: 'Port City commerce and information. Konrad uses Guild trade protections to gather evidence against the Church for twenty years.', id: 'factions-anchor' },
+  { title: 'Tribal Communities', section: 'Factions', excerpt: 'Protectors of Shaman Pluvia. Twelve fighters remaining. Give freely what Church and Cult take by force.', id: 'factions-anchor' },
+  { title: 'Assassin Orders', section: 'Factions', excerpt: 'Church specialized operatives. Faster than soldiers, deployed for targets too sensitive for open military action.', id: 'factions-anchor' },
+  { title: 'Mind State', section: 'Terminology', excerpt: 'Psychological stability 0-100. Rises through Caligo exposure, trauma, revelation shock. At 100, identity collapses. Caligo fills the void.', id: 'terminology-anchor' },
+  { title: 'Corruption', section: 'Terminology', excerpt: 'Ambient deterioration from Caligo influence. Not supernatural attack — natural consequence of proximity to something vast and indifferent.', id: 'terminology-anchor' },
+  { title: 'Enlightenment', section: 'Terminology', excerpt: 'Church version: alignment with doctrine. True version: incompatible with Church continued operation. Path B endings are its closest approximation.', id: 'terminology-anchor' },
+  { title: 'Fragments of Caligo', section: 'Terminology', excerpt: 'Three physical manifestations of Caligo influence. Church wants control. Cult treats as sacred. Both methodologies share more than either admits.', id: 'terminology-anchor' },
+  { title: 'Nexus Points', section: 'Terminology', excerpt: 'Zones of Terrors locations with highest Caligo concentration. MS +15 at entry. Caligo Manifestations present. Reality boundary permeable.', id: 'terminology-anchor' },
+  { title: 'Zones of Terrors', section: 'Terminology', excerpt: 'Areas of critical Caligo corruption. MS accelerates. Eldritch Horrors roam. The experiment program was built to create soldiers who survive here.', id: 'terminology-anchor' },
+  { title: 'Lumen Energy', section: 'Terminology', excerpt: 'Cosmic principle of order in ambient form. Genuinely stabilizing in pure form. Church doses it carefully — enough for loyalty, not enough for independent evaluation.', id: 'terminology-anchor' },
+  { title: 'Caligo Influence', section: 'Terminology', excerpt: 'Ambient permeation of Caligo presence. Background radiation in spaces of broken balance. Those made sensitive to it were classified as failures.', id: 'terminology-anchor' },
+  { title: 'Eldritch Horrors', section: 'Terminology', excerpt: 'Humanoid entities, wrong in proportion. Appearance changes with observer Mind State. At MS 75+, massive and moving in ways that violate expected motion.', id: 'terminology-anchor' },
+  { title: 'Foresight', section: 'Terminology', excerpt: 'Pluvia ability to see possible futures. Active use: MS +10. At high MS, visions become indistinguishable from hallucination.', id: 'terminology-anchor' },
+  { title: 'The Orphanage', section: 'Terminology', excerpt: 'The hidden unifying thread. All five characters trace origin here. Church selected children with no family — no one to come looking.', id: 'terminology-anchor' },
+  { title: 'Mind State Resistance', section: 'Terminology', excerpt: 'Rated 1/5 to 5/5. Not courage — suppression architecture. Father Calum 5/5. Funeris 1/5. High resistance is damage buried, not avoided.', id: 'terminology-anchor' },
+  { title: 'World Origin — Cosmic Equilibrium', section: 'World History', excerpt: 'Before recorded history. Lumen and Caligo in balance. Neither good nor evil. Two poles of existence. This balance has been irrecoverable since the Church\'s founding.', id: 'origin-anchor' },
+  { title: 'Lore Connections — Orphanage System', section: 'Connections', excerpt: 'All five characters originate from one orphanage. Not coincidence — proof of systemic harm. The Church ran a production pipeline, not a charity.', id: 'connections-anchor' },
+  { title: 'Lore Connections — Church vs. Cult', section: 'Connections', excerpt: 'Church and Cult share more methodology than either admits. Both are cages with different colored bars. Both produce orphans.', id: 'connections-anchor' },
+];
+
+const inputEl   = document.getElementById('search-input');
+const overlayEl = document.getElementById('search-results-overlay');
+
+function performSearch() {
+  const q = inputEl.value.trim().toLowerCase();
+  overlayEl.innerHTML = '';
+  if (!q || q.length < 2) { overlayEl.classList.remove('visible'); return; }
+
+  const results = loreSearchIndex.filter(item =>
+    item.title.toLowerCase().includes(q) ||
+    item.excerpt.toLowerCase().includes(q) ||
+    item.section.toLowerCase().includes(q)
+  ).slice(0, 10);
+
+  if (!results.length) {
+    overlayEl.innerHTML = '<div class="search-no-result">No results found for "' + escapeHtml(q) + '"</div>';
+  } else {
+    results.forEach(item => {
+      const div = document.createElement('div');
+      div.className = 'search-result-item';
+      div.innerHTML = `<div class="sr-title">${highlightMatch(item.title, q)} <span style="font-size:9px;color:var(--text-dim);margin-left:6px;">${item.section}</span></div><div class="sr-excerpt">${highlightMatch(item.excerpt.slice(0,90) + '…', q)}</div>`;
+      div.onclick = () => {
+        const target = document.getElementById(item.id);
+        if (target) target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        overlayEl.classList.remove('visible');
+        inputEl.value = '';
+      };
+      overlayEl.appendChild(div);
+    });
+  }
+  overlayEl.classList.add('visible');
+}
+
+function highlightMatch(text, q) {
+  const idx = text.toLowerCase().indexOf(q);
+  if (idx < 0) return escapeHtml(text);
+  return escapeHtml(text.slice(0, idx)) +
+    '<mark class="search-highlight">' + escapeHtml(text.slice(idx, idx + q.length)) + '</mark>' +
+    escapeHtml(text.slice(idx + q.length));
+}
+function escapeHtml(str) {
+  return str.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+
+inputEl.addEventListener('input', performSearch);
+inputEl.addEventListener('keydown', e => {
+  if (e.key === 'Escape') { overlayEl.classList.remove('visible'); inputEl.blur(); }
+});
+document.addEventListener('click', e => {
+  if (!e.target.closest('.search-wrap') && !e.target.closest('#search-results-overlay')) {
+    overlayEl.classList.remove('visible');
+  }
+});
+
+/* ─── TERMINOLOGY FILTER ─── */
+document.querySelectorAll('.term-filter-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('.term-filter-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    const filter = btn.dataset.filter;
+    document.querySelectorAll('.term-card').forEach(card => {
+      if (filter === 'all' || card.classList.contains(filter)) {
+        card.style.display = '';
+      } else {
+        card.style.display = 'none';
+      }
+    });
+  });
+});
+
+/* ─── SMOOTH SCROLL FOR ANCHORS ─── */
+document.querySelectorAll('a[href^="#"]').forEach(a => {
+  a.addEventListener('click', e => {
+    const target = document.querySelector(a.getAttribute('href'));
+    if (target) { e.preventDefault(); target.scrollIntoView({ behavior: 'smooth', block: 'start' }); }
+  });
+});
+
+/* ─── SCROLL REVEAL ─── */
+const revealObserver = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      entry.target.style.opacity = '1';
+      entry.target.style.transform = 'translateY(0)';
+    }
+  });
+}, { threshold: 0.06, rootMargin: '0px 0px -30px 0px' });
+
+document.querySelectorAll('.reveal').forEach(el => {
+  el.style.opacity = '0';
+  el.style.transform = 'translateY(20px)';
+  el.style.transition = 'opacity 0.5s ease, transform 0.5s ease';
+  revealObserver.observe(el);
+});
+</script>
+</body>
+</html>

@@ -1,0 +1,1652 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Items Archive — Elucidate RPG Wiki</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Merriweather:ital,wght@0,300;0,400;0,700;0,900;1,300;1,400&family=Cinzel:wght@400;600;700;900&family=Crimson+Text:ital,wght@0,400;0,600;1,400&display=swap');
+
+:root {
+  --bg-deepest:    #080608;
+  --bg-dark:       #0e0b0f;
+  --bg-mid:        #140f16;
+  --bg-surface:    #1c1520;
+  --bg-elevated:   #221829;
+  --bg-card:       #1a1220;
+  --border-faint:  rgba(180,140,80,0.12);
+  --border-dim:    rgba(180,140,80,0.25);
+  --border-gold:   rgba(180,140,80,0.55);
+  --gold:          #b8922a;
+  --gold-bright:   #d4a83c;
+  --gold-pale:     #e8c96a;
+  --gold-muted:    #8a6a1e;
+  --crimson:       #8b1a1a;
+  --crimson-bright:#b02020;
+  --caligo:        #3a1a5c;
+  --caligo-bright: #5a2e8a;
+  --caligo-pale:   #8b5cbf;
+  --lumen:         #c8a84a;
+  --text-primary:  #e8dcc8;
+  --text-secondary:#c8b898;
+  --text-muted:    #9a8a72;
+  --text-dim:      #706050;
+  --white:         #f2ead8;
+  --shadow-deep: 0 8px 40px rgba(0,0,0,0.8);
+  --shadow-card: 0 4px 20px rgba(0,0,0,0.6);
+  --glow-gold: 0 0 20px rgba(184,146,42,0.3);
+  --glow-caligo: 0 0 20px rgba(90,46,138,0.4);
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body {
+  font-family: 'Merriweather', 'Cambria', Georgia, serif;
+  background: var(--bg-deepest);
+  color: var(--text-primary);
+  font-size: 14px;
+  line-height: 1.7;
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.03'/%3E%3C/svg%3E");
+  pointer-events: none;
+  z-index: 0;
+  opacity: 0.4;
+}
+a { color: var(--gold); text-decoration: none; transition: color 0.2s; }
+a:hover { color: var(--gold-pale); }
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: var(--bg-deepest); }
+::-webkit-scrollbar-thumb { background: var(--gold-muted); border-radius: 3px; }
+
+
+.site-header {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  z-index: 1000;
+  background: rgba(8,6,8,0.96);
+  border-bottom: 1px solid var(--border-gold);
+  backdrop-filter: blur(12px);
+  height: 56px;
+  display: flex;
+  align-items: center;
+  padding: 0 20px;
+  gap: 16px;
+  box-shadow: 0 2px 30px rgba(0,0,0,0.8);
+}
+
+.header-logo-wrap {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-shrink: 0;
+}
+
+.site-logo-img {
+  width: 36px;
+  height: 36px;
+  object-fit: contain;
+}
+
+.header-site-name {
+  font-family: 'Cinzel', serif;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--gold-pale);
+  letter-spacing: 1.5px;
+  line-height: 1.2;
+  text-transform: uppercase;
+}
+.header-site-name span {
+  display: block;
+  font-size: 9px;
+  color: var(--text-muted);
+  letter-spacing: 2px;
+  font-weight: 400;
+}
+
+.header-nav {
+  display: flex;
+  gap: 4px;
+  align-items: center;
+  margin-left: 12px;
+  flex: 1;
+}
+
+.header-nav a {
+  font-family: 'Cinzel', serif;
+  font-size: 10px;
+  letter-spacing: 1px;
+  color: var(--text-secondary);
+  padding: 5px 10px;
+  border: 1px solid transparent;
+  border-radius: 2px;
+  transition: all 0.2s;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+.header-nav a:hover {
+  color: var(--gold-pale);
+  border-color: var(--border-dim);
+  background: rgba(184,146,42,0.08);
+}
+.header-nav a.active {
+  color: var(--gold-pale);
+  border-color: var(--border-gold);
+  background: rgba(184,146,42,0.1);
+}
+
+.header-right {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-left: auto;
+  flex-shrink: 0;
+}
+
+.search-wrap:focus-within { border-color: var(--gold); box-shadow: 0 0 8px rgba(184,146,42,0.2); }
+.search-wrap input {
+  background: transparent; border: none; outline: none;
+  color: var(--text-primary);
+  font-family: 'Merriweather', serif;
+  font-size: 11px; padding: 6px 10px; width: 180px;
+}
+.search-wrap input::placeholder { color: var(--text-dim); }
+.search-wrap button {
+  background: var(--bg-elevated); border: none;
+  border-left: 1px solid var(--border-dim);
+  color: var(--gold); padding: 6px 10px;
+  cursor: pointer; font-size: 12px; transition: background 0.2s;
+}
+.search-wrap button:hover { background: rgba(184,146,42,0.15); }
+#search-results-overlay {
+  display: none; position: fixed;
+  top: 57px; right: 20px;
+  width: 340px; max-height: 400px;
+  overflow-y: auto;
+  background: var(--bg-elevated);
+  border: 1px solid var(--border-gold);
+  border-radius: 4px;
+  z-index: 999;
+  box-shadow: var(--shadow-deep);
+}
+#search-results-overlay.visible { display: block; }
+.search-result-item {
+  padding: 10px 14px;
+  border-bottom: 1px solid var(--border-faint);
+  cursor: pointer; transition: background 0.15s;
+}
+.search-result-item:hover { background: rgba(184,146,42,0.1); }
+.search-result-item .sr-title { font-family: 'Cinzel', serif; font-size: 11px; color: var(--gold-pale); }
+.search-result-item .sr-excerpt { font-size: 11px; color: var(--text-muted); margin-top: 2px; line-height: 1.5; }
+.search-no-result { padding: 14px; font-size: 12px; color: var(--text-muted); font-style: italic; text-align: center; }
+mark.search-highlight { background: rgba(184,146,42,0.25); color: var(--gold-pale); border-radius: 2px; }
+
+/* ── LAYOUT ── */
+.wiki-layout {
+  display: grid;
+  grid-template-columns: 210px 1fr;
+  min-height: 100vh;
+  padding-top: 56px;
+}
+
+/* ── SIDEBAR ── */
+.sidebar {
+  background: var(--bg-dark);
+  border-right: 1px solid var(--border-faint);
+  position: sticky; top: 56px;
+  height: calc(100vh - 56px);
+  overflow-y: auto;
+  padding: 16px 0; z-index: 100;
+}
+.sidebar-logo-mini {
+  padding: 0 14px 14px;
+  border-bottom: 1px solid var(--border-faint);
+  margin-bottom: 12px; text-align: center;
+}
+.sidebar-logo-mini .sb-title {
+  font-family: 'Cinzel', serif; font-size: 11px;
+  color: var(--gold); letter-spacing: 2px; text-transform: uppercase;
+}
+.sidebar-logo-mini .sb-sub { font-size: 9px; color: var(--text-muted); letter-spacing: 1px; margin-top: 2px; }
+.sidebar-section { margin-bottom: 6px; }
+.sidebar-heading {
+  font-family: 'Cinzel', serif; font-size: 9px;
+  letter-spacing: 2px; text-transform: uppercase;
+  color: var(--text-muted); padding: 6px 14px 4px;
+  border-top: 1px solid var(--border-faint);
+}
+.sidebar ul { list-style: none; }
+.sidebar ul li a {
+  display: flex; align-items: center; gap: 8px;
+  padding: 6px 14px 6px 16px;
+  color: var(--text-secondary); font-size: 12px;
+  font-family: 'Crimson Text', serif;
+  border-left: 2px solid transparent;
+  transition: all 0.2s; letter-spacing: 0.3px;
+}
+.sidebar ul li a .sb-icon { width: 14px; text-align: center; font-size: 12px; opacity: 0.7; }
+.sidebar ul li a:hover { background: rgba(184,146,42,0.07); border-left-color: var(--gold-muted); color: var(--gold-pale); }
+.sidebar ul li a.active-nav { background: rgba(184,146,42,0.12); border-left-color: var(--gold); color: var(--gold-pale); font-weight: 600; }
+.sidebar-divider { height: 1px; background: var(--border-faint); margin: 8px 12px; }
+.sidebar-ms-widget {
+  margin: 12px 14px; padding: 10px 12px;
+  background: var(--bg-elevated);
+  border: 1px solid var(--border-faint); border-radius: 3px;
+}
+.sidebar-ms-widget .ms-label { font-family: 'Cinzel', serif; font-size: 9px; color: var(--text-muted); letter-spacing: 1.5px; text-transform: uppercase; margin-bottom: 6px; }
+.ms-bar-track { height: 4px; background: var(--bg-mid); border-radius: 2px; overflow: hidden; margin-bottom: 4px; }
+.ms-bar-fill { height: 100%; width: 35%; background: linear-gradient(90deg, var(--caligo), var(--caligo-bright)); border-radius: 2px; animation: ms-pulse 3s ease-in-out infinite alternate; }
+@keyframes ms-pulse { from { opacity: 0.6; } to { opacity: 1; } }
+.ms-bar-text { font-size: 9px; color: var(--text-dim); text-align: right; }
+
+/* ── MAIN CONTENT ── */
+.main-content { background: var(--bg-deepest); position: relative; overflow: hidden; }
+section { position: relative; z-index: 1; }
+
+/* ── PAGE HERO ── */
+.page-hero {
+  padding: 60px 60px 48px;
+  background:
+    radial-gradient(ellipse 80% 60% at 80% 40%, rgba(58,26,92,0.3) 0%, transparent 65%),
+    radial-gradient(ellipse 50% 50% at 10% 80%, rgba(139,26,26,0.15) 0%, transparent 60%),
+    var(--bg-deepest);
+  border-bottom: 1px solid var(--border-faint);
+  position: relative;
+  overflow: hidden;
+}
+.page-hero::before {
+  content: '';
+  position: absolute; top: 0; left: 0; right: 0;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--gold), transparent);
+  opacity: 0.5;
+}
+.hero-bg-stars { position: absolute; inset: 0; pointer-events: none; }
+.star {
+  position: absolute; width: 1px; height: 1px;
+  background: var(--gold-pale); border-radius: 50%;
+  animation: twinkle var(--d, 4s) ease-in-out infinite alternate;
+  opacity: var(--o, 0.4);
+}
+@keyframes twinkle { from { opacity: 0.1; transform: scale(0.8); } to { opacity: 0.7; transform: scale(1.4); } }
+.page-hero-tag {
+  font-family: 'Cinzel', serif; font-size: 10px;
+  letter-spacing: 4px; text-transform: uppercase;
+  color: var(--gold-muted); margin-bottom: 14px;
+  display: flex; align-items: center; gap: 12px;
+}
+.page-hero-tag::before, .page-hero-tag::after {
+  content: ''; display: block; height: 1px; width: 36px;
+  background: var(--gold-muted); opacity: 0.6;
+}
+.page-hero-title {
+  font-family: 'Cinzel', serif;
+  font-size: clamp(28px, 4vw, 52px);
+  font-weight: 900; line-height: 1.1;
+  color: var(--white); letter-spacing: 2px;
+  text-shadow: 0 4px 40px rgba(184,146,42,0.3);
+  margin-bottom: 6px;
+}
+.page-hero-title .accent { color: var(--gold-pale); text-shadow: 0 0 30px rgba(212,168,60,0.5); }
+.hero-line { width: 70px; height: 2px; background: linear-gradient(90deg, var(--gold), transparent); margin: 16px 0; }
+.page-hero-sub {
+  font-family: 'Crimson Text', serif; font-size: 17px;
+  font-style: italic; color: var(--text-secondary);
+  max-width: 580px; line-height: 1.7;
+}
+
+/* ── SECTION DIVIDER ── */
+.section-divider {
+  display: flex; align-items: center; gap: 16px;
+  padding: 0 60px; margin: 0;
+}
+.section-divider .div-line { flex: 1; height: 1px; background: linear-gradient(90deg, transparent, var(--border-gold), transparent); }
+.section-divider .div-icon { color: var(--gold-muted); font-size: 14px; flex-shrink: 0; }
+
+.section-header { text-align: center; margin-bottom: 44px; }
+.section-tag { font-family: 'Cinzel', serif; font-size: 9px; letter-spacing: 4px; color: var(--gold-muted); text-transform: uppercase; display: block; margin-bottom: 10px; }
+.section-title { font-family: 'Cinzel', serif; font-size: 24px; font-weight: 700; color: var(--white); letter-spacing: 1px; text-shadow: 0 2px 20px rgba(184,146,42,0.2); }
+.section-title .gold { color: var(--gold-pale); }
+.section-title .caligo { color: var(--caligo-pale); }
+.section-desc { font-family: 'Crimson Text', serif; font-size: 15px; font-style: italic; color: var(--text-muted); max-width: 600px; margin: 10px auto 0; line-height: 1.7; }
+
+/* ── FILTER BAR ── */
+.filter-section {
+  padding: 28px 60px 0;
+  background: var(--bg-dark);
+}
+.filter-bar {
+  display: flex; gap: 8px; flex-wrap: wrap;
+  align-items: center;
+  max-width: 1100px; margin: 0 auto;
+  padding-bottom: 20px;
+  border-bottom: 1px solid var(--border-faint);
+}
+.filter-label { font-family: 'Cinzel', serif; font-size: 9px; letter-spacing: 2px; color: var(--text-muted); text-transform: uppercase; margin-right: 4px; }
+.filter-btn {
+  font-family: 'Cinzel', serif; font-size: 9px;
+  letter-spacing: 1.5px; text-transform: uppercase;
+  color: var(--text-secondary);
+  background: var(--bg-surface);
+  border: 1px solid var(--border-faint);
+  padding: 5px 14px; cursor: pointer;
+  transition: all 0.2s; border-radius: 2px;
+}
+.filter-btn:hover { color: var(--gold-pale); border-color: var(--border-dim); background: rgba(184,146,42,0.08); }
+.filter-btn.active { color: var(--gold-pale); border-color: var(--border-gold); background: rgba(184,146,42,0.12); }
+#item-count { font-family: 'Cinzel', serif; font-size: 9px; color: var(--text-dim); margin-left: auto; letter-spacing: 1px; }
+
+/* ── ITEMS ARCHIVE SECTION ── */
+.archive-section {
+  padding: 48px 60px 70px;
+  background: var(--bg-dark);
+}
+
+/* ── CATEGORY GROUP ── */
+.category-group { margin-bottom: 64px; }
+.category-label {
+  display: flex; align-items: center; gap: 14px;
+  margin-bottom: 28px;
+}
+.category-label-text {
+  font-family: 'Cinzel', serif; font-size: 11px;
+  letter-spacing: 3px; text-transform: uppercase;
+  color: var(--gold-muted);
+}
+.category-label-line { flex: 1; height: 1px; background: var(--border-faint); }
+
+/* ── ITEM CARD ── */
+.item-cards-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  gap: 20px;
+  max-width: 1100px;
+}
+
+.item-entry {
+  background: var(--bg-elevated);
+  border: 1px solid var(--border-faint);
+  border-top: 2px solid var(--border-dim);
+  overflow: hidden;
+  transition: all 0.3s;
+  position: relative;
+}
+.item-entry:hover {
+  border-color: var(--border-dim);
+  border-top-color: var(--gold);
+  transform: translateY(-3px);
+  box-shadow: 0 8px 30px rgba(0,0,0,0.7), 0 0 16px rgba(184,146,42,0.08);
+}
+.item-entry.caligo-item { border-top-color: rgba(90,46,138,0.6); }
+.item-entry.caligo-item:hover { border-top-color: var(--caligo-pale); box-shadow: 0 8px 30px rgba(0,0,0,0.7), 0 0 20px rgba(90,46,138,0.2); }
+.item-entry.enlightenment-item { border-top-color: rgba(200,168,74,0.8); }
+.item-entry.enlightenment-item:hover { border-top-color: var(--gold-pale); box-shadow: 0 8px 30px rgba(0,0,0,0.7), var(--glow-gold); }
+
+.item-img-wrap {
+  width: 100%;
+  height: 120px;
+  background: var(--bg-surface);
+  border-bottom: 1px solid var(--border-faint);
+  display: flex; align-items: center; justify-content: center;
+  overflow: hidden; position: relative;
+}
+.item-img-wrap img {
+  width: 80px; height: 80px; object-fit: contain;
+  opacity: 0.5; transition: opacity 0.3s;
+}
+.item-entry:hover .item-img-wrap img { opacity: 0.7; }
+.item-img-wrap .item-symbol {
+  font-size: 40px; opacity: 0.25;
+  position: absolute;
+}
+.item-img-overlay {
+  position: absolute; inset: 0;
+  background: linear-gradient(180deg, transparent 60%, var(--bg-surface) 100%);
+}
+
+.item-body { padding: 20px 20px 18px; }
+.item-header { display: flex; align-items: flex-start; justify-content: space-between; gap: 10px; margin-bottom: 12px; }
+.item-name-block {}
+.item-name {
+  font-family: 'Cinzel', serif; font-size: 13px; font-weight: 700;
+  color: var(--gold-pale); letter-spacing: 0.5px;
+  margin-bottom: 4px;
+}
+.caligo-item .item-name { color: var(--caligo-pale); }
+.enlightenment-item .item-name { color: var(--gold-pale); }
+.item-type-badge {
+  font-family: 'Cinzel', serif; font-size: 7.5px;
+  letter-spacing: 1.5px; text-transform: uppercase;
+  padding: 2px 8px; border: 1px solid;
+  display: inline-block;
+}
+.badge-relic      { color: var(--gold); border-color: var(--border-dim); background: rgba(184,146,42,0.08); }
+.badge-fragment   { color: var(--caligo-pale); border-color: rgba(90,46,138,0.4); background: rgba(90,46,138,0.1); }
+.badge-artifact   { color: #e8c96a; border-color: rgba(200,168,74,0.5); background: rgba(200,168,74,0.08); }
+.badge-weapon     { color: #d46060; border-color: rgba(139,26,26,0.4); background: rgba(139,26,26,0.08); }
+.badge-armour     { color: #7abce8; border-color: rgba(90,160,220,0.3); background: rgba(90,160,220,0.06); }
+.badge-book       { color: #a8c890; border-color: rgba(120,180,80,0.3); background: rgba(120,180,80,0.06); }
+.badge-material   { color: var(--text-secondary); border-color: var(--border-faint); background: transparent; }
+.badge-potion     { color: #c890c8; border-color: rgba(180,100,180,0.3); background: rgba(180,100,180,0.06); }
+.badge-accessory  { color: #90c8b8; border-color: rgba(100,180,160,0.3); background: rgba(100,180,160,0.06); }
+
+.item-stats { display: flex; gap: 10px; margin-bottom: 12px; flex-wrap: wrap; }
+.stat-pill {
+  font-family: 'Cinzel', serif; font-size: 8px;
+  letter-spacing: 1px; color: var(--text-dim);
+  background: var(--bg-surface); border: 1px solid var(--border-faint);
+  padding: 2px 8px; border-radius: 20px;
+}
+.stat-pill span { color: var(--text-secondary); }
+
+.item-section { margin-bottom: 12px; }
+.item-section-label {
+  font-family: 'Cinzel', serif; font-size: 8px;
+  letter-spacing: 2px; text-transform: uppercase;
+  color: var(--gold-muted); margin-bottom: 4px;
+  display: flex; align-items: center; gap: 6px;
+}
+.item-section-label::after { content: ''; flex: 1; height: 1px; background: var(--border-faint); }
+.item-section-text {
+  font-size: 12px; color: var(--text-secondary);
+  line-height: 1.75;
+}
+.item-section-text.lore-text {
+  font-family: 'Crimson Text', serif;
+  font-size: 13.5px; font-style: italic;
+  color: var(--text-muted); line-height: 1.8;
+}
+
+.item-notes {
+  margin-top: 12px; padding: 10px 12px;
+  background: var(--bg-surface);
+  border-left: 2px solid var(--gold-muted);
+  font-size: 11px; color: var(--text-dim);
+  font-style: italic; line-height: 1.7;
+}
+.caligo-item .item-notes { border-left-color: var(--caligo); }
+
+/* ── SPECIAL CALLOUT ── */
+.special-section {
+  padding: 70px 60px;
+  background:
+    radial-gradient(ellipse 70% 50% at 50% 0%, rgba(58,26,92,0.2) 0%, transparent 60%),
+    var(--bg-deepest);
+}
+.fragment-focus {
+  max-width: 1100px; margin: 0 auto;
+}
+.fragment-intro {
+  text-align: center;
+  padding: 28px 32px;
+  background: var(--bg-surface);
+  border: 1px solid rgba(90,46,138,0.3);
+  margin-bottom: 40px;
+  position: relative;
+}
+.fragment-intro::before, .fragment-intro::after {
+  content: '◆';
+  position: absolute; top: -9px;
+  font-size: 14px; color: var(--caligo-pale);
+  background: var(--bg-deepest); padding: 0 6px;
+}
+.fragment-intro::before { left: 40px; }
+.fragment-intro::after  { right: 40px; }
+.fragment-intro p {
+  font-family: 'Crimson Text', serif;
+  font-size: 16px; line-height: 1.85;
+  color: var(--text-secondary); font-style: italic;
+}
+.fragment-intro strong { color: var(--caligo-pale); font-style: normal; }
+
+.fragment-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+  gap: 24px;
+}
+
+.fragment-card {
+  background: var(--bg-card);
+  border: 1px solid rgba(90,46,138,0.25);
+  border-top: 2px solid var(--caligo-bright);
+  overflow: hidden;
+  transition: all 0.3s;
+  position: relative;
+}
+.fragment-card:hover {
+  border-color: rgba(90,46,138,0.5);
+  border-top-color: var(--caligo-pale);
+  transform: translateY(-4px);
+  box-shadow: 0 10px 40px rgba(0,0,0,0.8), var(--glow-caligo);
+}
+.fragment-card-img {
+  height: 140px;
+  background:
+    radial-gradient(ellipse 60% 60% at 50% 50%, rgba(90,46,138,0.3) 0%, transparent 70%),
+    var(--bg-surface);
+  display: flex; align-items: center; justify-content: center;
+  border-bottom: 1px solid rgba(90,46,138,0.2);
+  font-size: 48px; opacity: 0.4;
+  position: relative; overflow: hidden;
+}
+.fragment-card-img img {
+  width: 80px; height: 80px; object-fit: contain;
+  opacity: 0.45; transition: opacity 0.3s;
+}
+.fragment-card:hover .fragment-card-img img { opacity: 0.65; }
+.fragment-card-body { padding: 22px 22px 18px; }
+.fragment-card-name {
+  font-family: 'Cinzel', serif; font-size: 14px; font-weight: 700;
+  color: var(--caligo-pale); letter-spacing: 0.5px; margin-bottom: 4px;
+}
+.fragment-card-sub {
+  font-family: 'Cinzel', serif; font-size: 8px;
+  letter-spacing: 2px; color: rgba(139,92,191,0.6);
+  text-transform: uppercase; margin-bottom: 14px;
+}
+.fragment-section { margin-bottom: 12px; }
+.fragment-section-label {
+  font-family: 'Cinzel', serif; font-size: 8px;
+  letter-spacing: 2px; text-transform: uppercase;
+  color: rgba(139,92,191,0.7); margin-bottom: 4px;
+  display: flex; align-items: center; gap: 6px;
+}
+.fragment-section-label::after { content: ''; flex: 1; height: 1px; background: rgba(90,46,138,0.2); }
+.fragment-section-text {
+  font-size: 12px; color: var(--text-secondary); line-height: 1.75;
+}
+.fragment-section-text.lore { font-family: 'Crimson Text', serif; font-size: 13.5px; font-style: italic; color: var(--text-muted); }
+.fragment-notes {
+  margin-top: 12px; padding: 10px 12px;
+  background: rgba(58,26,92,0.3);
+  border-left: 2px solid var(--caligo);
+  font-size: 11px; color: rgba(139,92,191,0.7);
+  font-style: italic; line-height: 1.7;
+}
+
+/* ── ENLIGHTENMENT SECTION ── */
+.enlightenment-section {
+  padding: 70px 60px;
+  background:
+    radial-gradient(ellipse 60% 40% at 50% 0%, rgba(184,146,42,0.06) 0%, transparent 60%),
+    var(--bg-mid);
+}
+.enlightenment-focus { max-width: 900px; margin: 0 auto; }
+.enlightenment-card {
+  background: var(--bg-elevated);
+  border: 1px solid rgba(184,146,42,0.3);
+  border-top: 2px solid var(--gold);
+  margin-bottom: 28px;
+  overflow: hidden;
+  transition: all 0.3s;
+}
+.enlightenment-card:hover {
+  box-shadow: 0 8px 30px rgba(0,0,0,0.7), var(--glow-gold);
+  transform: translateY(-2px);
+}
+.enlightenment-card-header {
+  display: grid;
+  grid-template-columns: 180px 1fr;
+  gap: 0;
+}
+.enlightenment-card-img {
+  height: 180px;
+  background:
+    radial-gradient(ellipse 70% 70% at 50% 50%, rgba(184,146,42,0.2) 0%, transparent 70%),
+    var(--bg-surface);
+  display: flex; align-items: center; justify-content: center;
+  border-right: 1px solid var(--border-faint);
+  font-size: 50px; opacity: 0.35;
+}
+.enlightenment-card-img img {
+  width: 90px; height: 90px; object-fit: contain; opacity: 0.5;
+}
+.enlightenment-card-meta { padding: 22px 24px; }
+.enlightenment-card-name {
+  font-family: 'Cinzel', serif; font-size: 15px; font-weight: 700;
+  color: var(--gold-pale); letter-spacing: 1px; margin-bottom: 4px;
+}
+.enlightenment-card-type {
+  font-family: 'Cinzel', serif; font-size: 8px;
+  letter-spacing: 2.5px; color: var(--gold-muted);
+  text-transform: uppercase; margin-bottom: 12px;
+}
+.enlightenment-card-body { padding: 0 24px 22px; }
+.enlightenment-section-label {
+  font-family: 'Cinzel', serif; font-size: 8px;
+  letter-spacing: 2px; text-transform: uppercase;
+  color: var(--gold-muted); margin-bottom: 4px; margin-top: 14px;
+  display: flex; align-items: center; gap: 6px;
+}
+.enlightenment-section-label::after { content: ''; flex: 1; height: 1px; background: var(--border-faint); }
+.enlightenment-text { font-size: 12.5px; color: var(--text-secondary); line-height: 1.8; }
+.enlightenment-text.lore { font-family: 'Crimson Text', serif; font-size: 14px; font-style: italic; color: var(--text-muted); }
+
+.crafting-recipe {
+  margin-top: 14px; padding: 12px 16px;
+  background: var(--bg-surface);
+  border: 1px solid var(--border-faint);
+  display: flex; align-items: center; gap: 10px; flex-wrap: wrap;
+}
+.crafting-label {
+  font-family: 'Cinzel', serif; font-size: 8px;
+  letter-spacing: 2px; color: var(--gold-muted); text-transform: uppercase;
+}
+.crafting-item {
+  font-family: 'Cinzel', serif; font-size: 9px;
+  color: var(--gold-pale); letter-spacing: 0.5px;
+  padding: 3px 10px; border: 1px solid var(--border-dim);
+  background: rgba(184,146,42,0.06);
+}
+.crafting-plus { color: var(--text-dim); font-size: 12px; }
+.crafting-arrow { color: var(--gold-muted); font-size: 14px; margin: 0 4px; }
+
+/* ── STATS TABLE ── */
+.items-data-section {
+  padding: 70px 60px;
+  background: var(--bg-deepest);
+}
+.data-table-wrap { max-width: 1100px; margin: 0 auto; overflow-x: auto; }
+.data-table {
+  width: 100%; border-collapse: collapse;
+  font-size: 11.5px;
+}
+.data-table th {
+  font-family: 'Cinzel', serif; font-size: 8px;
+  letter-spacing: 2px; text-transform: uppercase;
+  color: var(--gold-muted); padding: 10px 14px;
+  border-bottom: 1px solid var(--border-dim);
+  text-align: left; white-space: nowrap;
+  background: var(--bg-surface);
+}
+.data-table td {
+  padding: 9px 14px;
+  border-bottom: 1px solid var(--border-faint);
+  color: var(--text-secondary); vertical-align: middle;
+}
+.data-table tr:hover td { background: rgba(184,146,42,0.04); }
+.data-table .td-name { font-family: 'Cinzel', serif; font-size: 10.5px; color: var(--gold-pale); letter-spacing: 0.5px; }
+.data-table .td-caligo { color: var(--caligo-pale); }
+.data-table .td-type { font-family: 'Cinzel', serif; font-size: 8px; letter-spacing: 1px; text-transform: uppercase; }
+.data-table .td-stat { text-align: center; font-size: 11px; }
+.data-table .td-stat.positive { color: #7abce8; }
+
+/* ── FOOTER ── */
+.site-footer {
+  background: var(--bg-deepest);
+  border-top: 1px solid var(--border-faint);
+  padding: 40px 60px 28px;
+}
+.footer-inner {
+  max-width: 1100px; margin: 0 auto;
+  display: grid; grid-template-columns: 1fr auto 1fr;
+  gap: 32px; align-items: start;
+  padding-bottom: 28px;
+  border-bottom: 1px solid var(--border-faint);
+}
+.footer-logo-title { font-family: 'Cinzel', serif; font-size: 14px; font-weight: 700; color: var(--gold-pale); letter-spacing: 1px; margin-bottom: 4px; }
+.footer-logo-sub { font-size: 10px; color: var(--text-dim); letter-spacing: 0.5px; }
+.footer-links { display: flex; gap: 20px; justify-content: center; flex-wrap: wrap; }
+.footer-links a { font-family: 'Cinzel', serif; font-size: 9px; letter-spacing: 1.5px; text-transform: uppercase; color: var(--text-muted); transition: color 0.2s; }
+.footer-links a:hover { color: var(--gold-pale); }
+.footer-copy { text-align: right; font-size: 10px; color: var(--text-dim); line-height: 1.8; }
+.footer-ornament {
+  text-align: center; font-family: 'Crimson Text', serif;
+  font-size: 11px; font-style: italic;
+  color: var(--text-dim); letter-spacing: 1px;
+  padding-top: 20px;
+}
+
+/* ── SCROLL REVEAL ── */
+@keyframes fadeInUp {
+  from { opacity: 0; transform: translateY(20px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+</style>
+</head>
+<body>
+
+<header class="site-header">
+  <div class="header-logo-wrap">
+    <img src="http://elucidate.unaux.com/wp-content/uploads/2026/04/ELUCIDATE-WEBSITE-EYE-LOGO.png" alt="Elucidate RPG Wiki Logo" class="site-logo-img">
+    <div class="header-site-name">
+      Elucidate RPG
+      <span>OFFICIAL WIKI</span>
+    </div>
+  </div>
+  <nav class="header-nav">
+    <a href="#">Home</a>
+    <a href="characters.html">Characters</a>
+    <a href="npcs.html" class="active">NPCs</a>
+    <a href="items.html">Items</a>
+    <a href="environments.html">Environments</a>
+    <a href="lore.html">Lore</a>
+    <a href="developers.html">Developers</a>
+    <a href="fanart.html">Fan Art</a>
+    <a href="download.html">Download</a>
+  </nav>
+  <div class="header-right">
+    <div class="search-wrap">
+      <input type="text" id="search-input" placeholder="Search wiki…" autocomplete="off">
+      <button onclick="performSearch()">⌕</button>
+    </div>
+    <img src="http://elucidate.unaux.com/wp-content/uploads/2026/04/ELUCIDATE-LOGO-WITH-BG-2.png" alt="Elucidate RPG DLC Logo" class="site-logo-img" style="display:none;">
+  </div>
+</header>
+
+<div id="search-results-overlay"></div>
+
+<div class="wiki-layout">
+  <!-- SIDEBAR -->
+  <aside class="sidebar">
+    <div class="sidebar-logo-mini">
+      <div class="sb-title">Elucidate Wiki</div>
+      <div class="sb-sub">DLC · Complete Guide</div>
+    </div>
+
+    <div class="sidebar-section">
+      <div class="sidebar-heading">Navigation</div>
+      <ul>
+        <li><a href="index.html"><span class="sb-icon">⌂</span> Home</a></li>
+        <li><a href="characters.html" class="active-nav"><span class="sb-icon">⚔</span> Characters</a></li>
+        <li><a href="npcs.html"><span class="sb-icon">👤</span> NPCs</a></li>
+        <li><a href="items.html"><span class="sb-icon">🗡</span> Items</a></li>
+        <li><a href="environments.html"><span class="sb-icon">🗺</span> Environments</a></li>
+        <li><a href="lore.html"><span class="sb-icon">📜</span> Lore</a></li>
+      </ul>
+    </div>
+
+    <div class="sidebar-divider"></div>
+
+    <div class="sidebar-section">
+      <div class="sidebar-heading">Community</div>
+      <ul>
+        <li><a href="developers.html"><span class="sb-icon">🛠</span> Developers</a></li>
+        <li><a href="fanart.html"><span class="sb-icon">🎨</span> Fan Art</a></li>
+        <li><a href="download.html"><span class="sb-icon">↓</span> Download</a></li>
+      </ul>
+    </div>
+
+    <div class="sidebar-divider"></div>
+
+    <div class="sidebar-ms-widget">
+      <div class="ms-label">Mind State System</div>
+      <div class="ms-bar-track"><div class="ms-bar-fill"></div></div>
+      <div class="ms-bar-text">Stability: 65%</div>
+    </div>
+
+    <div class="sidebar-section" style="padding: 8px 14px;">
+      <div style="font-family:'Cinzel',serif;font-size:9px;color:var(--text-dim);letter-spacing:1px;text-transform:uppercase;margin-bottom:6px;">Playable Characters</div>
+      <ul style="list-style:none;">
+        <li style="margin-bottom:2px;"><a href="characters.html" style="font-size:11px;color:var(--text-muted);padding:3px 0;border:none;display:block;">↳ Lucidus / Ignis</a></li>
+        <li style="margin-bottom:2px;"><a href="characters.html" style="font-size:11px;color:var(--text-muted);padding:3px 0;border:none;display:block;">↳ Funeris</a></li>
+        <li style="margin-bottom:2px;"><a href="characters.html" style="font-size:11px;color:var(--text-muted);padding:3px 0;border:none;display:block;">↳ Pluvia</a></li>
+        <li style="margin-bottom:2px;"><a href="characters.html" style="font-size:11px;color:var(--text-muted);padding:3px 0;border:none;display:block;">↳ Konrad</a></li>
+        <li><a href="characters.html" style="font-size:11px;color:var(--text-muted);padding:3px 0;border:none;display:block;">↳ Father Calum</a></li>
+      </ul>
+    </div>
+  </aside>
+
+  <!-- MAIN -->
+  <main class="main-content">
+
+    <!-- PAGE HERO -->
+    <section class="page-hero">
+      <div class="hero-bg-stars" id="stars-container"></div>
+      <div class="page-hero-tag">Elucidate RPG DLC · Items Archive</div>
+      <h1 class="page-hero-title">Items, <span class="accent">Artifacts</span> &amp; Relics</h1>
+      <div class="hero-line"></div>
+      <p class="page-hero-sub">Every object in Elucidate carries the weight of its origin — forged, fractured, or written into existence by the same hands that shaped the war between Lumen and Caligo.</p>
+    </section>
+
+    <!-- FILTER BAR -->
+    <div class="filter-section">
+      <div class="filter-bar">
+        <span class="filter-label">Filter :</span>
+        <button class="filter-btn active" data-filter="all">All</button>
+        <button class="filter-btn" data-filter="fragment">Fragments</button>
+        <button class="filter-btn" data-filter="weapon">Weapons</button>
+        <button class="filter-btn" data-filter="armour">Armour</button>
+        <button class="filter-btn" data-filter="book">Books</button>
+        <button class="filter-btn" data-filter="material">Materials</button>
+        <button class="filter-btn" data-filter="potion">Potions</button>
+        <button class="filter-btn" data-filter="accessory">Accessories</button>
+        <span id="item-count"></span>
+      </div>
+    </div>
+
+    <!-- ══ FRAGMENTS OF CALIGO ══ -->
+    <div class="section-divider" style="padding: 32px 60px 0;"><div class="div-line"></div><div class="div-icon">◈</div><div class="div-line"></div></div>
+    <section class="special-section" id="fragments">
+      <div class="section-header">
+        <span class="section-tag">Sacred · Dangerous · Contested</span>
+        <h2 class="section-title">Fragments of <span class="caligo">Caligo</span></h2>
+        <p class="section-desc">Physical manifestations of the Formless One's influence. The Church wants them contained. The Cult wants them worshipped. The truth is worse than either.</p>
+      </div>
+      <div class="fragment-focus">
+        <div class="fragment-intro">
+          <p>Three Fragments exist in the known world. Each is a crystallized shard of <strong>Caligo's presence</strong> — not a piece of the entity itself, but an echo of the void it leaves behind wherever it passes. The Church calls them <strong>sacred enemy relics</strong>. The Cult calls them <strong>holy instruments</strong>. Both descriptions are wrong in the same way.</p>
+        </div>
+        <div class="fragment-grid" id="fragment-entries">
+
+          <!-- LARGEST FRAGMENT -->
+          <div class="fragment-card" data-category="fragment">
+            <div class="fragment-card-img">
+              <img src="placeholder-item.jpg" alt="Largest Fragment of Caligo">
+              <span style="position:absolute;font-size:52px;opacity:0.2;">👁</span>
+            </div>
+            <div class="fragment-card-body">
+              <div class="fragment-card-name">Largest Fragment of Caligo</div>
+              <div class="fragment-card-sub">Eye Form · Fragment · Legendary</div>
+              <div class="fragment-section">
+                <div class="fragment-section-label">Function</div>
+                <div class="fragment-section-text">Dropped by the Cult Leader upon defeat. Completing the trio of Fragments is the central objective of the Mercenary's mission. Possessing it triggers the final decision node: deliver to the Church, or withhold.</div>
+              </div>
+              <div class="fragment-section">
+                <div class="fragment-section-label">Description</div>
+                <div class="fragment-section-text">A dense, asymmetrical shard roughly the size of a fist, dark as obsidian but veined with light that does not come from any external source. The surface is warm — not uncomfortably so, but insistently. Looking directly at it for too long produces a sensation described by every carrier as <em>recognition</em>.</div>
+              </div>
+              <div class="fragment-section">
+                <div class="fragment-section-label">Lore</div>
+                <div class="fragment-section-text lore">The Cult of Caligo has held this Fragment since the Church expelled its founding members. It was not stolen — it was carried out by a child who simply refused to leave it behind. The Cult built their entire theology around it: the Eye Form, they call it, the gaze of the Formless One rendered solid. The Church calls it a corruption node. The Librarian Scholar called it a mirror. He did not explain what it reflects.</div>
+              </div>
+              <div class="fragment-notes">⚠ MS +12 on acquisition. At MS > 75, carriers report hearing a voice that uses their original name — the one before the Church renamed them.</div>
+            </div>
+          </div>
+
+          <!-- FLAME FRAGMENT -->
+          <div class="fragment-card" data-category="fragment">
+            <div class="fragment-card-img">
+              <img src="placeholder-item.jpg" alt="Flame Fragment of Caligo">
+              <span style="position:absolute;font-size:52px;opacity:0.2;">🔥</span>
+            </div>
+            <div class="fragment-card-body">
+              <div class="fragment-card-name">Flame Fragment of Caligo</div>
+              <div class="fragment-card-sub">Fire Form · Fragment · Legendary</div>
+              <div class="fragment-section">
+                <div class="fragment-section-label">Function</div>
+                <div class="fragment-section-text">Found in the Tribe Area. Voluntarily surrendered by Pluvia, the Shaman, who has kept it protected from both the Church and Cult. Holding it in combat grants a passive aura that causes hesitation in Eldritch Horrors — they pause for 1.5 seconds before engaging. This advantage vanishes above MS 70.</div>
+              </div>
+              <div class="fragment-section">
+                <div class="fragment-section-label">Description</div>
+                <div class="fragment-section-text">Translucent, amber-hued, shaped like a flame frozen mid-flicker. Unlike other Fragments, this one flickers visibly — a slow, rhythmic pulse that matches no known combustion pattern. It does not burn the holder's skin, but nearby parchment browns at the edges if left adjacent overnight.</div>
+              </div>
+              <div class="fragment-section">
+                <div class="fragment-section-label">Lore</div>
+                <div class="fragment-section-text lore">The Tribe's elders have passed the Flame Fragment down through seventeen generations without ever fully understanding what they were guarding. Their oral tradition calls it <em>the memory that refuses to cool</em>. Pluvia's Foresight has told her, three times and in three separate visions, that if this Fragment reaches the Church, something ends that cannot be started again. She gives it away anyway. The visions showed that too.</div>
+              </div>
+              <div class="fragment-notes">⚠ The Tribe Elder's last words before the Shaman departs: "Bring her back when it is done. If you can." The qualifier is not accidental.</div>
+            </div>
+          </div>
+
+          <!-- VOID FRAGMENT -->
+          <div class="fragment-card" data-category="fragment">
+            <div class="fragment-card-img">
+              <img src="placeholder-item.jpg" alt="Void Fragment of Caligo">
+              <span style="position:absolute;font-size:52px;opacity:0.2;">🌑</span>
+            </div>
+            <div class="fragment-card-body">
+              <div class="fragment-card-name">Void Fragment of Caligo</div>
+              <div class="fragment-card-sub">Shadow Form · Fragment · Legendary</div>
+              <div class="fragment-section">
+                <div class="fragment-section-label">Function</div>
+                <div class="fragment-section-text">Located along the path toward Cultist Island. Found in a sea cave marked on no official map. Passive effect: the holder perceives Eldritch Horrors in their baseline form regardless of MS level — their appearance does not degrade or intensify. The horror is fixed. Some players find this more disturbing than the alternatives.</div>
+              </div>
+              <div class="fragment-section">
+                <div class="fragment-section-label">Description</div>
+                <div class="fragment-section-text">Perfectly spherical, matte black, approximately the weight of a stone twice its size. No visible seam, no texture, no temperature. It absorbs ambient light in a radius of roughly three feet. Objects placed next to it cast no shadow because the Fragment absorbs shadow itself.</div>
+              </div>
+              <div class="fragment-section">
+                <div class="fragment-section-label">Lore</div>
+                <div class="fragment-section-text lore">The Church's mission briefing does not mention this Fragment. It exists in their records under an administrative category titled <em>Indirect Artifacts — Non-Priority Recovery</em>. The record was amended fourteen years ago. Before the amendment, it was listed as <em>Priority One — Do Not Approach Unaccompanied</em>. The reason for the amendment is redacted. Father Calum's personal archive contains a single note: "The Void Fragment does not corrupt. It clarifies. That is the problem."</div>
+              </div>
+              <div class="fragment-notes">⚠ Unique: grants Caligo Perception passive. Trade-off — the world rendered clearly at all MS levels is not always preferable to the distorted version.</div>
+            </div>
+          </div>
+
+          <!-- ECHO FRAGMENT -->
+          <div class="fragment-card" data-category="fragment">
+            <div class="fragment-card-img">
+              <img src="placeholder-item.jpg" alt="Echo Fragment of Caligo">
+              <span style="position:absolute;font-size:52px;opacity:0.2;">〰</span>
+            </div>
+            <div class="fragment-card-body">
+              <div class="fragment-card-name">Echo Fragment of Caligo</div>
+              <div class="fragment-card-sub">Memory Form · Fragment · Legendary</div>
+              <div class="fragment-section">
+                <div class="fragment-section-label">Function</div>
+                <div class="fragment-section-text">Found in the Hidden Basement beneath the Home Village. Interacting with it triggers a memory playback event — the player experiences 45 seconds of the character's suppressed childhood. MS +15 immediately. However: for the rest of the playthrough, random enemy attacks miss 8% of the time as the character's instincts compensate for gaps in manufactured memory.</div>
+              </div>
+              <div class="fragment-section">
+                <div class="fragment-section-label">Description</div>
+                <div class="fragment-section-text">Crystalline, colorless, shaped irregularly like broken glass but with no sharp edges. When held, it produces a low sub-audible resonance felt more than heard — a vibration that settles somewhere behind the sternum. Players with high-end audio equipment report it has a discernible pitch: a child's voice, saying nothing that can be transcribed.</div>
+              </div>
+              <div class="fragment-section">
+                <div class="fragment-section-label">Lore</div>
+                <div class="fragment-section-text lore">The Experimental Notes from the Home Village reference a failed procedure in which a subject's memory was successfully excised but the memories themselves did not dissipate — they consolidated into a physical form and could not be destroyed. The fragment was documented, sealed in the basement, and not reported to the Church. The notes read: <em>"The memories survived the subject. This outcome was not anticipated. We do not know what to do with a grief that outlasts the person who felt it."</em></div>
+              </div>
+              <div class="fragment-notes">⚠ Cannot be delivered to Father Calum. He does not acknowledge its existence in any dialogue tree. The inventory slot it occupies is labeled "unknown" in the Church's ledger.</div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- ══ ENLIGHTENMENT ITEMS ══ -->
+    <div class="section-divider"><div class="div-line"></div><div class="div-icon">✦</div><div class="div-line"></div></div>
+    <section class="enlightenment-section" id="enlightenment">
+      <div class="section-header">
+        <span class="section-tag">Knowledge · Crafting · Origin</span>
+        <h2 class="section-title">The <span class="gold">Enlightenment</span> Artifacts</h2>
+        <p class="section-desc">Items born from the Formless One of Enlightenment — knowledge made tangible, or knowledge weaponized.</p>
+      </div>
+      <div class="enlightenment-focus">
+
+        <!-- BOOK OF ENLIGHTENMENT -->
+        <div class="enlightenment-card" data-category="book">
+          <div class="enlightenment-card-header">
+            <div class="enlightenment-card-img">
+              <img src="placeholder-item.jpg" alt="Book of Enlightenment">
+              <span>📖</span>
+            </div>
+            <div class="enlightenment-card-meta">
+              <div class="enlightenment-card-name">Book of Enlightenment</div>
+              <div class="enlightenment-card-type">Special Book · Artifact · Legendary</div>
+              <div class="crafting-recipe">
+                <span class="crafting-label">Crafted from</span>
+                <span class="crafting-item">Ancient Paper</span>
+                <span class="crafting-arrow">→</span>
+                <span class="crafting-item">Book of Enlightenment</span>
+              </div>
+            </div>
+          </div>
+          <div class="enlightenment-card-body">
+            <div class="enlightenment-section-label">Function / Effect</div>
+            <div class="enlightenment-text">The Book of Enlightenment carries the <code>save</code> effect — the only item in the game capable of preserving a character's current state against the Mind State collapse of Path C. Reading it does not reduce MS directly; instead, it creates a stability anchor. When MS reaches 100 and collapse would normally trigger, the book intervenes: the player retains agency for one final decision, the outcome of which is shaped entirely by what they have done up to that point.</div>
+            <div class="enlightenment-section-label">Description</div>
+            <div class="enlightenment-text">Bound in material that resembles gold leaf but is not — closer to compressed light, if that were a material. The pages resist tearing. The text within is not static: it changes between readings, reflecting the reader's current knowledge state back at them with additions the reader did not put there. No two characters read the same book. The words are always legible. The meaning is always just beyond comfortable comprehension.</div>
+            <div class="enlightenment-section-label">Lore</div>
+            <div class="enlightenment-text lore">The Formless One of Enlightenment is never named in the game's dialogue — only implied. Where Caligo is described as existing <em>the way weather exists</em>, Enlightenment is its inverse: a presence that does not corrupt but illuminates, and not always kindly. The Book is the only confirmed physical artifact of Enlightenment's influence. It was not created by scholars or the Church. The Ancient Paper from which it is crafted predates the Theocratic capital by four hundred years. The Librarian Scholar, in his extended dialogue, says only: <em>"There are things that want to be known. The book is one of them."</em> He does not explain further. He never explains further. That is the whole of what Enlightenment gives: the information, without the comfort of understanding it.</div>
+            <div class="enlightenment-section-label">Notes</div>
+            <div class="enlightenment-text">The Book of Enlightenment is the game's rarest crafted item. Its relationship to Caligo is oppositional but not adversarial — Caligo corrupts through absence of meaning; Enlightenment overwhelms through excess of it. Both result in the same risk: a mind that cannot hold what it has been given.</div>
+          </div>
+        </div>
+
+        <!-- ANCIENT PAPER -->
+        <div class="enlightenment-card" data-category="material">
+          <div class="enlightenment-card-header">
+            <div class="enlightenment-card-img">
+              <img src="placeholder-item.jpg" alt="Ancient Paper">
+              <span>📜</span>
+            </div>
+            <div class="enlightenment-card-meta">
+              <div class="enlightenment-card-name">Ancient Paper</div>
+              <div class="enlightenment-card-type">Material · Crafting Component · Rare</div>
+              <div class="crafting-recipe">
+                <span class="crafting-label">Used in</span>
+                <span class="crafting-item">Book of Enlightenment</span>
+              </div>
+            </div>
+          </div>
+          <div class="enlightenment-card-body">
+            <div class="enlightenment-section-label">Function / Effect</div>
+            <div class="enlightenment-text">Primary crafting material for the Book of Enlightenment. Cannot be used in any other recipe. Found in the Records Archive of the Theocratic Capital — the document references "dual-purpose acquisition" of the Fragments, noting that the Cult's ritual use and the Church's containment protocols share more methodology than either party admits. This is the first evidence, available to any character who finds it, that the Church and Cult are two expressions of the same underlying design.</div>
+            <div class="enlightenment-section-label">Description</div>
+            <div class="enlightenment-text">Yellowed but intact despite its age. The text upon it is in three scripts, two of which no character in the game can read. The third is administrative Church Latin, and it is the clearest and most damning of the three. The paper does not age further once found — it simply holds its condition indefinitely, the way certain truths resist decay no matter how long they are suppressed.</div>
+            <div class="enlightenment-section-label">Lore</div>
+            <div class="enlightenment-text lore">The Formless One of Enlightenment did not create the Ancient Paper directly. What Enlightenment did was ensure that whoever needed to find it would find it — that the document would survive every fire, flood, and deliberate destruction the Church attempted. There are singed corners. There are water stains. There is a circular burn mark consistent with something very hot being placed on it and then removed. The text beneath the burn mark is perfectly legible. The Formless One of Enlightenment is patient in a way that has nothing to do with virtue and everything to do with certainty.</div>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ══ ALL ITEMS ARCHIVE ══ -->
+    <div class="section-divider"><div class="div-line"></div><div class="div-icon">◆</div><div class="div-line"></div></div>
+    <section class="archive-section" id="all-items">
+      <div class="section-header">
+        <span class="section-tag">Full Archive</span>
+        <h2 class="section-title">Complete <span class="gold">Item Registry</span></h2>
+        <p class="section-desc">All weapons, armour, books, materials, potions and accessories catalogued from across the world of Elucidate.</p>
+      </div>
+
+      <!-- WEAPONS -->
+      <div class="category-group" id="weapons">
+        <div class="category-label">
+          <span class="category-label-text">⚔ Weapons</span>
+          <div class="category-label-line"></div>
+        </div>
+        <div class="item-cards-grid">
+
+          <div class="item-entry" data-category="weapon">
+            <div class="item-img-wrap"><img src="placeholder-item.jpg" alt="Blunderbuss"><span class="item-symbol">🔫</span><div class="item-img-overlay"></div></div>
+            <div class="item-body">
+              <div class="item-header">
+                <div class="item-name-block"><div class="item-name">Blunderbuss</div></div>
+                <span class="item-type-badge badge-weapon">Ranged</span>
+              </div>
+              <div class="item-stats"><span class="stat-pill">DMG <span>55</span></span><span class="stat-pill">Type <span>Longranged</span></span></div>
+              <div class="item-section"><div class="item-section-label">Function</div><div class="item-section-text">The Mercenary's signature starting weapon. Two shots before reload — significant knockback on hit, essential for crowd control in multi-enemy scenarios and for breaking shield formations. Upgradeable to Reinforced Blunderbuss with Iron Ingot ×2 + Silver Wire.</div></div>
+              <div class="item-section"><div class="item-section-label">Description</div><div class="item-section-text">A flared brass muzzle that looks more like a trumpet than a firearm. Heavy, temperamental in moisture, but reliable when maintained. Blacksmith Conrad's words: <em>She has never once let a man down who treated her right.</em></div></div>
+              <div class="item-section"><div class="item-section-label">Lore</div><div class="item-section-text lore">Issued by the Church's Third Regiment armory. The chest it came from is marked "Returned by nobody. As usual." Every soldier the Church sends through that armory takes a Blunderbuss. Most do not come back to return it. The ones who do come back changed.</div></div>
+            </div>
+          </div>
+
+          <div class="item-entry" data-category="weapon">
+            <div class="item-img-wrap"><img src="placeholder-item.jpg" alt="Makeshift Spear"><span class="item-symbol">🗡</span><div class="item-img-overlay"></div></div>
+            <div class="item-body">
+              <div class="item-header">
+                <div class="item-name-block"><div class="item-name">Makeshift Spear</div></div>
+                <span class="item-type-badge badge-weapon">2-Handed</span>
+              </div>
+              <div class="item-stats"><span class="stat-pill">DMG <span>38</span></span><span class="stat-pill">Type <span>Reach</span></span></div>
+              <div class="item-section"><div class="item-section-label">Function</div><div class="item-section-text">Long reach — keeps distance from Eldritch Horrors. Can be thrown once per combat encounter to lodge in an enemy and briefly immobilize them. Upgradeable to Iron Spear at any blacksmith. Becomes a liability in enclosed spaces like the Underground Laboratory.</div></div>
+              <div class="item-section"><div class="item-section-label">Description</div><div class="item-section-text">A knife strapped to a long stick with leather cord. The improvised nature is visible and irrelevant — the reach is real, and reach is what matters when what is coming toward you should not come close.</div></div>
+              <div class="item-section"><div class="item-section-label">Lore</div><div class="item-section-text lore">Craftable at Conrad's workshop after the introductory dialogue. The worn journal found in the back room of that workshop belongs to a soldier who also carried this spear and was sent to the Home Village. His last entry says something was wrong there for years. He was correct.</div></div>
+            </div>
+          </div>
+
+          <div class="item-entry" data-category="weapon">
+            <div class="item-img-wrap"><img src="placeholder-item.jpg" alt="Scimitar"><span class="item-symbol">⚔</span><div class="item-img-overlay"></div></div>
+            <div class="item-body">
+              <div class="item-header">
+                <div class="item-name-block"><div class="item-name">Scimitar</div></div>
+                <span class="item-type-badge badge-weapon">1-Handed</span>
+              </div>
+              <div class="item-stats"><span class="stat-pill">DMG <span>36</span></span><span class="stat-pill">Type <span>Curved Blade</span></span></div>
+              <div class="item-section"><div class="item-section-label">Function</div><div class="item-section-text">Dropped by Cultist Soldiers. Single-edged, high damage for a one-handed weapon, best used where the Spear's reach is a disadvantage. Favored by the Cult for its cultural resonance — curved blades are associated in Cult theology with the arc of Caligo's influence through time.</div></div>
+              <div class="item-section"><div class="item-section-label">Description</div><div class="item-section-text">A wicked, sweeping curve of steel maintained with unusual care given the carriers. Cultist Soldiers keep their Scimitars ceremonially clean even when everything else they own is weathered. The edge is consistent proof of dedication.</div></div>
+              <div class="item-section"><div class="item-section-label">Lore</div><div class="item-section-text lore">The Cult adopted curved blades in the early years of their formation — a deliberate rejection of the Church's straight-sword iconography. What began as symbolism became tradition. The Scimitar the Mercenary might carry after Cultist Island was sharpened by someone who believed in something. That fact does not change what was done with it.</div></div>
+            </div>
+          </div>
+
+          <div class="item-entry" data-category="weapon">
+            <div class="item-img-wrap"><img src="placeholder-item.jpg" alt="Flintlock"><span class="item-symbol">🔫</span><div class="item-img-overlay"></div></div>
+            <div class="item-body">
+              <div class="item-header">
+                <div class="item-name-block"><div class="item-name">Flintlock</div></div>
+                <span class="item-type-badge badge-weapon">Ranged</span>
+              </div>
+              <div class="item-stats"><span class="stat-pill">DMG <span>46</span></span><span class="stat-pill">Type <span>Longranged</span></span></div>
+              <div class="item-section"><div class="item-section-label">Function</div><div class="item-section-text">The Merchant's favored weapon. Faster to ready than the Blunderbuss, lower knockback. Best used for precision elimination rather than crowd suppression — Konrad's combat philosophy in one firearm.</div></div>
+              <div class="item-section"><div class="item-section-label">Description</div><div class="item-section-text">Compact, well-balanced, with wood grain smoothed by years of handling. The barrel has been modified — a small modification near the trigger guard that no standard gunsmith would recognize but that reduces misfires in damp conditions. Someone who uses this weapon has thought carefully about not dying.</div></div>
+              <div class="item-section"><div class="item-section-label">Lore</div><div class="item-section-text lore">Port City is a merchant city, and merchants in Port City carry Flintlocks not because they expect violence but because they have learned that expecting violence is irrelevant to whether it arrives. Konrad has carried his for fourteen years. He has fired it twice in that time. Both times were necessary. He does not enjoy the memory of either.</div></div>
+            </div>
+          </div>
+
+          <div class="item-entry" data-category="weapon">
+            <div class="item-img-wrap"><img src="placeholder-item.jpg" alt="Short Sword"><span class="item-symbol">🗡</span><div class="item-img-overlay"></div></div>
+            <div class="item-body">
+              <div class="item-header">
+                <div class="item-name-block"><div class="item-name">Short Sword</div></div>
+                <span class="item-type-badge badge-weapon">1-Handed</span>
+              </div>
+              <div class="item-stats"><span class="stat-pill">DMG <span>28</span></span><span class="stat-pill">Type <span>Blade</span></span></div>
+              <div class="item-section"><div class="item-section-label">Function</div><div class="item-section-text">Purchasable from the Supply Merchant. Faster attack speed than the Spear. Best in enclosed spaces — corridors, the Underground Laboratory, the Cathedral's inner halls — where a longer weapon's reach becomes a hindrance against walls.</div></div>
+              <div class="item-section"><div class="item-section-label">Description</div><div class="item-section-text">A double-edged steel blade with a simple crossguard. Nothing ceremonial. Nothing wasted. The kind of weapon that was designed for the specific purpose of ending things quickly without announcement.</div></div>
+              <div class="item-section"><div class="item-section-label">Lore</div><div class="item-section-text lore">Standard issue for Church operatives working in close quarters. The Underground Laboratory encounters — where corridors were built to accommodate medical procedure, not combat — were the context for its design. The Church built the corridors narrow deliberately. They did not want two people to be able to pass side by side. Accountability requires witnesses.</div></div>
+            </div>
+          </div>
+
+          <div class="item-entry" data-category="weapon">
+            <div class="item-img-wrap"><img src="placeholder-item.jpg" alt="Claymore"><span class="item-symbol">⚔</span><div class="item-img-overlay"></div></div>
+            <div class="item-body">
+              <div class="item-header">
+                <div class="item-name-block"><div class="item-name">Claymore</div></div>
+                <span class="item-type-badge badge-weapon">2-Handed</span>
+              </div>
+              <div class="item-stats"><span class="stat-pill">DMG <span>47</span></span><span class="stat-pill">Type <span>Greatsword</span></span></div>
+              <div class="item-section"><div class="item-section-label">Function</div><div class="item-section-text">High-damage two-hander. The distinctive crossguard ending in quatrefoils is Church iconography — carrying it signals allegiance, or at minimum past allegiance, in ways that affect NPC dialogue in certain zones.</div></div>
+              <div class="item-section"><div class="item-section-label">Description</div><div class="item-section-text">Signifies both faith and a very long reach. The quatrefoils were added as a design choice three generations ago by a Church armorer who believed weapons should carry the marks of their purpose. The purpose was violence in service of doctrine. The ornamentation does not change that, but it makes it easier to perform.</div></div>
+              <div class="item-section"><div class="item-section-label">Lore</div><div class="item-section-text lore">Holy Knights carry Claymores. When the Mercenary fights former Church allies in Ending B, the weight of that specific weapon type in his inventory — if he is carrying one — triggers a unique internal monologue: recognition without sentimentality, a distinction the game insists upon. He has moved from using the weapon to carrying the memory of using it. That is different.</div></div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- ARMOUR -->
+      <div class="category-group" id="armour">
+        <div class="category-label">
+          <span class="category-label-text">🛡 Armour</span>
+          <div class="category-label-line"></div>
+        </div>
+        <div class="item-cards-grid">
+
+          <div class="item-entry" data-category="armour">
+            <div class="item-img-wrap"><img src="placeholder-item.jpg" alt="Priest's Robe"><span class="item-symbol">👘</span><div class="item-img-overlay"></div></div>
+            <div class="item-body">
+              <div class="item-header">
+                <div class="item-name-block"><div class="item-name">Priest's Robe</div></div>
+                <span class="item-type-badge badge-armour">Body</span>
+              </div>
+              <div class="item-stats"><span class="stat-pill">DEF <span>8</span></span><span class="stat-pill">Mind Res <span>+1</span></span></div>
+              <div class="item-section"><div class="item-section-label">Function</div><div class="item-section-text">Dropped by Father Calum upon defeat in Ending B. Low physical defense, but the Mind Resistance bonus reflects what wearing the Church's authority does to a person's psychological armor — even stripped from the man who abused it. Equipping it triggers a unique reaction from any surviving NPCs who recognize it.</div></div>
+              <div class="item-section"><div class="item-section-label">Description</div><div class="item-section-text">White, or once white — now off-white in the way that long-held certainty becomes off-white when it is finally examined. Embroidered with the Church seal at the hem. The stitching is immaculate. Someone who cared about this robe cared about it deeply before the caring became the mechanism of something terrible.</div></div>
+              <div class="item-section"><div class="item-section-label">Lore</div><div class="item-section-text lore">Father Calum was dressed as C-1 before he was dressed as a priest. The robe was given to him when the Church decided that the most successful product of their program should be the program's administrator. He has worn it every day for thirty years. His personal journal's last entry ends mid-sentence. The robe outlasts the sentence.</div></div>
+            </div>
+          </div>
+
+          <div class="item-entry" data-category="armour">
+            <div class="item-img-wrap"><img src="placeholder-item.jpg" alt="Dark Priest's Robe"><span class="item-symbol">🖤</span><div class="item-img-overlay"></div></div>
+            <div class="item-body">
+              <div class="item-header">
+                <div class="item-name-block"><div class="item-name">Dark Priest's Robe</div></div>
+                <span class="item-type-badge badge-armour">Body</span>
+              </div>
+              <div class="item-stats"><span class="stat-pill">DEF <span>8</span></span><span class="stat-pill">Speed <span>+1</span></span></div>
+              <div class="item-section"><div class="item-section-label">Function</div><div class="item-section-text">Dropped by Cultist higher-ups. Trades Mind Resistance for Speed — the Cult's philosophy in a stat line. They move faster because they stopped trying to hold their psychological ground and started moving with the current. Whether that is wisdom or collapse is the game's central question.</div></div>
+              <div class="item-section"><div class="item-section-label">Description</div><div class="item-section-text">Black, well-maintained despite the conditions of Cultist Island. The embroidery is Caligo's sigil — not the stylized version used in Cult propaganda, but the original form, which the Cult's founding members transcribed from their earliest Fragment interactions. It looks like a question mark that has lost its curve.</div></div>
+              <div class="item-section"><div class="item-section-label">Lore</div><div class="item-section-text lore">The Cult adopted black robes as a direct negation of the Church's white — but over time, the symbolism inverted. White for the Church means purity of purpose; black for the Cult came to mean transparency about what they are: instruments of something that does not care about them, who chose that relationship over the alternative of pretending the caring was real.</div></div>
+            </div>
+          </div>
+
+          <div class="item-entry" data-category="armour">
+            <div class="item-img-wrap"><img src="placeholder-item.jpg" alt="Arming Cap"><span class="item-symbol">🪖</span><div class="item-img-overlay"></div></div>
+            <div class="item-body">
+              <div class="item-header">
+                <div class="item-name-block"><div class="item-name">Arming Cap</div></div>
+                <span class="item-type-badge badge-armour">Head</span>
+              </div>
+              <div class="item-stats"><span class="stat-pill">DEF <span>4</span></span></div>
+              <div class="item-section"><div class="item-section-label">Function</div><div class="item-section-text">Dropped by Holy Knights in Ending B. Low defense, but its Church insignia means that wearing it while speaking to certain NPCs in the Theocratic Capital unlocks otherwise unavailable dialogue — specifically from Church guards who assume continued allegiance.</div></div>
+              <div class="item-section"><div class="item-section-label">Description</div><div class="item-section-text">A hat used by officers in the Theocratic Capital, bearing the Church insignia at the center of the forehead. A small detail: the stitching of the insignia on caps recovered post-Ending B is sometimes asymmetrical — an indication that the craftsmen making them were rushing, or that someone decided symmetry was no longer worth the effort.</div></div>
+              <div class="item-section"><div class="item-section-label">Lore</div><div class="item-section-text lore">The rank insignia on the Arming Cap corresponds to the Third Regiment — the same regiment that owned the armory chest that held the Mercenary's first Blunderbuss. The cap and the gun were issued to the same operational tier by the same administration. One is a weapon. One is permission to be trusted. The distinction is entirely the Church's.</div></div>
+            </div>
+          </div>
+
+          <div class="item-entry" data-category="armour">
+            <div class="item-img-wrap"><img src="placeholder-item.jpg" alt="Plate Armour"><span class="item-symbol">🛡</span><div class="item-img-overlay"></div></div>
+            <div class="item-body">
+              <div class="item-header">
+                <div class="item-name-block"><div class="item-name">Plate Armour</div></div>
+                <span class="item-type-badge badge-armour">Body</span>
+              </div>
+              <div class="item-stats"><span class="stat-pill">DEF <span>28</span></span></div>
+              <div class="item-section"><div class="item-section-label">Function</div><div class="item-section-text">High physical protection, no secondary effects. Best in structured combat zones — the Theocratic Capital Ending B, the port landings — where physical damage is predictable and consistent. Slows movement in ways that make it inadvisable in the Zones of Terrors where evasion matters more than absorption.</div></div>
+              <div class="item-section"><div class="item-section-label">Description</div><div class="item-section-text">Made from different alloys, offering moderate to high protection. The craftsmanship is undeniably skilled. The Church funds good armor because dead soldiers are expensive; the investment is purely logistical. The soldiers inside the armor draw whatever comfort they can from that.</div></div>
+              <div class="item-section"><div class="item-section-label">Lore</div><div class="item-section-text lore">Church-issue Plate Armour bears no personal markings — soldiers are not supposed to be individuals inside it. This was a deliberate design decision documented in a Church administrative bulletin titled <em>Standardization of Field Equipment for Identity Consistency</em>. The bulletin is seventeen pages long. The reason it takes seventeen pages to explain why armor should not be personalized is its own kind of lore.</div></div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- BOOKS -->
+      <div class="category-group" id="books">
+        <div class="category-label">
+          <span class="category-label-text">📖 Books & Skill Texts</span>
+          <div class="category-label-line"></div>
+        </div>
+        <div class="item-cards-grid">
+
+          <div class="item-entry" data-category="book">
+            <div class="item-img-wrap"><img src="placeholder-item.jpg" alt="Book of Craftsmanship"><span class="item-symbol">📖</span><div class="item-img-overlay"></div></div>
+            <div class="item-body">
+              <div class="item-header">
+                <div class="item-name-block"><div class="item-name">Book of Craftsmanship</div></div>
+                <span class="item-type-badge badge-book">Passive Skill</span>
+              </div>
+              <div class="item-section"><div class="item-section-label">Function</div><div class="item-section-text">Reading unlocks the Craftsmanship ability, enabling item crafting at any blacksmith station. Available in the Walled City armory chest and again in the Dormitory Ruins of the Home Village. Foundational — almost every weapon upgrade requires it.</div></div>
+              <div class="item-section"><div class="item-section-label">Lore</div><div class="item-section-text lore">The Walled City copy was left in the armory by the Third Regiment, unclaimed. The copy in the Home Village ruins has marginal notes in a child's handwriting. The notes are practical observations about metalwork. Whoever wrote them was paying close attention. The Church had not yet taught them not to.</div></div>
+            </div>
+          </div>
+
+          <div class="item-entry" data-category="book">
+            <div class="item-img-wrap"><img src="placeholder-item.jpg" alt="Book of Stars"><span class="item-symbol">⭐</span><div class="item-img-overlay"></div></div>
+            <div class="item-body">
+              <div class="item-header">
+                <div class="item-name-block"><div class="item-name">Book of Stars</div></div>
+                <span class="item-type-badge badge-book">Active Skill</span>
+              </div>
+              <div class="item-section"><div class="item-section-label">Function</div><div class="item-section-text">Unlocks the Foresight skill. Reading it costs MS +5 — the knowledge of what is coming is not free. Foresight reveals enemy positions, trap locations, and hidden NPC information. Its reliability degrades with MS: perfect clarity below 50, functional above 50, dangerously unreliable above 75.</div></div>
+              <div class="item-section"><div class="item-section-label">Lore</div><div class="item-section-text lore">Pluvia's people did not learn Foresight from this book. They held the knowledge before the book existed. The book is a Church-adjacent transcription of something the Tribe understood natively — translated into academic language that removes the felt sense of it entirely and replaces it with procedure. Pluvia, if asked about the book, says: <em>"Reading that is like being given a map of a country you have already walked."</em></div></div>
+            </div>
+          </div>
+
+          <div class="item-entry" data-category="book">
+            <div class="item-img-wrap"><img src="placeholder-item.jpg" alt="Book of Instincts"><span class="item-symbol">⚡</span><div class="item-img-overlay"></div></div>
+            <div class="item-body">
+              <div class="item-header">
+                <div class="item-name-block"><div class="item-name">Book of Instincts</div></div>
+                <span class="item-type-badge badge-book">Active Skill</span>
+              </div>
+              <div class="item-section"><div class="item-section-label">Function</div><div class="item-section-text">Unlocks Battle Instinct — briefly marks enemy weak points for amplified damage. Father Calum uses this skill in Phase 2 of his boss fight. For player characters, it is particularly valuable against heavily armored targets where exploiting openings matters more than raw damage output.</div></div>
+              <div class="item-section"><div class="item-section-label">Lore</div><div class="item-section-text lore">The Church produced this book internally. It was written by the program administrators to codify what the experiments produced — instincts that had been trained into subjects so deeply they could no longer be separated from identity. Father Calum co-authored it. He is listed as a technical consultant. His co-author was Subject C-2, who did not survive the procedure that made Battle Instinct possible to document.</div></div>
+            </div>
+          </div>
+
+          <div class="item-entry" data-category="book">
+            <div class="item-img-wrap"><img src="placeholder-item.jpg" alt="Book of Trade I"><span class="item-symbol">💰</span><div class="item-img-overlay"></div></div>
+            <div class="item-body">
+              <div class="item-header">
+                <div class="item-name-block"><div class="item-name">Book of Trade I — III</div></div>
+                <span class="item-type-badge badge-book">Passive Skill</span>
+              </div>
+              <div class="item-section"><div class="item-section-label">Function</div><div class="item-section-text">A series of three books unlocking Bartering, Bargaining, and Rumours respectively. Konrad begins with Bartering; the full chain reduces purchase prices and opens alternative information-gathering in tavern interactions. Book of Trade III (Rumours) unlocks NPC whisper dialogue unavailable through standard conversation.</div></div>
+              <div class="item-section"><div class="item-section-label">Lore</div><div class="item-section-text lore">The Guild Hall stocks all three. The Guild Master who warns Konrad about pressing the Church investigation has read all three volumes many times. He knows what they are for. He also knows that information has a price paid not in coins but in the kind of quiet that follows knowing too much. He made his choice twenty years ago and lives with it. Konrad made his more recently.</div></div>
+            </div>
+          </div>
+
+          <div class="item-entry" data-category="book">
+            <div class="item-img-wrap"><img src="placeholder-item.jpg" alt="Book of the Secrets"><span class="item-symbol">🔐</span><div class="item-img-overlay"></div></div>
+            <div class="item-body">
+              <div class="item-header">
+                <div class="item-name-block"><div class="item-name">Book of the Secrets</div></div>
+                <span class="item-type-badge badge-book">Lore Book</span>
+              </div>
+              <div class="item-section"><div class="item-section-label">Function</div><div class="item-section-text">Reading grants no skill — only knowledge. The game's most explicit lore item regarding Church hypocrisy: it states plainly that the Church worships a false God while actually embracing darkness. No mechanics attached. Some information changes nothing and everything simultaneously.</div></div>
+              <div class="item-section"><div class="item-section-label">Lore</div><div class="item-section-text lore">The book exists in the Restricted Corridor of the Theocratic Capital, behind a door that Father Calum opens with a key he carries on his person at all times. He has not read this book in eleven years, by choice. It was written by one of the original Church founders — someone who built the institution knowing exactly what they were building and chose the name Lumen as irony, not faith. The founder's name has been removed from every historical record. Someone named F has written in the margin: <em>"Both cages. Still cages."</em></div></div>
+            </div>
+          </div>
+
+          <div class="item-entry" data-category="book">
+            <div class="item-img-wrap"><img src="placeholder-item.jpg" alt="Book of Healing"><span class="item-symbol">✚</span><div class="item-img-overlay"></div></div>
+            <div class="item-body">
+              <div class="item-header">
+                <div class="item-name-block"><div class="item-name">Book of Healing</div></div>
+                <span class="item-type-badge badge-book">Active Skill</span>
+              </div>
+              <div class="item-section"><div class="item-section-label">Function</div><div class="item-section-text">Unlocks the Healing active skill, allowing recovery of HP outside combat. The description calls it a book that teaches the doctrine of Lumen — meaning the Church's canonical theology is the instruction manual for keeping yourself alive. The game does not comment on this irony directly. It simply states it.</div></div>
+              <div class="item-section"><div class="item-section-label">Lore</div><div class="item-section-text lore">The Lumen doctrine teaches that light cures corruption. The experiments the Church ran on children suggest a different interpretation: that what they called <em>light</em> was the process of removing whatever the darkness had touched, regardless of whether removing it left anything behind. The Book of Healing teaches restoration. What the Church practiced was subtraction. These are different things that the book does not reconcile, because the book was written before the experiments began.</div></div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- MATERIALS -->
+      <div class="category-group" id="materials">
+        <div class="category-label">
+          <span class="category-label-text">◇ Materials &amp; Crafting Components</span>
+          <div class="category-label-line"></div>
+        </div>
+        <div class="item-cards-grid">
+
+          <div class="item-entry" data-category="material">
+            <div class="item-img-wrap"><img src="placeholder-item.jpg" alt="Blue Gem"><span class="item-symbol">💎</span><div class="item-img-overlay"></div></div>
+            <div class="item-body">
+              <div class="item-header">
+                <div class="item-name-block"><div class="item-name">Blue Gem</div></div>
+                <span class="item-type-badge badge-material">Material</span>
+              </div>
+              <div class="item-section"><div class="item-section-label">Function</div><div class="item-section-text">The game's primary MS reducer. Critical to stockpile before entering doubled-rate zones like the Home Village. The Shaman's playthrough begins with one in the Healing Hut — its placement is the game's quiet acknowledgment that Pluvia's starting MS of 30 is already precarious. Not having Blue Gems when the MS escalation hits is the most common cause of Path C triggers.</div></div>
+              <div class="item-section"><div class="item-section-label">Description</div><div class="item-section-text">A blue-colored gem of unknown mineral composition. Its calming effect is not metaphorical — it produces a measurable decrease in MS that no in-game character can explain and no Church document accounts for. Caligo is affected by it the same way weather is affected by a clear window: it does not stop, but something about the barrier makes it matter less.</div></div>
+              <div class="item-section"><div class="item-section-label">Lore</div><div class="item-section-text lore">Blue Gems appear naturally in Tribe territory and near coastal regions outside Church jurisdiction. They do not appear near the Theocratic Capital, the Underground Laboratory, or Cultist Island. Whether this is geological coincidence or something more purposeful is not stated in any document. Pluvia, if asked directly, says: <em>"Some things resist without choosing to. The gem is one of them."</em> She says it the way someone says something they believe is true but cannot prove.</div></div>
+            </div>
+          </div>
+
+          <div class="item-entry" data-category="material">
+            <div class="item-img-wrap"><img src="placeholder-item.jpg" alt="Iron Ingot"><span class="item-symbol">🔩</span><div class="item-img-overlay"></div></div>
+            <div class="item-body">
+              <div class="item-header">
+                <div class="item-name-block"><div class="item-name">Iron Ingot</div></div>
+                <span class="item-type-badge badge-material">Material</span>
+              </div>
+              <div class="item-section"><div class="item-section-label">Function</div><div class="item-section-text">Primary crafting material for weapon upgrades. Two Iron Ingots plus Silver Wire upgrades the Blunderbuss to its Reinforced variant. Found in the Blacksmith Workshop's locked cabinet and dropped by Holy Knights and Church Soldiers. The most common crafting component across all upgrade trees.</div></div>
+              <div class="item-section"><div class="item-section-label">Lore</div><div class="item-section-text lore">The Church's foundries run continuously. Iron comes from mines in the northern territories — the same territories where the Home Village sits. The village that was destroyed provided iron ore to the Church before it became a site of Eldritch Horror incursion. The supply chain continued for two years after the village was abandoned. The Church marked it as a "supply disruption" in their records, not a tragedy.</div></div>
+            </div>
+          </div>
+
+          <div class="item-entry" data-category="material">
+            <div class="item-img-wrap"><img src="placeholder-item.jpg" alt="Silver Wire"><span class="item-symbol">✨</span><div class="item-img-overlay"></div></div>
+            <div class="item-body">
+              <div class="item-header">
+                <div class="item-name-block"><div class="item-name">Silver Wire</div></div>
+                <span class="item-type-badge badge-material">Material</span>
+              </div>
+              <div class="item-section"><div class="item-section-label">Function</div><div class="item-section-text">Used in accessory crafting and the Blunderbuss upgrade. Dropped by Church Assassins — the most elite and dangerous of the Church's mobile operatives. The fact that assassins carry refined silver wire is not coincidence; it is part of their toolkit for weapon modification in the field.</div></div>
+              <div class="item-section"><div class="item-section-label">Lore</div><div class="item-section-text lore">Silver has traditional significance in Lumen doctrine — associated with clarity and precision, qualities the Church values in instruments that do its work quietly. Church Assassins are not listed in any official Church roster. They are funded through the same administrative category that covers "Charitable Operations." The Silver Wire they carry is listed as a "blessed implement." The Church has creative language for most things.</div></div>
+            </div>
+          </div>
+
+          <div class="item-entry" data-category="material">
+            <div class="item-img-wrap"><img src="placeholder-item.jpg" alt="Green Herb"><span class="item-symbol">🌿</span><div class="item-img-overlay"></div></div>
+            <div class="item-body">
+              <div class="item-header">
+                <div class="item-name-block"><div class="item-name">Green Herb</div></div>
+                <span class="item-type-badge badge-material">Material</span>
+              </div>
+              <div class="item-section"><div class="item-section-label">Function</div><div class="item-section-text">Crafting material said to cure infections. Combined with Empty Vials for medicinal compounds. Found commonly in Tribe territory and scattered through the Zones of Terrors — nature persisting in corrupted places, which the game uses as consistent background symbolism.</div></div>
+              <div class="item-section"><div class="item-section-label">Lore</div><div class="item-section-text lore">The Tribe's Shaman has used Green Herbs in her practice for decades. The Church's medical staff filed a report fourteen years ago recommending the standardization of Tribe herbal knowledge into Church medical protocol. The report was rejected. The rejection note reads: <em>"Sourcing through non-institutional channels creates accountability gaps."</em> People in the Home Village could have used the herbs. They were not given access to the protocol.</div></div>
+            </div>
+          </div>
+
+          <div class="item-entry" data-category="material">
+            <div class="item-img-wrap"><img src="placeholder-item.jpg" alt="Red Gem"><span class="item-symbol">🔴</span><div class="item-img-overlay"></div></div>
+            <div class="item-body">
+              <div class="item-header">
+                <div class="item-name-block"><div class="item-name">Red Gem</div></div>
+                <span class="item-type-badge badge-material">Material</span>
+              </div>
+              <div class="item-section"><div class="item-section-label">Function</div><div class="item-section-text">Said to contain the soul of a great warrior. Rare drop in high-risk zones. Used in accessory crafting — specifically in combinations that amplify offensive capability at the cost of psychological stability. The trade-off is mechanical and also thematic.</div></div>
+              <div class="item-section"><div class="item-section-label">Lore</div><div class="item-section-text lore">The Red Gem does not contain a soul. It contains a resonance — a pattern from something that was alive that impressed itself into the crystal's structure at the moment of that thing's death. Whether that qualifies as a soul is the kind of question the Cult's Library of Caligo addresses in seventeen competing marginal notes from seven different readers, none of whom agree, all of whom have circled the same passage in the original text.</div></div>
+            </div>
+          </div>
+
+          <div class="item-entry" data-category="material">
+            <div class="item-img-wrap"><img src="placeholder-item.jpg" alt="Leather Scraps"><span class="item-symbol">🪡</span><div class="item-img-overlay"></div></div>
+            <div class="item-body">
+              <div class="item-header">
+                <div class="item-name-block"><div class="item-name">Leather Scraps</div></div>
+                <span class="item-type-badge badge-material">Material</span>
+              </div>
+              <div class="item-section"><div class="item-section-label">Function</div><div class="item-section-text">Common crafting material for armor repairs and upgrades. Dropped by Church Soldiers and found throughout the Walled City. Required for the Iron Spear upgrade alongside Iron Ingots.</div></div>
+              <div class="item-section"><div class="item-section-label">Lore</div><div class="item-section-text lore">Church Soldiers patch their own equipment in the field using Leather Scraps from a standard-issue repair kit. This was not always policy — previously, soldiers returned to armories for repairs. The change was made after too many soldiers used armory visits to speak to blacksmiths like Conrad. Conrad, notably, still has his old appointment logs. He has kept them for twenty years. He is the kind of man who keeps things.</div></div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- POTIONS -->
+      <div class="category-group" id="potions">
+        <div class="category-label">
+          <span class="category-label-text">⚗ Potions &amp; Consumables</span>
+          <div class="category-label-line"></div>
+        </div>
+        <div class="item-cards-grid">
+
+          <div class="item-entry" data-category="potion">
+            <div class="item-img-wrap"><img src="placeholder-item.jpg" alt="Red Vial"><span class="item-symbol">🧪</span><div class="item-img-overlay"></div></div>
+            <div class="item-body">
+              <div class="item-header">
+                <div class="item-name-block"><div class="item-name">Red Vial</div></div>
+                <span class="item-type-badge badge-potion">Potion</span>
+              </div>
+              <div class="item-stats"><span class="stat-pill">Effect <span>HP +70</span></span></div>
+              <div class="item-section"><div class="item-section-label">Function</div><div class="item-section-text">Powerful instant HP recovery. The most efficient healing item in the game — 70 HP restored immediately with no side effects. Scarce in early zones; more available after the Port City. Essential stockpile item for the Cultist Island assault.</div></div>
+              <div class="item-section"><div class="item-section-label">Lore</div><div class="item-section-text lore">Church medical reports refer to Red Vials as <em>accelerated coagulant compound with neural stabilizing properties</em>. The same compound appears in the Underground Laboratory's supply manifests listed under a different name: <em>Subject Stabilization Fluid</em>. The applications differ. The formula is identical. The Church is meticulous about language in exactly the places where language is doing the most work.</div></div>
+            </div>
+          </div>
+
+          <div class="item-entry" data-category="potion">
+            <div class="item-img-wrap"><img src="placeholder-item.jpg" alt="Ale"><span class="item-symbol">🍺</span><div class="item-img-overlay"></div></div>
+            <div class="item-body">
+              <div class="item-header">
+                <div class="item-name-block"><div class="item-name">Ale / Rum / Wine</div></div>
+                <span class="item-type-badge badge-potion">Drink</span>
+              </div>
+              <div class="item-stats"><span class="stat-pill">Effect <span>MS -10</span></span></div>
+              <div class="item-section"><div class="item-section-label">Function</div><div class="item-section-text">All three alcohol variants reduce MS by 10. A tactical option in zones where Blue Gems have been depleted. The Tavern Keeper at The Gilded Anchor keeps them stocked and notices who drinks what quantity — his tracking of Konrad's dark ale consumption is how he knows Konrad is carrying something heavy.</div></div>
+              <div class="item-section"><div class="item-section-label">Lore</div><div class="item-section-text lore">The game acknowledges without judgment that alcohol as a coping mechanism for psychological pressure is both understandable and insufficient. Ale reduces MS. It does not resolve what caused the MS to rise. The Tavern Keeper, who has observed this dynamic for twenty years, puts Konrad's second drink on the house. He does not say this is because he cares. He does not need to say it.</div></div>
+            </div>
+          </div>
+
+          <div class="item-entry" data-category="potion">
+            <div class="item-img-wrap"><img src="placeholder-item.jpg" alt="Betadine"><span class="item-symbol">💊</span><div class="item-img-overlay"></div></div>
+            <div class="item-body">
+              <div class="item-header">
+                <div class="item-name-block"><div class="item-name">Betadine / Antibiotics</div></div>
+                <span class="item-type-badge badge-potion">Medicine</span>
+              </div>
+              <div class="item-stats"><span class="stat-pill">Effect <span>Remove Infection</span></span></div>
+              <div class="item-section"><div class="item-section-label">Function</div><div class="item-section-text">Both items cure the Infection status — Betadine for wound cleaning, Antibiotics for systemic infection. The Zones of Terrors have environmental hazards that inflict Infection through contact with corrupted surfaces. Having either item available is essential in high-risk exploration.</div></div>
+              <div class="item-section"><div class="item-section-label">Lore</div><div class="item-section-text lore">The Tribe's healing traditions use neither. They use Green Herbs, specific clay, and Pluvia's guidance. The Church brought Betadine and Antibiotics into common use — genuine medical contributions that made people's lives better. This is acknowledged in the game's lore and not used to excuse anything. Good work and terrible work can come from the same institution. That is part of what makes the institution difficult to simply condemn and leave.</div></div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- ACCESSORIES -->
+      <div class="category-group" id="accessories">
+        <div class="category-label">
+          <span class="category-label-text">💎 Accessories</span>
+          <div class="category-label-line"></div>
+        </div>
+        <div class="item-cards-grid">
+
+          <div class="item-entry" data-category="accessory">
+            <div class="item-img-wrap"><img src="placeholder-item.jpg" alt="Blue Amulet"><span class="item-symbol">🔵</span><div class="item-img-overlay"></div></div>
+            <div class="item-body">
+              <div class="item-header">
+                <div class="item-name-block"><div class="item-name">Blue Amulet</div></div>
+                <span class="item-type-badge badge-accessory">Accessory</span>
+              </div>
+              <div class="item-stats"><span class="stat-pill">Mind Res <span>+1</span></span></div>
+              <div class="item-section"><div class="item-section-label">Function</div><div class="item-section-text">Passive Mind Resistance increase. Worn, it slows MS accumulation throughout the playthrough — modest but consistent. Particularly useful for Funeris and Pluvia, whose base MS resistance is 1/5, the lowest in the game.</div></div>
+              <div class="item-section"><div class="item-section-label">Lore</div><div class="item-section-text lore">Strange sense of calm. That is the item description's full text. In a game that documents everything in clinical or literary detail, the Blue Amulet has seven words of description and no lore entry in any document. The Tribe Elder, if asked about it, says only: <em>"Some things do not explain themselves. They simply are."</em> This is either profound or the game acknowledging it ran out of origin text for one item. The calm is real either way.</div></div>
+            </div>
+          </div>
+
+          <div class="item-entry" data-category="accessory">
+            <div class="item-img-wrap"><img src="placeholder-item.jpg" alt="Ring"><span class="item-symbol">💍</span><div class="item-img-overlay"></div></div>
+            <div class="item-body">
+              <div class="item-header">
+                <div class="item-name-block"><div class="item-name">Ring</div></div>
+                <span class="item-type-badge badge-accessory">Accessory</span>
+              </div>
+              <div class="item-stats"><span class="stat-pill">DEF <span>1</span></span></div>
+              <div class="item-section"><div class="item-section-label">Function</div><div class="item-section-text">Minimal stats — 1 defense. But equipping it triggers a passive event flag that unlocks optional NPC dialogue across multiple zones, specifically from characters who recognize what the ring is. What it is, is not explained unless those conversations are found.</div></div>
+              <div class="item-section"><div class="item-section-label">Lore</div><div class="item-section-text lore">Item description: <em>A promise you failed to fulfil. Maybe you can still try again.</em> The ring has no crafting origin and no purchase source — it is found, each time in a different place depending on which character's playthrough is active. A promise made before the game begins. The person it was made to is not identified. The game trusts the player to carry the weight of not knowing and not puts it down.</div></div>
+            </div>
+          </div>
+
+          <div class="item-entry" data-category="accessory">
+            <div class="item-img-wrap"><img src="placeholder-item.jpg" alt="Wind Essence"><span class="item-symbol">💨</span><div class="item-img-overlay"></div></div>
+            <div class="item-body">
+              <div class="item-header">
+                <div class="item-name-block"><div class="item-name">Wind Essence</div></div>
+                <span class="item-type-badge badge-accessory">Relic</span>
+              </div>
+              <div class="item-stats"><span class="stat-pill">Type <span>Companion Relic</span></span></div>
+              <div class="item-section"><div class="item-section-label">Function</div><div class="item-section-text">Given by the Tribe Chief when Pluvia chooses to accompany the Mercenary. Not a standard equipment item — it cannot be equipped or discarded. It occupies a unique inventory slot labeled <em>carried</em>. Its presence affects Pluvia's Foresight accuracy and provides a passive MS resistance effect only when both the Mercenary and Pluvia are in the same zone.</div></div>
+              <div class="item-section"><div class="item-section-label">Lore</div><div class="item-section-text lore">The Tribe Chief's words: <em>It is not a gift. It is a promise that we believe in what she is walking toward.</em> The Wind Essence was Pluvia's from the moment she was born — the Tribe held it in trust. It was always hers to carry; they were simply the ones keeping it safe until she chose to leave. That she chose to leave is the whole of what the Essence represents: the moment belonging and purpose point in different directions, and someone moves toward purpose.</div></div>
+            </div>
+          </div>
+
+          <div class="item-entry" data-category="accessory">
+            <div class="item-img-wrap"><img src="placeholder-item.jpg" alt="Red Scarf"><span class="item-symbol">🧣</span><div class="item-img-overlay"></div></div>
+            <div class="item-body">
+              <div class="item-header">
+                <div class="item-name-block"><div class="item-name">Red Scarf</div></div>
+                <span class="item-type-badge badge-accessory">Head</span>
+              </div>
+              <div class="item-stats"><span class="stat-pill">DEF <span>1</span></span></div>
+              <div class="item-section"><div class="item-section-label">Function</div><div class="item-section-text">1 defense. Categorized as a head item because the game's equipment system requires it, but it does not function as a helmet in any conventional sense. Wearing it in the Orphanage ruins or the Home Village triggers a unique, brief animation that plays once per playthrough and cannot be triggered again.</div></div>
+              <div class="item-section"><div class="item-section-label">Lore</div><div class="item-section-text lore">Item description: <em>Reminds you of a distant past.</em> The Red Scarf and the Black Dress are the game's two memory items — objects with no combat value that function entirely as emotional prompts. The Scarf's distant past belongs to whoever is holding it. The game does not specify. It does not need to. What matters is that the character holds something familiar enough to hurt and does not put it down.</div></div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+    </section>
+
+    <!-- STATS TABLE -->
+    <div class="section-divider"><div class="div-line"></div><div class="div-icon">▸</div><div class="div-line"></div></div>
+    <section class="items-data-section">
+      <div class="section-header">
+        <span class="section-tag">Reference</span>
+        <h2 class="section-title">Item <span class="gold">Stats Reference</span></h2>
+        <p class="section-desc">Full numerical reference for weapons, armor and key items.</p>
+      </div>
+      <div class="data-table-wrap">
+        <table class="data-table">
+          <thead>
+            <tr>
+              <th>Item</th>
+              <th>Type</th>
+              <th>Subtype</th>
+              <th class="td-stat">DEF</th>
+              <th class="td-stat">DMG</th>
+              <th class="td-stat">SPD</th>
+              <th class="td-stat">MND RES</th>
+              <th>Notes</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr><td class="td-name td-caligo">Largest Fragment</td><td class="td-type">Fragment</td><td>Legendary</td><td class="td-stat">—</td><td class="td-stat">—</td><td class="td-stat">—</td><td class="td-stat">—</td><td>MS +12 on acquire</td></tr>
+            <tr><td class="td-name td-caligo">Flame Fragment</td><td class="td-type">Fragment</td><td>Legendary</td><td class="td-stat">—</td><td class="td-stat">—</td><td class="td-stat">—</td><td class="td-stat">—</td><td>Horror hesitation aura</td></tr>
+            <tr><td class="td-name td-caligo">Void Fragment</td><td class="td-type">Fragment</td><td>Legendary</td><td class="td-stat">—</td><td class="td-stat">—</td><td class="td-stat">—</td><td class="td-stat">—</td><td>Caligo Perception passive</td></tr>
+            <tr><td class="td-name td-caligo">Echo Fragment</td><td class="td-type">Fragment</td><td>Legendary</td><td class="td-stat">—</td><td class="td-stat">—</td><td class="td-stat">—</td><td class="td-stat">—</td><td>MS +15; memory playback</td></tr>
+            <tr><td class="td-name">Book of Enlightenment</td><td class="td-type">Book</td><td>Special</td><td class="td-stat">0</td><td class="td-stat">0</td><td class="td-stat">0</td><td class="td-stat">0</td><td>Save effect — Path C anchor</td></tr>
+            <tr><td class="td-name">Blunderbuss</td><td class="td-type">Weapon</td><td>Longranged</td><td class="td-stat">0</td><td class="td-stat positive">55</td><td class="td-stat">0</td><td class="td-stat">0</td><td>2 shots; knockback</td></tr>
+            <tr><td class="td-name">Makeshift Spear</td><td class="td-type">Weapon</td><td>2-Handed</td><td class="td-stat">0</td><td class="td-stat positive">38</td><td class="td-stat">0</td><td class="td-stat">0</td><td>Throwable once/combat</td></tr>
+            <tr><td class="td-name">Claymore</td><td class="td-type">Weapon</td><td>2-Handed</td><td class="td-stat">0</td><td class="td-stat positive">47</td><td class="td-stat">0</td><td class="td-stat">0</td><td>Church iconography</td></tr>
+            <tr><td class="td-name">Scimitar</td><td class="td-type">Weapon</td><td>1-Handed</td><td class="td-stat">0</td><td class="td-stat positive">36</td><td class="td-stat">0</td><td class="td-stat">0</td><td>Cult drop</td></tr>
+            <tr><td class="td-name">Flintlock</td><td class="td-type">Weapon</td><td>Longranged</td><td class="td-stat">0</td><td class="td-stat positive">46</td><td class="td-stat">0</td><td class="td-stat">0</td><td>Merchant's weapon</td></tr>
+            <tr><td class="td-name">Short Sword</td><td class="td-type">Weapon</td><td>1-Handed</td><td class="td-stat">0</td><td class="td-stat positive">28</td><td class="td-stat">0</td><td class="td-stat">0</td><td>Fast; enclosed spaces</td></tr>
+            <tr><td class="td-name">Plate Armour</td><td class="td-type">Armour</td><td>Body</td><td class="td-stat positive">28</td><td class="td-stat">0</td><td class="td-stat">0</td><td class="td-stat">0</td><td>High physical protection</td></tr>
+            <tr><td class="td-name">Priest's Robe</td><td class="td-type">Armour</td><td>Body</td><td class="td-stat positive">8</td><td class="td-stat">0</td><td class="td-stat">0</td><td class="td-stat positive">+1</td><td>Calum boss drop</td></tr>
+            <tr><td class="td-name">Dark Priest's Robe</td><td class="td-type">Armour</td><td>Body</td><td class="td-stat positive">8</td><td class="td-stat">0</td><td class="td-stat positive">+1</td><td class="td-stat">0</td><td>Cult leader drop</td></tr>
+            <tr><td class="td-name">Plated Mail</td><td class="td-type">Armour</td><td>Body</td><td class="td-stat positive">38</td><td class="td-stat">0</td><td class="td-stat">0</td><td class="td-stat">0</td><td>Highest body defense</td></tr>
+            <tr><td class="td-name">Blue Gem</td><td class="td-type">Material</td><td>Consumable</td><td class="td-stat">0</td><td class="td-stat">0</td><td class="td-stat">0</td><td class="td-stat">0</td><td>MS reducer; critical</td></tr>
+            <tr><td class="td-name">Red Vial</td><td class="td-type">Potion</td><td>Heal</td><td class="td-stat">0</td><td class="td-stat">0</td><td class="td-stat">0</td><td class="td-stat">0</td><td>HP +70 instant</td></tr>
+            <tr><td class="td-name">Blue Amulet</td><td class="td-type">Accessory</td><td>—</td><td class="td-stat">0</td><td class="td-stat">0</td><td class="td-stat">0</td><td class="td-stat positive">+1</td><td>Passive MS resistance</td></tr>
+            <tr><td class="td-name">Wind Essence</td><td class="td-type">Relic</td><td>Companion</td><td class="td-stat">—</td><td class="td-stat">—</td><td class="td-stat">—</td><td class="td-stat">—</td><td>Pluvia path only</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer class="site-footer">
+      <div class="footer-inner">
+        <div class="footer-logo-block">
+          <div class="footer-logo-title">Elucidate RPG</div>
+          <div class="footer-logo-sub">Pamantasan ng Lungsod ng Maynila · BS Information Technology</div>
+        </div>
+        <div class="footer-links">
+          <a href="characters.html">Characters</a>
+          <a href="lore.html">Lore</a>
+          <a href="items.html">Items</a>
+          <a href="environments.html">Environments</a>
+          <a href="developers.html">Developers</a>
+        </div>
+        <div class="footer-copy">
+          <span>©2026. Elucidate RPG DLC. All Rights Reserved.<br>
+          Made by Group WOZ (BSIT 1-3). · Powered by FGC UNAUX</span>
+        </div>
+      </div>
+      <div class="footer-ornament">
+        ✦ &nbsp; Every object carries the weight of its origin — forged, fractured, or written into existence &nbsp; ✦
+      </div>
+    </footer>
+
+  </main>
+</div>
+
+<script>
+(function generateStars() {
+  const container = document.getElementById('stars-container');
+  if (!container) return;
+  for (let i = 0; i < 60; i++) {
+    const s = document.createElement('div');
+    s.className = 'star';
+    s.style.cssText = `
+      left: ${Math.random() * 100}%;
+      top:  ${Math.random() * 100}%;
+      --d:  ${3 + Math.random() * 5}s;
+      --o:  ${0.2 + Math.random() * 0.5};
+      animation-delay: ${Math.random() * 6}s;
+      width:  ${Math.random() < 0.15 ? 2 : 1}px;
+      height: ${Math.random() < 0.15 ? 2 : 1}px;
+    `;
+    container.appendChild(s);
+  }
+})();
+
+// ── FILTER ──────────────────────────────
+const filterBtns = document.querySelectorAll('.filter-btn');
+const itemCountEl = document.getElementById('item-count');
+
+function updateCount() {
+  const activeFilter = document.querySelector('.filter-btn.active')?.dataset.filter || 'all';
+  const all = document.querySelectorAll('[data-category]');
+  let visible = 0;
+  all.forEach(el => {
+    const show = activeFilter === 'all' || el.dataset.category === activeFilter;
+    el.style.display = show ? '' : 'none';
+    if (show) visible++;
+  });
+  itemCountEl.textContent = `${visible} items`;
+  document.querySelectorAll('.category-group').forEach(group => {
+    const anyVisible = group.querySelectorAll('[data-category]:not([style*="none"])').length > 0;
+    group.style.display = anyVisible ? '' : 'none';
+  });
+}
+
+filterBtns.forEach(btn => {
+  btn.addEventListener('click', () => {
+    filterBtns.forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    updateCount();
+  });
+});
+updateCount();
+
+// ── SEARCH ──────────────────────────────
+const itemIndex = [];
+document.querySelectorAll('[data-category]').forEach(card => {
+  const name = card.querySelector('.item-name, .fragment-card-name, .enlightenment-card-name');
+  const texts = card.querySelectorAll('.item-section-text, .fragment-section-text, .enlightenment-text');
+  if (name) {
+    itemIndex.push({
+      name: name.textContent.trim(),
+      text: Array.from(texts).map(t => t.textContent).join(' ').toLowerCase(),
+      el: card
+    });
+  }
+});
+
+const inputEl = document.getElementById('search-input');
+const overlayEl = document.getElementById('search-results-overlay');
+
+inputEl.addEventListener('input', () => {
+  const q = inputEl.value.trim().toLowerCase();
+  overlayEl.innerHTML = '';
+  if (!q || q.length < 2) { overlayEl.classList.remove('visible'); return; }
+  const results = itemIndex.filter(i => i.name.toLowerCase().includes(q) || i.text.includes(q)).slice(0, 10);
+  if (!results.length) {
+    overlayEl.innerHTML = '<div class="search-no-result">No items found for "' + q + '"</div>';
+  } else {
+    results.forEach(item => {
+      const div = document.createElement('div');
+      div.className = 'search-result-item';
+      div.innerHTML = `<div class="sr-title">${highlightMatch(item.name, q)}</div><div class="sr-excerpt">Click to scroll to item</div>`;
+      div.onclick = () => {
+        overlayEl.classList.remove('visible');
+        item.el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        item.el.style.outline = '1px solid var(--gold)';
+        setTimeout(() => { item.el.style.outline = ''; }, 2000);
+      };
+      overlayEl.appendChild(div);
+    });
+  }
+  overlayEl.classList.add('visible');
+});
+
+inputEl.addEventListener('keydown', e => { if (e.key === 'Escape') { overlayEl.classList.remove('visible'); inputEl.blur(); } });
+document.addEventListener('click', e => { if (!e.target.closest('.search-wrap') && !e.target.closest('#search-results-overlay')) overlayEl.classList.remove('visible'); });
+
+function highlightMatch(text, q) {
+  const i = text.toLowerCase().indexOf(q);
+  if (i < 0) return text;
+  return text.slice(0, i) + '<mark class="search-highlight">' + text.slice(i, i + q.length) + '</mark>' + text.slice(i + q.length);
+}
+
+// ── SCROLL REVEAL ────────────────────────
+const observer = new IntersectionObserver(entries => {
+  entries.forEach(e => {
+    if (e.isIntersecting) { e.target.style.opacity = '1'; e.target.style.transform = 'translateY(0)'; }
+  });
+}, { threshold: 0.06, rootMargin: '0px 0px -30px 0px' });
+
+document.querySelectorAll('.item-entry, .fragment-card, .enlightenment-card').forEach(el => {
+  el.style.opacity = '0';
+  el.style.transform = 'translateY(18px)';
+  el.style.transition = 'opacity 0.45s ease, transform 0.45s ease';
+  observer.observe(el);
+});
+</script>
+</body>
+</html>

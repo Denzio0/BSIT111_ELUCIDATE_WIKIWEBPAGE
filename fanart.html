@@ -1,0 +1,531 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Fan Art — Elucidate RPG Wiki</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Merriweather:ital,wght@0,300;0,400;0,700;0,900;1,300;1,400&family=Cinzel:wght@400;600;700;900&family=Crimson+Text:ital,wght@0,400;0,600;1,400&display=swap');
+
+:root {
+  --bg-deepest:    #080608;
+  --bg-dark:       #0e0b0f;
+  --bg-mid:        #140f16;
+  --bg-surface:    #1c1520;
+  --bg-elevated:   #221829;
+  --bg-card:       #1a1220;
+  --border-faint:  rgba(180,140,80,0.12);
+  --border-dim:    rgba(180,140,80,0.25);
+  --border-gold:   rgba(180,140,80,0.55);
+  --gold:          #b8922a;
+  --gold-bright:   #d4a83c;
+  --gold-pale:     #e8c96a;
+  --gold-muted:    #8a6a1e;
+  --crimson:       #8b1a1a;
+  --crimson-bright:#b02020;
+  --caligo:        #46db9e;
+  --caligo-bright: #a60827;
+  --caligo-pale:   #8b5cbf;
+  --lumen:         #c8a84a;
+  --text-primary:  #e8dcc8;
+  --text-secondary:#c8b898;
+  --text-muted:    #9a8a72;
+  --text-dim:      #706050;
+  --white:         #f2ead8;
+  --shadow-deep:   0 8px 40px rgba(0,0,0,0.8);
+  --shadow-card:   0 4px 20px rgba(0,0,0,0.6);
+  --glow-gold:     0 0 20px rgba(184,146,42,0.3);
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: 'Merriweather', 'Cambria', Georgia, serif;
+  background: var(--bg-deepest);
+  color: var(--text-primary);
+  font-size: 14px;
+  line-height: 1.7;
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+body::before {
+  content: '';
+  position: fixed; inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.03'/%3E%3C/svg%3E");
+  pointer-events: none; z-index: 0; opacity: 0.4;
+}
+a { color: var(--gold); text-decoration: none; transition: color 0.2s; }
+a:hover { color: var(--gold-pale); }
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: var(--bg-deepest); }
+::-webkit-scrollbar-thumb { background: var(--gold-muted); border-radius: 3px; }
+
+.site-header {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  z-index: 1000;
+  background: rgba(8,6,8,0.96);
+  border-bottom: 1px solid var(--border-gold);
+  backdrop-filter: blur(12px);
+  height: 56px;
+  display: flex;
+  align-items: center;
+  padding: 0 20px;
+  gap: 16px;
+  box-shadow: 0 2px 30px rgba(0,0,0,0.8);
+}
+
+.header-logo-wrap {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-shrink: 0;
+}
+
+.site-logo-img {
+  width: 36px;
+  height: 36px;
+  object-fit: contain;
+}
+
+.header-site-name {
+  font-family: 'Cinzel', serif;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--gold-pale);
+  letter-spacing: 1.5px;
+  line-height: 1.2;
+  text-transform: uppercase;
+}
+.header-site-name span {
+  display: block;
+  font-size: 9px;
+  color: var(--text-muted);
+  letter-spacing: 2px;
+  font-weight: 400;
+}
+
+.header-nav {
+  display: flex;
+  gap: 4px;
+  align-items: center;
+  margin-left: 12px;
+  flex: 1;
+}
+
+.header-nav a {
+  font-family: 'Cinzel', serif;
+  font-size: 10px;
+  letter-spacing: 1px;
+  color: var(--text-secondary);
+  padding: 5px 10px;
+  border: 1px solid transparent;
+  border-radius: 2px;
+  transition: all 0.2s;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+.header-nav a:hover {
+  color: var(--gold-pale);
+  border-color: var(--border-dim);
+  background: rgba(184,146,42,0.08);
+}
+.header-nav a.active {
+  color: var(--gold-pale);
+  border-color: var(--border-gold);
+  background: rgba(184,146,42,0.1);
+}
+
+.header-right {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-left: auto;
+  flex-shrink: 0;
+}
+
+.search-wrap { display: flex; align-items: center; border: 1px solid var(--border-dim); border-radius: 3px; overflow: hidden; background: var(--bg-mid); transition: border-color 0.2s; }
+.search-wrap:focus-within { border-color: var(--gold); box-shadow: 0 0 8px rgba(184,146,42,0.2); }
+.search-wrap input { background: transparent; border: none; outline: none; color: var(--text-primary); font-family: 'Merriweather', serif; font-size: 11px; padding: 6px 10px; width: 180px; }
+.search-wrap input::placeholder { color: var(--text-dim); }
+.search-wrap button { background: var(--bg-elevated); border: none; border-left: 1px solid var(--border-dim); color: var(--gold); padding: 6px 10px; cursor: pointer; font-size: 12px; transition: background 0.2s; }
+.search-wrap button:hover { background: rgba(184,146,42,0.15); }
+#search-results-overlay { display: none; position: fixed; top: 57px; right: 20px; width: 340px; max-height: 400px; overflow-y: auto; background: var(--bg-elevated); border: 1px solid var(--border-gold); border-radius: 4px; z-index: 999; box-shadow: var(--shadow-deep); }
+#search-results-overlay.visible { display: block; }
+.search-result-item { padding: 10px 14px; border-bottom: 1px solid var(--border-faint); cursor: pointer; transition: background 0.15s; }
+.search-result-item:hover { background: rgba(184,146,42,0.1); }
+.search-result-item .sr-title { font-family: 'Cinzel', serif; font-size: 11px; color: var(--gold-pale); letter-spacing: 0.5px; }
+.search-result-item .sr-excerpt { font-size: 11px; color: var(--text-muted); margin-top: 2px; line-height: 1.5; }
+.search-no-result { padding: 14px; font-size: 12px; color: var(--text-muted); font-style: italic; text-align: center; }
+.search-highlight { background: rgba(184,146,42,0.3); color: var(--gold-pale); border-radius: 2px; padding: 0 1px; }
+
+.wiki-layout { display: grid; grid-template-columns: 210px 1fr; min-height: 100vh; padding-top: 56px; }
+
+.sidebar {
+  background: var(--bg-dark); border-right: 1px solid var(--border-faint);
+  position: sticky; top: 56px; height: calc(100vh - 56px);
+  overflow-y: auto; padding: 16px 0; z-index: 100;
+}
+.sidebar-logo-mini { padding: 0 14px 14px; border-bottom: 1px solid var(--border-faint); margin-bottom: 12px; text-align: center; }
+.sidebar-logo-mini .sb-title { font-family: 'Cinzel', serif; font-size: 11px; color: var(--gold); letter-spacing: 2px; text-transform: uppercase; }
+.sidebar-logo-mini .sb-sub { font-size: 9px; color: var(--text-muted); letter-spacing: 1px; margin-top: 2px; }
+.sidebar-heading { font-family: 'Cinzel', serif; font-size: 9px; letter-spacing: 2px; text-transform: uppercase; color: var(--text-muted); padding: 6px 14px 4px; border-top: 1px solid var(--border-faint); }
+.sidebar ul { list-style: none; }
+.sidebar ul li a {
+  display: flex; align-items: center; gap: 8px;
+  padding: 6px 14px 6px 16px; color: var(--text-secondary);
+  font-size: 12px; font-family: 'Crimson Text', serif;
+  border-left: 2px solid transparent; transition: all 0.2s; letter-spacing: 0.3px;
+}
+.sidebar ul li a .sb-icon { width: 14px; text-align: center; font-size: 12px; opacity: 0.7; }
+.sidebar ul li a:hover { background: rgba(184,146,42,0.07); border-left-color: var(--gold-muted); color: var(--gold-pale); }
+.sidebar ul li a.active-nav { background: rgba(184,146,42,0.12); border-left-color: var(--gold); color: var(--gold-pale); font-weight: 600; }
+.sidebar-divider { height: 1px; background: var(--border-faint); margin: 8px 12px; }
+
+.sidebar-ms-widget { margin: 12px 14px; padding: 10px 12px; background: var(--bg-elevated); border: 1px solid var(--border-faint); border-radius: 3px; }
+.sidebar-ms-widget .ms-label { font-family: 'Cinzel', serif; font-size: 9px; color: var(--text-muted); letter-spacing: 1.5px; text-transform: uppercase; margin-bottom: 6px; }
+.ms-bar-track { height: 4px; background: var(--bg-mid); border-radius: 2px; overflow: hidden; margin-bottom: 4px; }
+.ms-bar-fill { height: 100%; width: 97.5%; background: linear-gradient(90deg, var(--caligo), var(--caligo-bright)); border-radius: 2px; animation: ms-pulse 3s ease-in-out infinite alternate; }
+@keyframes ms-pulse { from { opacity: 0.6; } to { opacity: 1; } }
+.ms-bar-text { font-size: 9px; color: var(--text-dim); text-align: right; }
+
+.main-content { background: var(--bg-deepest); position: relative; overflow: hidden; }
+section { position: relative; z-index: 1; }
+
+.page-banner {
+  padding: 56px 60px 40px;
+  background:
+    radial-gradient(ellipse 60% 80% at 85% 30%, rgba(58,26,92,0.3) 0%, transparent 60%),
+    radial-gradient(ellipse 50% 50% at 5% 70%, rgba(184,146,42,0.08) 0%, transparent 55%),
+    var(--bg-deepest);
+  border-bottom: 1px solid var(--border-faint);
+  position: relative;
+}
+.page-banner::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 1px; background: linear-gradient(90deg, transparent, var(--gold), transparent); opacity: 0.5; }
+.page-banner-tag { font-family: 'Cinzel', serif; font-size: 10px; letter-spacing: 4px; text-transform: uppercase; color: var(--gold-muted); margin-bottom: 14px; display: flex; align-items: center; gap: 12px; }
+.page-banner-tag::before, .page-banner-tag::after { content: ''; display: block; height: 1px; width: 30px; background: var(--gold-muted); opacity: 0.6; }
+.page-banner-title { font-family: 'Cinzel', serif; font-size: clamp(28px, 4vw, 48px); font-weight: 900; color: var(--gold-pale); letter-spacing: 3px; text-transform: uppercase; line-height: 1.1; text-shadow: 0 0 40px rgba(184,146,42,0.3); margin-bottom: 10px; }
+.page-banner-sub { font-family: 'Crimson Text', serif; font-style: italic; color: var(--text-muted); font-size: 14px; letter-spacing: 0.5px; }
+.breadcrumb { font-family: 'Cinzel', serif; font-size: 10px; color: var(--text-dim); letter-spacing: 1px; margin-top: 18px; }
+.breadcrumb a { color: var(--text-dim); }
+.breadcrumb a:hover { color: var(--gold); }
+.breadcrumb span { color: var(--gold-muted); margin: 0 6px; }
+
+.section-wrap { padding: 50px 60px; }
+.section-header { display: flex; align-items: center; gap: 16px; margin-bottom: 32px; }
+.section-header-line { flex: 1; height: 1px; background: linear-gradient(90deg, var(--border-dim), transparent); }
+.section-header-title { font-family: 'Cinzel', serif; font-size: 11px; font-weight: 700; color: var(--gold); letter-spacing: 3px; text-transform: uppercase; }
+
+.fanart-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 28px;
+}
+
+.fanart-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border-faint);
+  border-radius: 4px;
+  overflow: hidden;
+  transition: border-color 0.3s, box-shadow 0.3s, transform 0.3s;
+  position: relative;
+}
+.fanart-card::before {
+  content: '';
+  position: absolute; top: 0; left: 0; right: 0; height: 2px;
+  background: linear-gradient(90deg, var(--caligo), var(--gold), var(--caligo));
+  opacity: 0; transition: opacity 0.3s;
+}
+.fanart-card:hover {
+  border-color: var(--border-gold);
+  box-shadow: 0 10px 40px rgba(0,0,0,0.7), 0 0 20px rgba(184,146,42,0.12);
+  transform: translateY(-5px);
+}
+.fanart-card:hover::before { opacity: 1; }
+
+.fanart-img-wrap {
+  width: 100%;
+  height: 260px;
+  overflow: hidden;
+  background: linear-gradient(135deg, var(--bg-mid) 0%, var(--bg-elevated) 100%);
+  position: relative;
+  display: flex; align-items: center; justify-content: center;
+}
+.fanart-img-wrap img {
+  width: 100%; height: 100%;
+  object-fit: cover;
+  transition: transform 0.5s ease;
+}
+.fanart-card:hover .fanart-img-wrap img { transform: scale(1.08); }
+.fanart-img-placeholder {
+  width: 100%; height: 260px;
+  background: linear-gradient(135deg, var(--bg-mid) 0%, var(--bg-elevated) 100%);
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  gap: 10px;
+}
+.fanart-img-placeholder .ph-icon { font-size: 52px; opacity: 0.15; }
+.fanart-img-placeholder .ph-text { font-family: 'Cinzel', serif; font-size: 9px; color: var(--text-dim); letter-spacing: 2px; text-transform: uppercase; }
+
+.fanart-card-overlay {
+  position: absolute; inset: 0;
+  background: linear-gradient(to top, rgba(8,6,8,0.85) 0%, transparent 50%);
+  opacity: 0; transition: opacity 0.3s;
+  display: flex; align-items: flex-end;
+  pointer-events: none;
+}
+.fanart-card:hover .fanart-card-overlay { opacity: 1; }
+.fanart-overlay-text {
+  padding: 16px;
+  font-family: 'Cinzel', serif; font-size: 10px;
+  color: var(--gold-pale); letter-spacing: 1.5px;
+  text-transform: uppercase;
+}
+
+.fanart-card-body { padding: 16px 20px; }
+.fanart-card-title { font-family: 'Cinzel', serif; font-size: 14px; font-weight: 700; color: var(--gold-pale); letter-spacing: 0.5px; margin-bottom: 5px; }
+.fanart-card-artist {
+  font-family: 'Crimson Text', serif; font-size: 12px;
+  color: var(--text-muted); display: flex; align-items: center; gap: 6px;
+}
+.fanart-card-artist::before { content: '✦'; font-size: 8px; color: var(--gold-muted); }
+
+.submission-banner {
+  background: var(--bg-card);
+  border: 1px solid var(--border-faint);
+  border-radius: 4px;
+  padding: 36px 44px;
+  text-align: center;
+  margin-top: 40px;
+  position: relative; overflow: hidden;
+}
+.submission-banner::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px; background: linear-gradient(90deg, transparent, var(--gold), transparent); }
+.submission-title { font-family: 'Cinzel', serif; font-size: 17px; font-weight: 700; color: var(--gold-pale); letter-spacing: 2px; text-transform: uppercase; margin-bottom: 10px; }
+.submission-desc { font-family: 'Crimson Text', serif; font-size: 14px; color: var(--text-secondary); max-width: 480px; margin: 0 auto; line-height: 1.7; }
+
+.site-footer {
+  background: var(--bg-dark); border-top: 1px solid var(--border-faint);
+  padding: 32px 60px; position: relative; z-index: 1;
+}
+.footer-inner {
+  max-width: 1100px; margin: 0 auto;
+  display: flex; justify-content: space-between; align-items: center;
+  flex-wrap: wrap; gap: 16px;
+}
+.footer-logo-block {}
+.footer-logo-title { font-family: 'Cinzel', serif; font-size: 13px; font-weight: 700; color: var(--gold-pale); letter-spacing: 2px; text-transform: uppercase; }
+.footer-logo-sub { font-size: 10px; color: var(--text-dim); margin-top: 3px; letter-spacing: 0.5px; }
+.footer-links { display: flex; gap: 20px; flex-wrap: wrap; }
+.footer-links a { font-family: 'Cinzel', serif; font-size: 9px; letter-spacing: 1.5px; color: var(--text-muted); text-transform: uppercase; transition: color 0.2s; }
+.footer-links a:hover { color: var(--gold); }
+.footer-copy { font-size: 10px; color: var(--text-muted); letter-spacing: 0.5px; }
+.footer-copy span { color: var(--text-secondary); }
+.footer-ornament { text-align: center; margin-top: 20px; padding-top: 16px; border-top: 1px solid var(--border-faint); font-family: 'Cinzel', serif; font-size: 9px; letter-spacing: 3px; color: var(--text-muted); text-transform: uppercase; }
+
+.reveal { opacity: 0; transform: translateY(18px); transition: opacity 0.5s ease, transform 0.5s ease; }
+.reveal.visible { opacity: 1; transform: translateY(0); }
+</style>
+</head>
+<body>
+
+<header class="site-header">
+  <div class="header-logo-wrap">
+    <img src="http://elucidate.unaux.com/wp-content/uploads/2026/04/ELUCIDATE-WEBSITE-EYE-LOGO.png" alt="Elucidate RPG Wiki Logo" class="site-logo-img">
+    <div class="header-site-name">
+      Elucidate RPG
+      <span>OFFICIAL WIKI</span>
+    </div>
+  </div>
+  <nav class="header-nav">
+    <a href="#">Home</a>
+    <a href="characters.html">Characters</a>
+    <a href="npcs.html">NPCs</a>
+    <a href="items.html">Items</a>
+    <a href="environments.html">Environments</a>
+    <a href="lore.html" >Lore</a>
+    <a href="developers.html">Developers</a>
+    <a href="fanart.html" class="active">Fan Art</a>
+    <a href="download.html">Download</a>
+  </nav>
+  <div class="header-right">
+    <div class="search-wrap">
+      <input type="text" id="search-input" placeholder="Search wiki…" autocomplete="off">
+      <button onclick="performSearch()">⌕</button>
+    </div>
+    <img src="http://elucidate.unaux.com/wp-content/uploads/2026/04/ELUCIDATE-LOGO-WITH-BG-2.png" alt="Elucidate RPG DLC Logo" class="site-logo-img" style="display:none;">
+  </div>
+</header>
+
+<div id="search-results-overlay"></div>
+
+<div class="wiki-layout">
+
+   <aside class="sidebar">
+    <div class="sidebar-logo-mini">
+      <div class="sb-title">Elucidate Wiki</div>
+      <div class="sb-sub">DLC · Complete Guide</div>
+    </div>
+
+    <div class="sidebar-section">
+      <div class="sidebar-heading">Navigation</div>
+      <ul>
+        <li><a href="index.html"><span class="sb-icon">⌂</span> Home</a></li>
+        <li><a href="characters.html"><span class="sb-icon">⚔</span> Characters</a></li>
+        <li><a href="npcs.html"><span class="sb-icon">👤</span> NPCs</a></li>
+        <li><a href="items.html"><span class="sb-icon">🗡</span> Items</a></li>
+        <li><a href="environments.html"><span class="sb-icon">🗺</span> Environments</a></li>
+        <li><a href="lore.html"><span class="sb-icon">📜</span> Lore</a></li>
+      </ul>
+    </div>
+
+    <div class="sidebar-divider"></div>
+
+    <div class="sidebar-section">
+      <div class="sidebar-heading">Community</div>
+      <ul>
+        <li><a href="developers.html"><span class="sb-icon">🛠</span> Developers</a></li>
+        <li><a href="fanart.html" class="active-nav"><span class="sb-icon">🎨</span> Fan Art</a></li>
+        <li><a href="download.html"><span class="sb-icon">↓</span> Download</a></li>
+      </ul>
+    </div>
+	
+	<div class="sidebar-divider"></div>
+
+		<div class="sidebar-ms-widget">
+		  <div class="ms-label">Mind State</div>
+		  <div class="ms-bar-track"><div class="ms-bar-fill"></div></div>
+		  <div class="ms-bar-text">LOOK AT YOURSELF!! ARE YOU REAL?</div>
+		</div>
+	  </aside>
+
+  <main class="main-content">
+
+    <div class="page-banner">
+      <div class="page-banner-tag">Community</div>
+      <div class="page-banner-title">Fan Art</div>
+      <div class="page-banner-sub">Community-created artwork celebrating the world of Elucidate RPG</div>
+      <div class="breadcrumb">
+        <a href="index.html">Home</a><span>›</span>Fan Art
+      </div>
+    </div>
+
+    <section class="section-wrap">
+      <div class="section-header">
+        <div class="section-header-title">Gallery</div>
+        <div class="section-header-line"></div>
+      </div>
+
+      <div class="fanart-grid" id="fanart-grid">
+
+        <div class="fanart-card reveal">
+          <div class="fanart-img-wrap">
+            <img src="http://elucidate.unaux.com/wp-content/uploads/2026/04/656632680_3851609461814495_7711970776517659184_n.jpg" alt="Fan Art"
+              onerror="this.parentElement.innerHTML='<div class=\'fanart-img-placeholder\'><div class=\'ph-icon\'>🎨</div><div class=\'ph-text\'>Fan Art</div></div>'">
+            <div class="fanart-card-overlay">
+              <div class="fanart-overlay-text">View Artwork</div>
+            </div>
+          </div>
+          <div class="fanart-card-body">
+            <div class="fanart-card-title">Father Calum Portrait</div>
+            <div class="fanart-card-artist">Artist: Kayelikesyaou</div>
+          </div>
+        </div>
+
+        <div class="fanart-card reveal">
+          <div class="fanart-img-wrap">
+            <img src="http://elucidate.unaux.com/wp-content/uploads/2026/04/656507934_962355529579899_828901061679513751_n-1-rotated.jpg" alt="Fan Art"
+              onerror="this.parentElement.innerHTML='<div class=\'fanart-img-placeholder\'><div class=\'ph-icon\'>🎨</div><div class=\'ph-text\'>Fan Art</div></div>'">
+            <div class="fanart-card-overlay">
+              <div class="fanart-overlay-text">View Artwork</div>
+            </div>
+          </div>
+          <div class="fanart-card-body">
+            <div class="fanart-card-title">Father Calum Portrait</div>
+            <div class="fanart-card-artist">Artist: Kayelikesyaou</div>
+          </div>
+        </div>
+
+      </div>
+
+      <div class="submission-banner reveal">
+        <div class="submission-title">Share Your Artwork</div>
+        <div class="submission-desc">
+          Are you a fan of Elucidate RPG? Submit your fan art to be featured in this gallery. We welcome all art styles celebrating the characters, environments, and lore of the game.
+        </div>
+		<div class="submission-desc">
+         Submit Here: jadvallite2025@plm.edu.ph
+        </div>
+      </div>
+    </section>
+
+     <footer class="site-footer">
+      <div class="footer-inner">
+        <div class="footer-logo-block">
+          <div class="footer-logo-title">Elucidate RPG</div>
+          <div class="footer-logo-sub">Pamantasan ng Lungsod ng Maynila · BS Information Technology</div>
+        </div>
+        <div class="footer-links">
+          <a href="characters.html">Characters</a>
+          <a href="lore.html">Lore</a>
+          <a href="items.html">Items</a>
+          <a href="environments.html">Environments</a>
+          <a href="developers.html">Developers</a>
+        </div>
+        <div class="footer-copy">
+          <span>©2026. Elucidate RPG DLC. All Rights Reserved.<br>
+          Made by Group WOZ (BSIT 1-3). · Powered by FGC UNAUX</span>
+        </div>
+      </div>
+      <div class="footer-ornament">
+        ✦ &nbsp; Between what you were told and what is true — that distance is everything &nbsp; ✦
+      </div>
+    </footer>
+
+  </main>
+</div>
+
+<script>
+const inputEl   = document.getElementById('search-input');
+const overlayEl = document.getElementById('search-results-overlay');
+
+const searchIndex = [
+  { title: 'Fan Art Gallery', section: 'Fan Art', excerpt: 'Community-created artwork celebrating the world of Elucidate RPG.', href: '#fanart-grid' },
+  { title: 'Placeholder Fan Art Title', section: 'Artwork', excerpt: 'Fan artwork submitted by the community. Artist: Placeholder Artist Name.', href: '#fanart-grid' },
+  { title: 'Submit Fan Art', section: 'Community', excerpt: 'Share your fan artwork to be featured in the gallery.', href: '#' },
+];
+
+function escapeHtml(str) { return str.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
+function highlightMatch(text, q) {
+  const idx = text.toLowerCase().indexOf(q);
+  if (idx < 0) return escapeHtml(text);
+  return escapeHtml(text.slice(0, idx)) + '<mark class="search-highlight">' + escapeHtml(text.slice(idx, idx + q.length)) + '</mark>' + escapeHtml(text.slice(idx + q.length));
+}
+function performSearch() {
+  const q = inputEl.value.trim().toLowerCase();
+  overlayEl.innerHTML = '';
+  if (!q || q.length < 2) { overlayEl.classList.remove('visible'); return; }
+  const results = searchIndex.filter(item => item.title.toLowerCase().includes(q) || item.excerpt.toLowerCase().includes(q) || item.section.toLowerCase().includes(q)).slice(0, 10);
+  if (!results.length) {
+    overlayEl.innerHTML = '<div class="search-no-result">No results for "' + escapeHtml(q) + '"</div>';
+  } else {
+    results.forEach(item => {
+      const div = document.createElement('div');
+      div.className = 'search-result-item';
+      div.innerHTML = `<div class="sr-title">${highlightMatch(item.title, q)} <span style="font-size:9px;color:var(--text-dim);margin-left:6px;">${item.section}</span></div><div class="sr-excerpt">${highlightMatch(item.excerpt.slice(0,80) + '…', q)}</div>`;
+      div.onclick = () => { if (item.href.startsWith('#')) { const el = document.querySelector(item.href); if (el) el.scrollIntoView({ behavior: 'smooth' }); } else window.location.href = item.href; overlayEl.classList.remove('visible'); };
+      overlayEl.appendChild(div);
+    });
+  }
+  overlayEl.classList.add('visible');
+}
+inputEl.addEventListener('input', performSearch);
+inputEl.addEventListener('keydown', e => { if (e.key === 'Escape') { overlayEl.classList.remove('visible'); inputEl.blur(); } });
+document.addEventListener('click', e => { if (!e.target.closest('.search-wrap') && !e.target.closest('#search-results-overlay')) overlayEl.classList.remove('visible'); });
+
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(entry => { if (entry.isIntersecting) entry.target.classList.add('visible'); });
+}, { threshold: 0.08, rootMargin: '0px 0px -30px 0px' });
+document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+</script>
+</body>
+</html>

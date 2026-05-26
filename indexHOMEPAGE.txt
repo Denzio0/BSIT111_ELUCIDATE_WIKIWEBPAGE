@@ -1,0 +1,1972 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Elucidate RPG — Wiki</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Merriweather:ital,wght@0,300;0,400;0,700;0,900;1,300;1,400&family=Cinzel:wght@400;600;700;900&family=Crimson+Text:ital,wght@0,400;0,600;1,400&display=swap');
+
+:root {
+  --bg-deepest:    #080608;
+  --bg-dark:       #0e0b0f;
+  --bg-mid:        #140f16;
+  --bg-surface:    #1c1520;
+  --bg-elevated:   #221829;
+  --bg-card:       #1a1220;
+  --border-faint:  rgba(180,140,80,0.12);
+  --border-dim:    rgba(180,140,80,0.25);
+  --border-gold:   rgba(180,140,80,0.55);
+  --gold:          #b8922a;
+  --gold-bright:   #d4a83c;
+  --gold-pale:     #e8c96a;
+  --gold-muted:    #8a6a1e;
+  --crimson:       #8b1a1a;
+  --crimson-bright:#b02020;
+  --caligo:        #3a1a5c;
+  --caligo-bright: #5a2e8a;
+  --caligo-pale:   #8b5cbf;
+  --lumen:         #c8a84a;
+  --text-primary:  #e8dcc8;
+  --text-secondary:#c8b898;
+  --text-muted:    #9a8a72;
+  --text-dim:      #706050;
+  --white:         #f2ead8;
+  --shadow-deep: 0 8px 40px rgba(0,0,0,0.8);
+  --shadow-card: 0 4px 20px rgba(0,0,0,0.6);
+  --glow-gold: 0 0 20px rgba(184,146,42,0.3);
+  --glow-caligo: 0 0 20px rgba(90,46,138,0.4);
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: 'Merriweather', 'Cambria', Georgia, serif;
+  background: var(--bg-deepest);
+  color: var(--text-primary);
+  font-size: 14px;
+  line-height: 1.7;
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.03'/%3E%3C/svg%3E");
+  pointer-events: none;
+  z-index: 0;
+  opacity: 0.4;
+}
+
+a { color: var(--gold); text-decoration: none; transition: color 0.2s; }
+a:hover { color: var(--gold-pale); text-decoration: none; }
+
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: var(--bg-deepest); }
+::-webkit-scrollbar-thumb { background: var(--gold-muted); border-radius: 3px; }
+
+.site-header {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  z-index: 1000;
+  background: rgba(8,6,8,0.96);
+  border-bottom: 1px solid var(--border-gold);
+  backdrop-filter: blur(12px);
+  height: 56px;
+  display: flex;
+  align-items: center;
+  padding: 0 20px;
+  gap: 16px;
+  box-shadow: 0 2px 30px rgba(0,0,0,0.8);
+}
+
+.header-logo-wrap {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-shrink: 0;
+}
+
+.site-logo {
+  width: 36px;
+  height: 36px;
+  object-fit: contain;
+  border: 1px solid var(--border-gold);
+  border-radius: 4px;
+  background: var(--bg-elevated);
+  padding: 3px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 20px;
+}
+
+.site-logo-img {
+  width: 36px;
+  height: 36px;
+  object-fit: contain;
+  border: 1px solid var(--border-gold);
+  border-radius: 4px;
+}
+
+.header-site-name {
+  font-family: 'Cinzel', serif;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--gold-pale);
+  letter-spacing: 1.5px;
+  line-height: 1.2;
+  text-transform: uppercase;
+}
+.header-site-name span {
+  display: block;
+  font-size: 9px;
+  color: var(--text-muted);
+  letter-spacing: 2px;
+  font-weight: 400;
+}
+
+.header-nav {
+  display: flex;
+  gap: 4px;
+  align-items: center;
+  margin-left: 12px;
+  flex: 1;
+}
+
+.header-nav a {
+  font-family: 'Cinzel', serif;
+  font-size: 10px;
+  letter-spacing: 1px;
+  color: var(--text-secondary);
+  padding: 5px 10px;
+  border: 1px solid transparent;
+  border-radius: 2px;
+  transition: all 0.2s;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+.header-nav a:hover {
+  color: var(--gold-pale);
+  border-color: var(--border-dim);
+  background: rgba(184,146,42,0.08);
+}
+.header-nav a.active {
+  color: var(--gold-pale);
+  border-color: var(--border-gold);
+  background: rgba(184,146,42,0.1);
+}
+
+.header-right {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-left: auto;
+  flex-shrink: 0;
+}
+
+.search-wrap {
+  display: flex;
+  align-items: center;
+  border: 1px solid var(--border-dim);
+  border-radius: 3px;
+  overflow: hidden;
+  background: var(--bg-mid);
+  transition: border-color 0.2s;
+}
+.search-wrap:focus-within {
+  border-color: var(--gold);
+  box-shadow: 0 0 8px rgba(184,146,42,0.2);
+}
+.search-wrap input {
+  background: transparent;
+  border: none;
+  outline: none;
+  color: var(--text-primary);
+  font-family: 'Merriweather', serif;
+  font-size: 11px;
+  padding: 6px 10px;
+  width: 180px;
+}
+.search-wrap input::placeholder { color: var(--text-dim); }
+.search-wrap button {
+  background: var(--bg-elevated);
+  border: none;
+  border-left: 1px solid var(--border-dim);
+  color: var(--gold);
+  padding: 6px 10px;
+  cursor: pointer;
+  font-size: 12px;
+  transition: background 0.2s;
+}
+.search-wrap button:hover { background: rgba(184,146,42,0.15); }
+
+#search-results-overlay {
+  display: none;
+  position: fixed;
+  top: 57px; right: 20px;
+  width: 340px;
+  max-height: 400px;
+  overflow-y: auto;
+  background: var(--bg-elevated);
+  border: 1px solid var(--border-gold);
+  border-radius: 4px;
+  z-index: 999;
+  box-shadow: var(--shadow-deep);
+}
+#search-results-overlay.visible { display: block; }
+.search-result-item {
+  padding: 10px 14px;
+  border-bottom: 1px solid var(--border-faint);
+  cursor: pointer;
+  transition: background 0.15s;
+}
+.search-result-item:hover { background: rgba(184,146,42,0.1); }
+.search-result-item .sr-title {
+  font-family: 'Cinzel', serif;
+  font-size: 11px;
+  color: var(--gold-pale);
+  letter-spacing: 0.5px;
+}
+.search-result-item .sr-excerpt {
+  font-size: 11px;
+  color: var(--text-muted);
+  margin-top: 2px;
+  line-height: 1.5;
+}
+.search-no-result {
+  padding: 14px;
+  font-size: 12px;
+  color: var(--text-muted);
+  font-style: italic;
+  text-align: center;
+}
+
+.wiki-layout {
+  display: grid;
+  grid-template-columns: 210px 1fr;
+  min-height: 100vh;
+  padding-top: 56px;
+}
+
+.sidebar {
+  background: var(--bg-dark);
+  border-right: 1px solid var(--border-faint);
+  position: sticky;
+  top: 56px;
+  height: calc(100vh - 56px);
+  overflow-y: auto;
+  padding: 16px 0;
+  z-index: 100;
+}
+
+.sidebar-logo-mini {
+  padding: 0 14px 14px;
+  border-bottom: 1px solid var(--border-faint);
+  margin-bottom: 12px;
+  text-align: center;
+}
+.sidebar-logo-mini .sb-title {
+  font-family: 'Cinzel', serif;
+  font-size: 11px;
+  color: var(--gold);
+  letter-spacing: 2px;
+  text-transform: uppercase;
+}
+.sidebar-logo-mini .sb-sub {
+  font-size: 9px;
+  color: var(--text-muted);
+  letter-spacing: 1px;
+  margin-top: 2px;
+}
+
+.sidebar-section {
+  margin-bottom: 6px;
+}
+.sidebar-heading {
+  font-family: 'Cinzel', serif;
+  font-size: 9px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  padding: 6px 14px 4px;
+  border-top: 1px solid var(--border-faint);
+}
+.sidebar ul { list-style: none; }
+.sidebar ul li a {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 14px 6px 16px;
+  color: var(--text-secondary);
+  font-size: 12px;
+  font-family: 'Crimson Text', serif;
+  border-left: 2px solid transparent;
+  transition: all 0.2s;
+  letter-spacing: 0.3px;
+}
+.sidebar ul li a .sb-icon {
+  width: 14px;
+  text-align: center;
+  font-size: 12px;
+  opacity: 0.7;
+}
+.sidebar ul li a:hover {
+  background: rgba(184,146,42,0.07);
+  border-left-color: var(--gold-muted);
+  color: var(--gold-pale);
+}
+.sidebar ul li a.active-nav {
+  background: rgba(184,146,42,0.12);
+  border-left-color: var(--gold);
+  color: var(--gold-pale);
+  font-weight: 600;
+}
+
+.sidebar-divider {
+  height: 1px;
+  background: var(--border-faint);
+  margin: 8px 12px;
+}
+
+.sidebar-ms-widget {
+  margin: 12px 14px;
+  padding: 10px 12px;
+  background: var(--bg-elevated);
+  border: 1px solid var(--border-faint);
+  border-radius: 3px;
+}
+.sidebar-ms-widget .ms-label {
+  font-family: 'Cinzel', serif;
+  font-size: 9px;
+  color: var(--text-muted);
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  margin-bottom: 6px;
+}
+.ms-bar-track {
+  height: 4px;
+  background: var(--bg-mid);
+  border-radius: 2px;
+  overflow: hidden;
+  margin-bottom: 4px;
+}
+.ms-bar-fill {
+  height: 100%;
+  width: 15%;
+  background: linear-gradient(90deg, var(--caligo), var(--caligo-bright));
+  border-radius: 2px;
+  animation: ms-pulse 3s ease-in-out infinite alternate;
+}
+@keyframes ms-pulse {
+  from { opacity: 0.6; }
+  to   { opacity: 1; }
+}
+.ms-bar-text {
+  font-size: 9px;
+  color: var(--text-dim);
+  text-align: right;
+}
+
+.main-content {
+  background: var(--bg-deepest);
+  position: relative;
+  overflow: hidden;
+}
+
+section {
+  position: relative;
+  z-index: 1;
+}
+
+.hero {
+  min-height: 92vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+  padding: 80px 60px 60px;
+  position: relative;
+  overflow: hidden;
+  background:
+    radial-gradient(ellipse 70% 60% at 80% 40%, rgba(58,26,92,0.35) 0%, transparent 65%),
+    radial-gradient(ellipse 50% 50% at 10% 80%, rgba(139,26,26,0.2) 0%, transparent 60%),
+    radial-gradient(ellipse 100% 80% at 50% 50%, rgba(20,15,22,0.9) 0%, transparent 100%),
+    var(--bg-deepest);
+}
+
+.hero-bg-stars {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+.star {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  background: var(--gold-pale);
+  border-radius: 50%;
+  animation: twinkle var(--d, 4s) ease-in-out infinite alternate;
+  opacity: var(--o, 0.4);
+}
+@keyframes twinkle {
+  from { opacity: 0.1; transform: scale(0.8); }
+  to   { opacity: 0.7; transform: scale(1.4); }
+}
+
+.hero::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--gold), transparent);
+  opacity: 0.5;
+}
+
+.hero-ornament {
+  position: absolute;
+  right: 60px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 380px;
+  height: 380px;
+  pointer-events: none;
+  opacity: 0.12;
+}
+
+.hero-eyemark-img {
+  position: absolute;
+  right: 80px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 280px;
+  height: 280px;
+  object-fit: contain;
+  pointer-events: none;
+  opacity: 0.08;
+  filter: blur(1px);
+  animation: float-eye 8s ease-in-out infinite;
+}
+@keyframes float-eye {
+  0%, 100% { transform: translateY(-50%) translateX(0); }
+  50%       { transform: translateY(calc(-50% - 12px)) translateX(-8px); }
+}
+
+.hero-tag {
+  font-family: 'Cinzel', serif;
+  font-size: 10px;
+  letter-spacing: 4px;
+  text-transform: uppercase;
+  color: var(--gold-muted);
+  margin-bottom: 18px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.hero-tag::before, .hero-tag::after {
+  content: '';
+  display: block;
+  height: 1px;
+  width: 40px;
+  background: var(--gold-muted);
+  opacity: 0.6;
+}
+
+.hero-title {
+  font-family: 'Cinzel', serif;
+  font-size: clamp(36px, 5vw, 64px);
+  font-weight: 900;
+  line-height: 1.1;
+  color: var(--white);
+  letter-spacing: 2px;
+  text-shadow: 0 4px 40px rgba(184,146,42,0.3);
+  margin-bottom: 6px;
+  max-width: 700px;
+  animation: fadeInUp 0.8s ease both;
+}
+.hero-title .accent-word {
+  color: var(--gold-pale);
+  text-shadow: 0 0 30px rgba(212,168,60,0.5), 0 4px 40px rgba(184,146,42,0.4);
+}
+
+.hero-subtitle-line {
+  width: 80px;
+  height: 2px;
+  background: linear-gradient(90deg, var(--gold), transparent);
+  margin: 16px 0;
+  animation: fadeInUp 0.8s 0.1s ease both;
+}
+
+.hero-subtitle {
+  font-family: 'Crimson Text', serif;
+  font-size: 18px;
+  font-style: italic;
+  color: var(--text-secondary);
+  max-width: 560px;
+  line-height: 1.7;
+  margin-bottom: 8px;
+  animation: fadeInUp 0.8s 0.2s ease both;
+}
+
+.hero-lore-quote {
+  font-family: 'Merriweather', serif;
+  font-size: 12px;
+  color: var(--text-muted);
+  font-style: italic;
+  max-width: 480px;
+  line-height: 1.8;
+  margin-bottom: 36px;
+  padding-left: 14px;
+  border-left: 2px solid var(--gold-muted);
+  animation: fadeInUp 0.8s 0.3s ease both;
+}
+
+.hero-actions {
+  display: flex;
+  gap: 14px;
+  flex-wrap: wrap;
+  animation: fadeInUp 0.8s 0.4s ease both;
+}
+
+.btn-primary {
+  font-family: 'Cinzel', serif;
+  font-size: 11px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--bg-deepest);
+  background: linear-gradient(135deg, var(--gold-bright), var(--gold));
+  border: none;
+  padding: 13px 28px;
+  cursor: pointer;
+  transition: all 0.25s;
+  position: relative;
+  overflow: hidden;
+  clip-path: polygon(8px 0%, 100% 0%, calc(100% - 8px) 100%, 0% 100%);
+}
+.btn-primary::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, rgba(255,255,255,0.2), transparent);
+  opacity: 0;
+  transition: opacity 0.2s;
+}
+.btn-primary:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 24px rgba(184,146,42,0.4);
+  color: var(--bg-deepest);
+}
+.btn-primary:hover::before { opacity: 1; }
+
+.btn-secondary {
+  font-family: 'Cinzel', serif;
+  font-size: 11px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--gold);
+  background: transparent;
+  border: 1px solid var(--border-gold);
+  padding: 12px 28px;
+  cursor: pointer;
+  transition: all 0.25s;
+  clip-path: polygon(8px 0%, 100% 0%, calc(100% - 8px) 100%, 0% 100%);
+}
+.btn-secondary:hover {
+  background: rgba(184,146,42,0.1);
+  color: var(--gold-pale);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 16px rgba(184,146,42,0.2);
+}
+
+.hero-scroll-hint {
+  position: absolute;
+  bottom: 30px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  opacity: 0.4;
+  animation: bounce-down 2s ease-in-out infinite;
+}
+@keyframes bounce-down {
+  0%, 100% { transform: translateX(-50%) translateY(0); }
+  50%       { transform: translateX(-50%) translateY(6px); }
+}
+.hero-scroll-hint span { font-size: 9px; letter-spacing: 2px; color: var(--text-muted); font-family: 'Cinzel', serif; }
+.hero-scroll-hint::after { content: '▼'; font-size: 10px; color: var(--gold-muted); }
+
+@keyframes fadeInUp {
+  from { opacity: 0; transform: translateY(24px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.section-divider {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 0 60px;
+  margin: 0;
+}
+.section-divider .div-line {
+  flex: 1;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--border-gold), transparent);
+}
+.section-divider .div-icon {
+  color: var(--gold-muted);
+  font-size: 14px;
+  flex-shrink: 0;
+}
+
+.section-header {
+  text-align: center;
+  margin-bottom: 44px;
+}
+.section-tag {
+  font-family: 'Cinzel', serif;
+  font-size: 9px;
+  letter-spacing: 4px;
+  color: var(--gold-muted);
+  text-transform: uppercase;
+  display: block;
+  margin-bottom: 10px;
+}
+.section-title {
+  font-family: 'Cinzel', serif;
+  font-size: 26px;
+  font-weight: 700;
+  color: var(--white);
+  letter-spacing: 1px;
+  text-shadow: 0 2px 20px rgba(184,146,42,0.2);
+}
+.section-title .gold { color: var(--gold-pale); }
+.section-desc {
+  font-family: 'Crimson Text', serif;
+  font-size: 15px;
+  font-style: italic;
+  color: var(--text-muted);
+  max-width: 600px;
+  margin: 10px auto 0;
+  line-height: 1.7;
+}
+
+.intro-section {
+  padding: 70px 60px;
+  background:
+    radial-gradient(ellipse 80% 50% at 50% 100%, rgba(184,146,42,0.04) 0%, transparent 70%),
+    var(--bg-dark);
+}
+
+.intro-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 24px;
+  max-width: 1100px;
+  margin: 0 auto;
+}
+
+.intro-pillar {
+  background: var(--bg-elevated);
+  border: 1px solid var(--border-faint);
+  border-top: 2px solid var(--border-dim);
+  padding: 28px 24px;
+  position: relative;
+  transition: all 0.3s;
+  overflow: hidden;
+}
+.intro-pillar::before {
+  content: '';
+  position: absolute;
+  bottom: 0; left: 0; right: 0;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--border-dim), transparent);
+  transform: scaleX(0);
+  transition: transform 0.3s;
+}
+.intro-pillar:hover { border-top-color: var(--gold); box-shadow: 0 4px 20px rgba(0,0,0,0.5); transform: translateY(-3px); }
+.intro-pillar:hover::before { transform: scaleX(1); }
+.intro-pillar:nth-child(2) { border-top-color: var(--caligo-bright); }
+.intro-pillar:nth-child(2):hover { border-top-color: var(--caligo-pale); }
+.intro-pillar:nth-child(3) { border-top-color: var(--crimson); }
+.intro-pillar:nth-child(3):hover { border-top-color: var(--crimson-bright); }
+
+.pillar-symbol {
+  font-size: 32px;
+  margin-bottom: 14px;
+  display: block;
+}
+.pillar-symbol-img {
+  width: 48px;
+  height: 48px;
+  object-fit: contain;
+  margin-bottom: 14px;
+  display: block;
+  opacity: 0.85;
+}
+.pillar-title {
+  font-family: 'Cinzel', serif;
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--gold-pale);
+  letter-spacing: 1px;
+  margin-bottom: 10px;
+  text-transform: uppercase;
+}
+.intro-pillar:nth-child(2) .pillar-title { color: var(--caligo-pale); }
+.intro-pillar:nth-child(3) .pillar-title { color: #d46060; }
+.pillar-body {
+  font-size: 13px;
+  color: var(--text-secondary);
+  line-height: 1.75;
+}
+
+.intro-full-text {
+  max-width: 900px;
+  margin: 44px auto 0;
+  text-align: center;
+  padding: 28px 32px;
+  background: var(--bg-surface);
+  border: 1px solid var(--border-faint);
+  position: relative;
+}
+.intro-full-text::before,
+.intro-full-text::after {
+  content: '✦';
+  position: absolute;
+  top: -9px;
+  font-size: 14px;
+  color: var(--gold);
+  background: var(--bg-dark);
+  padding: 0 6px;
+}
+.intro-full-text::before { left: 40px; }
+.intro-full-text::after  { right: 40px; }
+.intro-full-text p {
+  font-family: 'Crimson Text', serif;
+  font-size: 16px;
+  line-height: 1.85;
+  color: var(--text-secondary);
+  font-style: italic;
+}
+.intro-full-text strong { color: var(--gold-pale); font-style: normal; font-weight: 600; }
+
+.featured-section {
+  padding: 70px 60px;
+  background: var(--bg-deepest);
+}
+
+.lore-cards-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 20px;
+  max-width: 1100px;
+  margin: 0 auto;
+}
+
+.lore-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border-faint);
+  overflow: hidden;
+  transition: all 0.3s;
+  cursor: pointer;
+  position: relative;
+  group: true;
+}
+.lore-card:hover {
+  border-color: var(--border-gold);
+  transform: translateY(-4px);
+  box-shadow: 0 8px 30px rgba(0,0,0,0.7), 0 0 20px rgba(184,146,42,0.1);
+}
+
+.lore-card-img {
+  width: 100%;
+  height: 160px;
+  background: var(--bg-elevated);
+  border-bottom: 1px solid var(--border-faint);
+  position: relative;
+  overflow: hidden;
+}
+.lore-card-img img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  opacity: 0.55;
+  display: block;
+  transition: opacity 0.3s;
+}
+.lore-card:hover .lore-card-img img { opacity: 0.7; }
+
+.lore-card-body {
+  padding: 16px;
+}
+.lore-card-cat {
+  font-family: 'Cinzel', serif;
+  font-size: 8px;
+  letter-spacing: 2.5px;
+  color: var(--gold-muted);
+  text-transform: uppercase;
+  margin-bottom: 6px;
+}
+.lore-card-title {
+  font-family: 'Cinzel', serif;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--white);
+  margin-bottom: 8px;
+  letter-spacing: 0.5px;
+}
+.lore-card-desc {
+  font-size: 11.5px;
+  color: var(--text-muted);
+  line-height: 1.7;
+  margin-bottom: 14px;
+}
+.btn-read-more {
+  font-family: 'Cinzel', serif;
+  font-size: 9px;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  color: var(--gold);
+  background: transparent;
+  border: 1px solid var(--border-dim);
+  padding: 6px 14px;
+  cursor: pointer;
+  transition: all 0.2s;
+  display: inline-block;
+}
+.btn-read-more:hover {
+  background: rgba(184,146,42,0.1);
+  border-color: var(--gold);
+  color: var(--gold-pale);
+}
+
+.items-section {
+  padding: 70px 60px;
+  background:
+    radial-gradient(ellipse 60% 40% at 50% 0%, rgba(58,26,92,0.15) 0%, transparent 60%),
+    var(--bg-dark);
+}
+
+.items-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 20px;
+  max-width: 1100px;
+  margin: 0 auto;
+}
+
+.item-card {
+  background: var(--bg-elevated);
+  border: 1px solid var(--border-faint);
+  padding: 24px 20px;
+  text-align: center;
+  position: relative;
+  transition: all 0.3s;
+  overflow: hidden;
+}
+.item-card::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 1px;
+  background: var(--border-dim);
+  transform: scaleX(0);
+  transition: transform 0.3s;
+}
+.item-card:hover {
+  border-color: var(--border-dim);
+  box-shadow: 0 4px 24px rgba(0,0,0,0.5);
+  transform: translateY(-3px);
+}
+.item-card:hover::before { transform: scaleX(1); }
+
+.item-icon {
+  width: 64px;
+  height: 64px;
+  margin: 0 auto 14px;
+  background: var(--bg-surface);
+  border: 1px solid var(--border-faint);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 28px;
+  position: relative;
+  transition: all 0.3s;
+}
+.item-card:hover .item-icon {
+  border-color: var(--border-gold);
+  box-shadow: var(--glow-gold);
+}
+.item-card:nth-child(3) .item-icon,
+.item-card:nth-child(4) .item-icon {
+  border-color: rgba(90,46,138,0.4);
+}
+.item-card:nth-child(3):hover .item-icon,
+.item-card:nth-child(4):hover .item-icon {
+  box-shadow: var(--glow-caligo);
+}
+
+.item-img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  border-radius: 50%;
+  opacity: 0.7;
+}
+
+.item-name {
+  font-family: 'Cinzel', serif;
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--gold-pale);
+  letter-spacing: 0.5px;
+  margin-bottom: 8px;
+}
+.item-card:nth-child(3) .item-name,
+.item-card:nth-child(4) .item-name {
+  color: var(--caligo-pale);
+}
+
+.item-rarity {
+  display: inline-block;
+  font-family: 'Cinzel', serif;
+  font-size: 7.5px;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  padding: 2px 8px;
+  border: 1px solid;
+  margin-bottom: 10px;
+}
+.rarity-legendary { color: var(--gold); border-color: var(--border-dim); background: rgba(184,146,42,0.08); }
+.rarity-mystic    { color: var(--caligo-pale); border-color: rgba(90,46,138,0.4); background: rgba(90,46,138,0.1); }
+.rarity-rare      { color: #7abce8; border-color: rgba(90,160,220,0.3); background: rgba(90,160,220,0.06); }
+
+.item-desc {
+  font-size: 11px;
+  color: var(--text-muted);
+  line-height: 1.7;
+}
+
+.quicknav-section {
+  padding: 70px 60px;
+  background: var(--bg-deepest);
+}
+
+.quicknav-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+  max-width: 900px;
+  margin: 0 auto;
+}
+
+.quicknav-card {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  background: var(--bg-surface);
+  border: 1px solid var(--border-faint);
+  padding: 20px 22px;
+  cursor: pointer;
+  transition: all 0.25s;
+  position: relative;
+  overflow: hidden;
+  text-decoration: none;
+}
+.quicknav-card::before {
+  content: '';
+  position: absolute;
+  left: 0; top: 0; bottom: 0;
+  width: 2px;
+  background: var(--gold);
+  transform: scaleY(0);
+  transition: transform 0.25s;
+}
+.quicknav-card:hover {
+  border-color: var(--border-dim);
+  background: var(--bg-elevated);
+  transform: translateX(4px);
+}
+.quicknav-card:hover::before { transform: scaleY(1); }
+.quicknav-card:hover .qn-title { color: var(--gold-pale); }
+
+.qn-icon {
+  font-size: 24px;
+  flex-shrink: 0;
+  width: 44px;
+  height: 44px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--bg-elevated);
+  border: 1px solid var(--border-faint);
+  border-radius: 3px;
+  transition: all 0.25s;
+  overflow: hidden;
+}
+.qn-icon-img {
+  width: 26px;
+  height: 26px;
+  object-fit: contain;
+  opacity: 0.8;
+}
+.quicknav-card:hover .qn-icon {
+  border-color: var(--border-gold);
+  box-shadow: var(--glow-gold);
+}
+
+.qn-text {}
+.qn-title {
+  font-family: 'Cinzel', serif;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--text-primary);
+  letter-spacing: 0.5px;
+  transition: color 0.2s;
+}
+.qn-desc {
+  font-size: 10.5px;
+  color: var(--text-muted);
+  margin-top: 2px;
+  line-height: 1.4;
+}
+
+.factions-section {
+  padding: 70px 60px;
+  background:
+    radial-gradient(ellipse 80% 50% at 0% 50%, rgba(139,26,26,0.08) 0%, transparent 50%),
+    radial-gradient(ellipse 80% 50% at 100% 50%, rgba(58,26,92,0.12) 0%, transparent 50%),
+    var(--bg-mid);
+}
+
+.factions-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 28px;
+  max-width: 900px;
+  margin: 0 auto;
+}
+
+.faction-card {
+  background: var(--bg-elevated);
+  border: 1px solid var(--border-faint);
+  padding: 32px 28px;
+  position: relative;
+  overflow: hidden;
+  transition: all 0.3s;
+}
+.faction-card::after {
+  content: '';
+  position: absolute;
+  bottom: 0; left: 0; right: 0;
+  height: 2px;
+}
+.faction-lumen::after  { background: linear-gradient(90deg, transparent, var(--gold), transparent); }
+.faction-caligo::after { background: linear-gradient(90deg, transparent, var(--caligo-bright), transparent); }
+.faction-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 8px 32px rgba(0,0,0,0.6);
+}
+.faction-lumen:hover  { border-color: var(--border-gold); }
+.faction-caligo:hover { border-color: rgba(90,46,138,0.4); }
+
+.faction-header {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin-bottom: 16px;
+}
+.faction-emblem {
+  font-size: 36px;
+  width: 60px;
+  height: 60px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid;
+  border-radius: 50%;
+  flex-shrink: 0;
+  overflow: hidden;
+}
+.faction-emblem-img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  border-radius: 50%;
+  opacity: 0.85;
+}
+.faction-lumen .faction-emblem  { border-color: var(--border-gold); background: rgba(184,146,42,0.1); }
+.faction-caligo .faction-emblem { border-color: rgba(90,46,138,0.5); background: rgba(58,26,92,0.3); }
+
+.faction-name {
+  font-family: 'Cinzel', serif;
+  font-size: 16px;
+  font-weight: 700;
+  letter-spacing: 1px;
+  margin-bottom: 2px;
+}
+.faction-lumen .faction-name  { color: var(--gold-pale); }
+.faction-caligo .faction-name { color: var(--caligo-pale); }
+.faction-tagline {
+  font-family: 'Crimson Text', serif;
+  font-style: italic;
+  font-size: 12px;
+  color: var(--text-muted);
+}
+
+.faction-body {
+  font-size: 12.5px;
+  color: var(--text-secondary);
+  line-height: 1.8;
+  margin-bottom: 16px;
+}
+
+.faction-stat {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 6px;
+  font-size: 11px;
+}
+.faction-stat-label {
+  font-family: 'Cinzel', serif;
+  font-size: 9px;
+  letter-spacing: 1px;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  width: 80px;
+  flex-shrink: 0;
+}
+.faction-stat-val { color: var(--text-secondary); }
+.faction-lumen .faction-stat-val  { color: var(--gold-pale); }
+.faction-caligo .faction-stat-val { color: var(--caligo-pale); }
+
+.ms-callout {
+  padding: 60px;
+  background: var(--bg-dark);
+  border-top: 1px solid var(--border-faint);
+  border-bottom: 1px solid var(--border-faint);
+}
+
+.ms-callout-inner {
+  max-width: 900px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: 1fr 1.5fr;
+  gap: 40px;
+  align-items: center;
+}
+
+.ms-visual {
+  position: relative;
+}
+.ms-circle-outer {
+  width: 160px;
+  height: 160px;
+  border-radius: 50%;
+  border: 2px solid var(--border-faint);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  margin: 0 auto;
+  animation: rotate-slow 20s linear infinite;
+}
+.ms-circle-outer::before {
+  content: '';
+  position: absolute;
+  inset: -8px;
+  border-radius: 50%;
+  border: 1px dashed var(--border-faint);
+  animation: rotate-slow 30s linear infinite reverse;
+}
+@keyframes rotate-slow {
+  from { transform: rotate(0deg); }
+  to   { transform: rotate(360deg); }
+}
+.ms-circle-inner {
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(58,26,92,0.6) 0%, var(--bg-elevated) 70%);
+  border: 1px solid rgba(90,46,138,0.4);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  gap: 2px;
+  animation: rotate-slow 20s linear infinite reverse;
+}
+.ms-circle-inner .ms-num {
+  font-family: 'Cinzel', serif;
+  font-size: 28px;
+  font-weight: 700;
+  color: var(--caligo-pale);
+}
+.ms-circle-inner .ms-label-mini {
+  font-family: 'Cinzel', serif;
+  font-size: 7px;
+  letter-spacing: 2px;
+  color: var(--text-dim);
+  text-transform: uppercase;
+}
+
+.ms-text {}
+.ms-text-title {
+  font-family: 'Cinzel', serif;
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--white);
+  margin-bottom: 8px;
+  letter-spacing: 0.5px;
+}
+.ms-text-title .caligo { color: var(--caligo-pale); }
+.ms-text-body {
+  font-size: 13px;
+  color: var(--text-secondary);
+  line-height: 1.8;
+  margin-bottom: 16px;
+}
+.ms-thresholds {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.ms-threshold-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 11px;
+}
+.ms-threshold-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+.ms-threshold-row:nth-child(1) .ms-threshold-dot { background: #4caf50; }
+.ms-threshold-row:nth-child(2) .ms-threshold-dot { background: #ff9800; }
+.ms-threshold-row:nth-child(3) .ms-threshold-dot { background: #f44336; }
+.ms-threshold-row:nth-child(4) .ms-threshold-dot { background: #9c27b0; }
+.ms-threshold-label { color: var(--text-secondary); }
+.ms-threshold-desc  { color: var(--text-muted); font-style: italic; }
+
+.site-footer {
+  background: var(--bg-dark);
+  border-top: 1px solid var(--border-faint);
+  padding: 32px 60px;
+}
+.footer-inner {
+  max-width: 1100px;
+  margin: 0 auto;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 16px;
+}
+.footer-logo-block {}
+.footer-logo-title {
+  font-family: 'Cinzel', serif;
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--gold-pale);
+  letter-spacing: 2px;
+  text-transform: uppercase;
+}
+.footer-logo-sub {
+  font-size: 10px;
+  color: var(--text-dim);
+  margin-top: 3px;
+  letter-spacing: 0.5px;
+}
+
+.footer-links {
+  display: flex;
+  gap: 20px;
+  flex-wrap: wrap;
+}
+.footer-links a {
+  font-family: 'Cinzel', serif;
+  font-size: 9px;
+  letter-spacing: 1.5px;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  transition: color 0.2s;
+}
+.footer-links a:hover { color: var(--gold); }
+
+.footer-copy {
+  font-size: 10px;
+  color: var(--text-muted);
+  letter-spacing: 0.5px;
+}
+.footer-copy span { color: var(--text-secondary); }
+
+.footer-ornament {
+  text-align: center;
+  margin-top: 20px;
+  padding-top: 16px;
+  border-top: 1px solid var(--border-faint);
+  font-family: 'Cinzel', serif;
+  font-size: 9px;
+  letter-spacing: 3px;
+  color: var(--text-muted);
+  text-transform: uppercase;
+}
+
+.search-highlight {
+  background: rgba(184,146,42,0.25);
+  color: var(--gold-pale);
+  border-radius: 2px;
+  padding: 0 1px;
+}
+
+@media (max-width: 1100px) {
+  .intro-grid      { grid-template-columns: 1fr 1fr; }
+  .lore-cards-grid { grid-template-columns: repeat(2, 1fr); }
+  .items-grid      { grid-template-columns: repeat(2, 1fr); }
+}
+
+@media (max-width: 800px) {
+  .wiki-layout   { grid-template-columns: 1fr; }
+  .sidebar       { display: none; }
+  .hero          { padding: 50px 24px 40px; }
+  .intro-grid    { grid-template-columns: 1fr; }
+  .intro-section,
+  .featured-section,
+  .items-section,
+  .quicknav-section,
+  .factions-section,
+  .ms-callout    { padding: 50px 24px; }
+  .section-divider { padding: 0 24px; }
+  .lore-cards-grid { grid-template-columns: 1fr; }
+  .items-grid      { grid-template-columns: 1fr 1fr; }
+  .quicknav-grid   { grid-template-columns: 1fr 1fr; }
+  .factions-grid   { grid-template-columns: 1fr; }
+  .ms-callout-inner{ grid-template-columns: 1fr; }
+  .footer-inner    { flex-direction: column; align-items: flex-start; }
+  .header-nav      { display: none; }
+}
+</style>
+</head>
+<body>
+
+<header class="site-header">
+  <div class="header-logo-wrap">
+    <img src="Untitled design.png" alt="Elucidate RPG Wiki Logo" class="site-logo-img">
+    <div class="header-site-name">
+      Elucidate RPG
+      <span>OFFICIAL WIKI</span>
+    </div>
+  </div>
+  <nav class="header-nav">
+    <a href="#" class="active">Home</a>
+    <a href="characters.html">Characters</a>
+    <a href="npcs.html">NPCs</a>
+    <a href="items.html">Items</a>
+    <a href="environments.html">Environments</a>
+    <a href="lore.html">Lore</a>
+    <a href="developers.html">Developers</a>
+    <a href="fanart.html">Fan Art</a>
+    <a href="download.html">Download</a>
+  </nav>
+  <div class="header-right">
+    <div class="search-wrap">
+      <input type="text" id="search-input" placeholder="Search wiki…" autocomplete="off">
+      <button onclick="performSearch()">⌕</button>
+    </div>
+    <img src="http://elucidate.unaux.com/wp-content/uploads/2026/04/ELUCIDATE-WEBSITE-EYE-LOGO.png" alt="E RPG DLC Logo" class="site-logo-img" style="display:none;">
+  </div>
+</header>
+
+<div id="search-results-overlay"></div>
+
+<div class="wiki-layout">
+
+  <aside class="sidebar">
+    <div class="sidebar-logo-mini">
+      <div class="sb-title">Elucidate Wiki</div>
+      <div class="sb-sub">DLC · Complete Guide</div>
+    </div>
+
+    <div class="sidebar-section">
+      <div class="sidebar-heading">Navigation</div>
+      <ul>
+        <li><a href="#" class="active-nav"><span class="sb-icon">⌂</span> Home</a></li>
+        <li><a href="characters.html"><span class="sb-icon">⚔</span> Characters</a></li>
+        <li><a href="npcs.html"><span class="sb-icon">👤</span> NPCs</a></li>
+        <li><a href="items.html"><span class="sb-icon">🗡</span> Items</a></li>
+        <li><a href="environments.html"><span class="sb-icon">🗺</span> Environments</a></li>
+        <li><a href="lore.html"><span class="sb-icon">📜</span> Lore</a></li>
+      </ul>
+    </div>
+
+    <div class="sidebar-divider"></div>
+
+    <div class="sidebar-section">
+      <div class="sidebar-heading">Community</div>
+      <ul>
+        <li><a href="developers.html"><span class="sb-icon">🛠</span> Developers</a></li>
+        <li><a href="fanart.html"><span class="sb-icon">🎨</span> Fan Art</a></li>
+        <li><a href="download.html"><span class="sb-icon">↓</span> Download</a></li>
+      </ul>
+    </div>
+
+    <div class="sidebar-divider"></div>
+
+    <div class="sidebar-ms-widget">
+      <div class="ms-label">Mind State System</div>
+      <div class="ms-bar-track">
+        <div class="ms-bar-fill"></div>
+      </div>
+      <div class="ms-bar-text">Stability: 15%</div>
+    </div>
+
+    <div class="sidebar-section" style="padding: 8px 14px;">
+      <div style="font-family:'Cinzel',serif;font-size:9px;color:var(--text-dim);letter-spacing:1px;text-transform:uppercase;margin-bottom:6px;">Playable Characters</div>
+      <ul style="list-style:none;">
+        <li style="margin-bottom:2px;"><a href="characters.html" style="font-size:11px;color:var(--text-muted);padding:3px 0;border:none;display:block;">↳ Lucidus / Ignis</a></li>
+        <li style="margin-bottom:2px;"><a href="characters.html" style="font-size:11px;color:var(--text-muted);padding:3px 0;border:none;display:block;">↳ Funeris</a></li>
+        <li style="margin-bottom:2px;"><a href="characters.html" style="font-size:11px;color:var(--text-muted);padding:3px 0;border:none;display:block;">↳ Pluvia</a></li>
+        <li style="margin-bottom:2px;"><a href="characters.html" style="font-size:11px;color:var(--text-muted);padding:3px 0;border:none;display:block;">↳ Konrad</a></li>
+        <li><a href="characters.html" style="font-size:11px;color:var(--text-muted);padding:3px 0;border:none;display:block;">↳ Father Calum</a></li>
+      </ul>
+    </div>
+  </aside>
+
+  <main class="main-content" id="main-searchable">
+
+    <section class="hero">
+      <div class="hero-bg-stars" id="stars-container"></div>
+
+      <img src="http://elucidate.unaux.com/wp-content/uploads/2026/04/ELUCIDATE-LOGO-WITH-BG-1.png" alt="Elucidate RPG Hero Emblem" class="hero-eyemark-img">
+
+      <div class="hero-tag">
+        Official Wiki · DLC Edition · Full Lore Archive
+      </div>
+
+      <h1 class="hero-title">
+        <span class="accent-word">Elucidate</span><br>
+        RPG
+      </h1>
+
+      <div class="hero-subtitle-line"></div>
+
+      <p class="hero-subtitle">
+        Between the light that controls and the darkness that consumes, five souls carry the weight of a broken world.
+      </p>
+
+      <p class="hero-lore-quote">
+        "The Church builds soldiers to stop asking questions. And somewhere, underneath all that training, you haven't stopped entirely. Keep it that way." — Blacksmith Conrad
+      </p>
+
+      <div class="hero-actions">
+        <button class="btn-primary" onclick="document.getElementById('intro').scrollIntoView({behavior:'smooth'})">
+          ✦ Explore the Wiki
+        </button>
+        <button class="btn-secondary" onclick="window.location.href='lore.html'">
+          Read the Lore
+        </button>
+      </div>
+
+      <div class="hero-scroll-hint">
+        <span>Scroll</span>
+      </div>
+    </section>
+
+    <div class="section-divider">
+      <div class="div-line"></div>
+      <div class="div-icon">✦</div>
+      <div class="div-line"></div>
+    </div>
+
+    <section class="intro-section" id="intro">
+      <div class="section-header">
+        <span class="section-tag">World Overview</span>
+        <h2 class="section-title">The World of <span class="gold">Elucidate</span></h2>
+        <p class="section-desc">A world fractured between divine order and formless chaos, where five orphaned souls unknowingly shaped the war entire.</p>
+      </div>
+
+      <div class="intro-grid">
+        <div class="intro-pillar">
+          <img src="pillar-lumen-placeholder.png" alt="Lumen — Church of Light" class="pillar-symbol-img">
+          <div class="pillar-title">Lumen &amp; The Church</div>
+          <p class="pillar-body">The Church of Lumen built its doctrine upon the genuine cosmic principle of order and light — then weaponized it for control. Behind cathedral walls and holy doctrine, they conducted experiments on orphan children, forging <strong style="color:var(--gold-pale)">Vindication Lumen</strong> — soldiers who could endure the Zones of Terrors without losing their minds.</p>
+        </div>
+        <div class="intro-pillar">
+          <img src="pillar-caligo-placeholder.png" alt="Caligo — The Formless" class="pillar-symbol-img">
+          <div class="pillar-title">Caligo &amp; The Cult</div>
+          <p class="pillar-body"><strong style="color:var(--caligo-pale)">Caligo the Formless</strong> predates the Church by centuries. It does not desire worship. It exists the way weather exists — without intention, but with terrible consequence. The Cult of Caligo rose from the Church's discarded experiments: children expelled as defects, gathered under Caligo's ambient influence on a hidden island.</p>
+        </div>
+        <div class="intro-pillar">
+          <img src="pillar-orphanage-placeholder.png" alt="Subject I-3 and The Orphanage" class="pillar-symbol-img">
+          <div class="pillar-title">Subject I-3 &amp; The Orphanage</div>
+          <p class="pillar-body">All five playable characters trace their origin to the same orphanage. <strong style="color:#d46060">Experiment Subject I-3</strong> — designated <em>Lucidus</em>, born <em>Ignis</em> — is the most stable result. He does not know this. The war he fights for is the system that made him. Every mission brings him closer to a truth he was trained never to find.</p>
+        </div>
+      </div>
+
+      <div class="intro-full-text">
+        <p>
+          In the beginning, the world existed in fragile balance between <strong>Lumen</strong> and <strong>Caligo</strong> — order and chaos, light and formless darkness. Neither was wholly good nor evil. They were two poles of existence. When balance held, the world prospered. When it was broken, the world decayed. Both the Church and the Cult are corrupt versions of a genuine cosmic principle. The war between them is not good versus evil — it is <strong>two forms of human corruption fighting over the corpse of something that was once true.</strong>
+        </p>
+      </div>
+    </section>
+
+    <!-- ══════════════ DIVIDER ══════════════ -->
+    <div class="section-divider">
+      <div class="div-line"></div>
+      <div class="div-icon">⬡</div>
+      <div class="div-line"></div>
+    </div>
+
+    <!-- ══════════════ FEATURED LORE ══════════════ -->
+    <section class="featured-section" id="featured">
+      <div class="section-header">
+        <span class="section-tag">Wiki Sections</span>
+        <h2 class="section-title">Featured <span class="gold">Lore</span></h2>
+        <p class="section-desc">Explore the full compendium — characters, factions, relics, and the cursed zones that haunt them all.</p>
+      </div>
+
+      <div class="lore-cards-grid">
+        <!-- Characters -->
+        <div class="lore-card">
+          <div class="lore-card-img">
+            <img src="lore-characters-placeholder.jpg" alt="Characters — Elucidate RPG">
+          </div>
+          <div class="lore-card-body">
+            <div class="lore-card-cat">Playable · 5 Characters</div>
+            <div class="lore-card-title">Characters</div>
+            <p class="lore-card-desc">Five orphaned experiments — Ignis, Funeris, Pluvia, Konrad, and Father Calum — each with three paths and three endings shaped by the Mind State system.</p>
+            <a href="characters.html" class="btn-read-more">Read More →</a>
+          </div>
+        </div>
+
+        <!-- NPCs -->
+        <div class="lore-card">
+          <div class="lore-card-img">
+            <img src="lore-npcs-placeholder.jpg" alt="NPCs — Elucidate RPG">
+          </div>
+          <div class="lore-card-body">
+            <div class="lore-card-cat">World · Interactions</div>
+            <div class="lore-card-title">NPCs</div>
+            <p class="lore-card-desc">Blacksmith Conrad, Tribe Elder, Harbor Captain, the Tavern Keeper who reads storms — every NPC holds a fragment of lore the documents never confirm outright.</p>
+            <a href="npcs.html" class="btn-read-more">Read More →</a>
+          </div>
+        </div>
+
+        <!-- Items -->
+        <div class="lore-card">
+          <div class="lore-card-img">
+            <img src="lore-items-placeholder.jpg" alt="Items — Elucidate RPG">
+          </div>
+          <div class="lore-card-body">
+            <div class="lore-card-cat">Equipment · Crafting</div>
+            <div class="lore-card-title">Items</div>
+            <p class="lore-card-desc">Blunderbuss, Makeshift Spear, Blue Gems, Fragments of Caligo — every item carries a history and a mechanical purpose across the five playthroughs.</p>
+            <a href="items.html" class="btn-read-more">Read More →</a>
+          </div>
+        </div>
+
+        <!-- Environments -->
+        <div class="lore-card">
+          <div class="lore-card-img">
+            <img src="lore-environments-placeholder.jpg" alt="Environments — Elucidate RPG">
+          </div>
+          <div class="lore-card-body">
+            <div class="lore-card-cat">Zones · Locations</div>
+            <div class="lore-card-title">Environments</div>
+            <p class="lore-card-desc">From the Walled City to the Zones of Terrors — twelve locations classified as Safe, High-Risk, or Dual-State, each warping under Caligo's ambient corruption.</p>
+            <a href="environments.html" class="btn-read-more">Read More →</a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ══════════════ DIVIDER ══════════════ -->
+    <div class="section-divider">
+      <div class="div-line"></div>
+      <div class="div-icon">✦</div>
+      <div class="div-line"></div>
+    </div>
+
+    <!-- ══════════════ HIGHLIGHTED ITEMS ══════════════ -->
+    <section class="items-section" id="items">
+      <div class="section-header">
+        <span class="section-tag">Artifacts &amp; Relics</span>
+        <h2 class="section-title">Highlighted <span class="gold">Items</span></h2>
+        <p class="section-desc">The relics that connect the Church's agenda, the Cult's ritual, and the truth neither side wants spoken.</p>
+      </div>
+
+      <div class="items-grid">
+        <div class="item-card">
+          <div class="item-icon">
+            <img src="item-ancient-paper-placeholder.png" alt="Ancient Paper" class="item-img">
+          </div>
+          <div class="item-name">Ancient Paper</div>
+          <span class="item-rarity rarity-rare">Rare · Document</span>
+          <p class="item-desc">A record referencing 'dual-purpose acquisition' of the Fragments. Proof that the Church and Cult's methodologies share more than either would admit — the first written hint that this war was staged.</p>
+        </div>
+
+        <div class="item-card">
+          <div class="item-icon">
+            <img src="item-caligo-placeholder.png" alt="Caligo — The Formless" class="item-img">
+          </div>
+          <div class="item-name">Caligo</div>
+          <span class="item-rarity rarity-mystic">Mystic · Cosmic Entity</span>
+          <p class="item-desc">The Formless One. Predates the Church by centuries. Manifests through the Fragments as physical concentrations of its ambient influence — neither evil nor benevolent. Simply present, like weather.</p>
+        </div>
+
+        <div class="item-card">
+          <div class="item-icon">
+            <img src="item-fragment-eye-placeholder.png" alt="Largest Fragment of Caligo — Eye Form" class="item-img">
+          </div>
+          <div class="item-name">Fragment of Caligo — Eye Form</div>
+          <span class="item-rarity rarity-mystic">Legendary · Fragment</span>
+          <p class="item-desc">The largest Fragment, held by the Cult Leader on Cultist Island. The Church wants to weaponize it. The Cult guards it as sacred. Pluvia warns it will cost whoever carries it something — that is still the best outcome she can see.</p>
+        </div>
+
+        <div class="item-card">
+          <div class="item-icon">
+            <img src="item-flame-fragment-placeholder.png" alt="Flame Fragment" class="item-img">
+          </div>
+          <div class="item-name">Flame Fragment</div>
+          <span class="item-rarity rarity-legendary">Legendary · Fragment</span>
+          <p class="item-desc">One of the three Fragments scattered across the world. Its warmth mirrors Ignis — the name they suppressed, the fire they tried to make obedient. In Path B, it becomes the instrument of the Church's end.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ══════════════ FACTIONS ══════════════ -->
+    <div class="section-divider">
+      <div class="div-line"></div>
+      <div class="div-icon">⬡</div>
+      <div class="div-line"></div>
+    </div>
+
+    <section class="factions-section" id="factions">
+      <div class="section-header">
+        <span class="section-tag">Factions</span>
+        <h2 class="section-title">The Two <span class="gold">Powers</span></h2>
+        <p class="section-desc">Two corrupted expressions of a genuine cosmic truth, locked in a war that was never about what they claim it is.</p>
+      </div>
+
+      <div class="factions-grid">
+        <div class="faction-card faction-lumen">
+          <div class="faction-header">
+            <div class="faction-emblem">
+              <img src="faction-lumen-emblem-placeholder.png" alt="Church of Lumen Emblem" class="faction-emblem-img">
+            </div>
+            <div>
+              <div class="faction-name">Church of Lumen</div>
+              <div class="faction-tagline">"Diplomats reason. You conclude."</div>
+            </div>
+          </div>
+          <p class="faction-body">
+            Ancient order founded on the genuine cosmic principle of Lumen — order, light, structure. Corrupted by human ambition into a theocratic military machine that conducts underground experiments on orphan children, building soldiers capable of enduring the Zones of Terrors. Their goal: control all three Fragments of Caligo to achieve absolute dominance over darkness.
+          </p>
+          <div class="faction-stat"><span class="faction-stat-label">Base</span><span class="faction-stat-val">Theocratic Capital</span></div>
+          <div class="faction-stat"><span class="faction-stat-label">Leader</span><span class="faction-stat-val">Father Calum (Subject C-1)</span></div>
+          <div class="faction-stat"><span class="faction-stat-label">True Agenda</span><span class="faction-stat-val">Weaponize Caligo's power</span></div>
+        </div>
+
+        <div class="faction-card faction-caligo">
+          <div class="faction-header">
+            <div class="faction-emblem">
+              <img src="faction-caligo-emblem-placeholder.png" alt="Cult of Caligo Emblem" class="faction-emblem-img">
+            </div>
+            <div>
+              <div class="faction-name">Cult of Caligo</div>
+              <div class="faction-tagline">"Both are still cages. —F."</div>
+            </div>
+          </div>
+          <p class="faction-body">
+            Born from the Church's discarded experiments — children expelled as defects, survivors who found each other under Caligo's ambient influence. They guard the largest Fragment as sacred, believing Caligo is misunderstood rather than evil. They are not wrong about the Church. They are simply doing it badly, and alone, and they have been told their entire lives that they are nothing.
+          </p>
+          <div class="faction-stat"><span class="faction-stat-label">Base</span><span class="faction-stat-val">Cultist Island</span></div>
+          <div class="faction-stat"><span class="faction-stat-label">Leader</span><span class="faction-stat-val">The Cult Leader</span></div>
+          <div class="faction-stat"><span class="faction-stat-label">Origin</span><span class="faction-stat-val">Failed Church experiments</span></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ══════════════ MIND STATE CALLOUT ══════════════ -->
+    <div class="section-divider">
+      <div class="div-line"></div>
+      <div class="div-icon">✦</div>
+      <div class="div-line"></div>
+    </div>
+
+    <section class="ms-callout" id="mind-state">
+      <div class="ms-callout-inner">
+        <div class="ms-visual">
+          <div class="ms-circle-outer">
+            <div class="ms-circle-inner">
+              <span class="ms-num">MS</span>
+              <span class="ms-label-mini">Mind State</span>
+            </div>
+          </div>
+        </div>
+        <div class="ms-text">
+          <h3 class="ms-text-title">The <span class="caligo">Mind State</span> System</h3>
+          <p class="ms-text-body">
+            Every zone, every encounter, every revelation costs something. The Mind State meter measures psychological stability — and when it reaches 100, the player doesn't lose the game. They lose themselves. Zones of Terrors accelerate its rise. Blue Gems slow the collapse. The Shaman halves the rate entirely — if you save her in time.
+          </p>
+          <div class="ms-thresholds">
+            <div class="ms-threshold-row">
+              <div class="ms-threshold-dot"></div>
+              <span class="ms-threshold-label">0–49 — Stable</span>
+              <span class="ms-threshold-desc">: World as it is. Horrors are shadows.</span>
+            </div>
+            <div class="ms-threshold-row">
+              <div class="ms-threshold-dot"></div>
+              <span class="ms-threshold-label">50–74 — Strained</span>
+              <span class="ms-threshold-desc">: Proportions shift. NPCs react differently.</span>
+            </div>
+            <div class="ms-threshold-row">
+              <div class="ms-threshold-dot"></div>
+              <span class="ms-threshold-label">75–99 — Critical</span>
+              <span class="ms-threshold-desc">: Choices locked. Manifestations appear.</span>
+            </div>
+            <div class="ms-threshold-row">
+              <div class="ms-threshold-dot"></div>
+              <span class="ms-threshold-label">100 — Path C</span>
+              <span class="ms-threshold-desc">: Identity collapses. Caligo fills the void.</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ══════════════ QUICK NAV ══════════════ -->
+    <div class="section-divider">
+      <div class="div-line"></div>
+      <div class="div-icon">⬡</div>
+      <div class="div-line"></div>
+    </div>
+
+    <section class="quicknav-section" id="quicknav">
+      <div class="section-header">
+        <span class="section-tag">Quick Access</span>
+        <h2 class="section-title">Navigate the <span class="gold">Wiki</span></h2>
+      </div>
+
+      <div class="quicknav-grid">
+        <a href="characters.html" class="quicknav-card">
+          <div class="qn-icon"><img src="qn-characters-placeholder.png" alt="Characters" class="qn-icon-img"></div>
+          <div class="qn-text">
+            <div class="qn-title">Characters</div>
+            <div class="qn-desc">5 playable protagonists, full path guides</div>
+          </div>
+        </a>
+        <a href="npcs.html" class="quicknav-card">
+          <div class="qn-icon"><img src="qn-npcs-placeholder.png" alt="NPCs" class="qn-icon-img"></div>
+          <div class="qn-text">
+            <div class="qn-title">NPCs</div>
+            <div class="qn-desc">World inhabitants &amp; interaction logs</div>
+          </div>
+        </a>
+        <a href="items.html" class="quicknav-card">
+          <div class="qn-icon"><img src="qn-items-placeholder.png" alt="Items" class="qn-icon-img"></div>
+          <div class="qn-text">
+            <div class="qn-title">Items</div>
+            <div class="qn-desc">Weapons, relics, crafting materials</div>
+          </div>
+        </a>
+        <a href="lore.html" class="quicknav-card">
+          <div class="qn-icon"><img src="qn-lore-placeholder.png" alt="Lore" class="qn-icon-img"></div>
+          <div class="qn-text">
+            <div class="qn-title">Lore</div>
+            <div class="qn-desc">World history, factions, cosmic origins</div>
+          </div>
+        </a>
+        <a href="fanart.html" class="quicknav-card">
+          <div class="qn-icon"><img src="qn-fanart-placeholder.png" alt="Fan Art" class="qn-icon-img"></div>
+          <div class="qn-text">
+            <div class="qn-title">Fan Art</div>
+            <div class="qn-desc">Community artwork &amp; submissions</div>
+          </div>
+        </a>
+        <a href="download.html" class="quicknav-card">
+          <div class="qn-icon"><img src="qn-download-placeholder.png" alt="Download" class="qn-icon-img"></div>
+          <div class="qn-text">
+            <div class="qn-title">Download</div>
+            <div class="qn-desc">Get the game &amp; assets</div>
+          </div>
+        </a>
+      </div>
+    </section>
+
+    <!-- ══════════════ FOOTER ══════════════ -->
+    <footer class="site-footer">
+      <div class="footer-inner">
+        <div class="footer-logo-block">
+          <div class="footer-logo-title">Elucidate RPG</div>
+          <div class="footer-logo-sub">Pamantasan ng Lungsod ng Maynila · BS Information Technology</div>
+        </div>
+        <div class="footer-links">
+          <a href="characters.html">Characters</a>
+          <a href="lore.html">Lore</a>
+          <a href="items.html">Items</a>
+          <a href="environments.html">Environments</a>
+          <a href="developers.html">Developers</a>
+        </div>
+        <div class="footer-copy">
+          <span>©2026. Elucidate RPG DLC. All Rights Reserved.<br>
+          Made by Group WOZ (BSIT 1-3). · Powered by FGC UNAUX</span>
+        </div>
+      </div>
+      <div class="footer-ornament">
+        ✦ &nbsp; Between what you were told and what is true — that distance is everything &nbsp; ✦
+      </div>
+    </footer>
+
+  </main><!-- /main -->
+</div><!-- /wiki-layout -->
+
+
+<!-- ════════════════════════════════════
+     JAVASCRIPT
+════════════════════════════════════ -->
+<script>
+// ─── GENERATE STARS ───────────────────────
+(function generateStars() {
+  const container = document.getElementById('stars-container');
+  if (!container) return;
+  const count = 90;
+  for (let i = 0; i < count; i++) {
+    const s = document.createElement('div');
+    s.className = 'star';
+    s.style.cssText = `
+      left: ${Math.random() * 100}%;
+      top:  ${Math.random() * 100}%;
+      --d:  ${3 + Math.random() * 5}s;
+      --o:  ${0.2 + Math.random() * 0.5};
+      animation-delay: ${Math.random() * 6}s;
+      width:  ${Math.random() < 0.15 ? 2 : 1}px;
+      height: ${Math.random() < 0.15 ? 2 : 1}px;
+    `;
+    container.appendChild(s);
+  }
+})();
+
+// ─── SEARCH FUNCTIONALITY ─────────────────
+const searchIndex = [
+  { title: 'Lucidus / Ignis — Mercenary', section: 'Characters', excerpt: 'The most stable experiment. Enhanced physically, lost one eye. Does not know his true name.', href: 'characters.html' },
+  { title: 'Funeris — Cultist', section: 'Characters', excerpt: 'Expelled from the Church at age nine. Found by the Cult. Her name means Funeral.', href: 'characters.html' },
+  { title: 'Pluvia — Shaman', section: 'Characters', excerpt: 'Foresight ability lets her see three weeks ahead. Starting MS: 30. Lowest effective resistance.', href: 'characters.html' },
+  { title: 'Konrad — Merchant', section: 'Characters', excerpt: 'Witness to the orphanage. Spent twenty years building a case against the Church.', href: 'characters.html' },
+  { title: 'Father Calum — Priest', section: 'Characters', excerpt: 'Subject C-1. First fully successful experiment. Became the administrator. MS Resistance 5/5.', href: 'characters.html' },
+  { title: 'Walled City', section: 'Environments', excerpt: 'Safe Zone. Starting location for the Mercenary. Armory, Blacksmith Workshop, Notice Board.', href: 'environments.html' },
+  { title: 'Theocratic Capital', section: 'Environments', excerpt: 'Safe Zone on first visit. Battlefield in Ending B. The Church headquarters.', href: 'environments.html' },
+  { title: 'Home Village', section: 'Environments', excerpt: 'High-Risk Zone. MS DOUBLED rate. +15 on entry. No MS reducers available.', href: 'environments.html' },
+  { title: 'Cultist Island', section: 'Environments', excerpt: 'Fastest MS Zone: +5/min passive. Home of the Cult of Caligo and the largest Fragment.', href: 'environments.html' },
+  { title: 'Zones of Terrors', section: 'Environments', excerpt: 'High-Risk. Areas of heaviest Caligo corruption. Eldritch Horrors roam here.', href: 'environments.html' },
+  { title: 'Tribe Area', section: 'Environments', excerpt: '30-minute timed rescue. Shaman must be saved. Success: MS growth -30% for playthrough.', href: 'environments.html' },
+  { title: 'Port City', section: 'Environments', excerpt: 'Key Decision Hub. Konrad reveals the truth here. Central Path Lock decision.', href: 'environments.html' },
+  { title: 'Blunderbuss', section: 'Items', excerpt: 'Two shots before reload. Moderate damage, significant knockback. Essential for crowd control.', href: 'items.html' },
+  { title: 'Makeshift Spear', section: 'Items', excerpt: 'Long reach. Can be thrown once per combat to immobilize an enemy.', href: 'items.html' },
+  { title: 'Ancient Paper', section: 'Items', excerpt: 'References dual-purpose acquisition of the Fragments. The Church and Cult share more than either admits.', href: 'items.html' },
+  { title: 'Fragment of Caligo', section: 'Items', excerpt: 'Physical manifestations of Caligo\'s influence. Three exist. All five characters are entangled in their fate.', href: 'items.html' },
+  { title: 'Blue Gem', section: 'Items', excerpt: 'Reduces Mind State. Critical to stockpile before entering doubled-rate zones.', href: 'items.html' },
+  { title: 'Book of Craftsmanship', section: 'Items', excerpt: 'Reading unlocks the Craftsmanship passive skill at any blacksmith station.', href: 'items.html' },
+  { title: 'Wind Essence', section: 'Items', excerpt: 'Given by the Tribe Chief when Pluvia chooses to leave. A promise, not a gift.', href: 'items.html' },
+  { title: 'Church of Lumen', section: 'Lore', excerpt: 'Ancient order built on genuine cosmic principle, corrupted into political and military control.', href: 'lore.html' },
+  { title: 'Cult of Caligo', section: 'Lore', excerpt: 'Born from failed Church experiments. They guard the largest Fragment.', href: 'lore.html' },
+  { title: 'Mind State System', section: 'Lore', excerpt: 'Psychological stability meter. At 100, identity collapses. Caligo fills the void.', href: 'lore.html' },
+  { title: 'The Orphanage', section: 'Lore', excerpt: 'The hidden unifying thread. All five characters trace their origin here.', href: 'lore.html' },
+  { title: 'Caligo the Formless', section: 'Lore', excerpt: 'Predates the Church by centuries. No intention. No prayer. Exists like weather.', href: 'lore.html' },
+  { title: 'Eldritch Horrors', section: 'Lore', excerpt: 'Humanoid in shape, wrong in proportion. Appearance degrades with rising Mind State.', href: 'lore.html' },
+  { title: 'Blacksmith Conrad', section: 'NPCs', excerpt: 'Equips soldiers and recognizes which ones survive. Has been watching the Church far longer than he admits.', href: 'npcs.html' },
+  { title: 'Tribe Elder', section: 'NPCs', excerpt: 'Notices what Church soldiers miss. Twelve fighters remaining. Chooses allies carefully.', href: 'npcs.html' },
+  { title: 'Harbor Captain', section: 'NPCs', excerpt: 'Will take passage to Cultist Island. Full fare up front. Does not wait.', href: 'npcs.html' },
+  { title: 'Draft Officer', section: 'NPCs', excerpt: 'Assigns the Mercenary his mission. Understands no more than he is paid to.', href: 'npcs.html' },
+  { title: 'Librarian Scholar', section: 'NPCs', excerpt: 'Gives the real history of Caligo in the Theocratic Capital — and walks away as if he said nothing remarkable.', href: 'npcs.html' },
+];
+
+const inputEl   = document.getElementById('search-input');
+const overlayEl = document.getElementById('search-results-overlay');
+
+function performSearch() {
+  const q = inputEl.value.trim().toLowerCase();
+  overlayEl.innerHTML = '';
+  if (!q || q.length < 2) {
+    overlayEl.classList.remove('visible');
+    return;
+  }
+
+  const results = searchIndex.filter(item =>
+    item.title.toLowerCase().includes(q) ||
+    item.excerpt.toLowerCase().includes(q) ||
+    item.section.toLowerCase().includes(q)
+  ).slice(0, 10);
+
+  if (!results.length) {
+    overlayEl.innerHTML = '<div class="search-no-result">No results found for "' + escapeHtml(q) + '"</div>';
+  } else {
+    results.forEach(item => {
+      const div = document.createElement('div');
+      div.className = 'search-result-item';
+      div.innerHTML = `<div class="sr-title">${highlightMatch(item.title, q)} <span style="font-size:9px;color:var(--text-dim);margin-left:6px;">${item.section}</span></div><div class="sr-excerpt">${highlightMatch(item.excerpt.slice(0,80) + '…', q)}</div>`;
+      div.onclick = () => {
+        window.location.href = item.href;
+        overlayEl.classList.remove('visible');
+      };
+      overlayEl.appendChild(div);
+    });
+  }
+  overlayEl.classList.add('visible');
+}
+
+function highlightMatch(text, q) {
+  const idx = text.toLowerCase().indexOf(q);
+  if (idx < 0) return escapeHtml(text);
+  return escapeHtml(text.slice(0, idx)) +
+    '<mark class="search-highlight">' + escapeHtml(text.slice(idx, idx + q.length)) + '</mark>' +
+    escapeHtml(text.slice(idx + q.length));
+}
+function escapeHtml(str) {
+  return str.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+
+inputEl.addEventListener('input', performSearch);
+inputEl.addEventListener('keydown', e => { if (e.key === 'Escape') { overlayEl.classList.remove('visible'); inputEl.blur(); } });
+document.addEventListener('click', e => {
+  if (!e.target.closest('.search-wrap') && !e.target.closest('#search-results-overlay')) {
+    overlayEl.classList.remove('visible');
+  }
+});
+
+// ─── SMOOTH SCROLL FOR SAME-PAGE ANCHORS ──
+document.querySelectorAll('a[href^="#"]').forEach(a => {
+  a.addEventListener('click', e => {
+    const target = document.querySelector(a.getAttribute('href'));
+    if (target) { e.preventDefault(); target.scrollIntoView({ behavior: 'smooth', block: 'start' }); }
+  });
+});
+
+// ─── SCROLL REVEAL ANIMATION ──────────────
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      entry.target.style.opacity = '1';
+      entry.target.style.transform = 'translateY(0)';
+    }
+  });
+}, { threshold: 0.08, rootMargin: '0px 0px -40px 0px' });
+
+document.querySelectorAll('.intro-pillar, .lore-card, .item-card, .quicknav-card, .faction-card').forEach(el => {
+  el.style.opacity = '0';
+  el.style.transform = 'translateY(20px)';
+  el.style.transition = 'opacity 0.5s ease, transform 0.5s ease';
+  observer.observe(el);
+});
+</script>
+</body>
+</html>

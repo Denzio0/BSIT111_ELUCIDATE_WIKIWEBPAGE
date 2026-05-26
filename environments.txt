@@ -1,0 +1,2904 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Environments — Elucidate RPG Wiki</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Merriweather:ital,wght@0,300;0,400;0,700;0,900;1,300;1,400&family=Cinzel:wght@400;600;700;900&family=Crimson+Text:ital,wght@0,400;0,600;1,400&display=swap');
+
+:root {
+  --bg-deepest:    #080608;
+  --bg-dark:       #0e0b0f;
+  --bg-mid:        #140f16;
+  --bg-surface:    #1c1520;
+  --bg-elevated:   #221829;
+  --bg-card:       #1a1220;
+  --border-faint:  rgba(180,140,80,0.12);
+  --border-dim:    rgba(180,140,80,0.25);
+  --border-gold:   rgba(180,140,80,0.55);
+  --gold:          #b8922a;
+  --gold-bright:   #d4a83c;
+  --gold-pale:     #e8c96a;
+  --gold-muted:    #8a6a1e;
+  --crimson:       #8b1a1a;
+  --crimson-bright:#b02020;
+  --caligo:        #3a1a5c;
+  --caligo-bright: #5a2e8a;
+  --caligo-pale:   #8b5cbf;
+  --lumen:         #c8a84a;
+  --text-primary:  #e8dcc8;
+  --text-secondary:#c8b898;
+  --text-muted:    #9a8a72;
+  --text-dim:      #706050;
+  --white:         #f2ead8;
+  --shadow-deep: 0 8px 40px rgba(0,0,0,0.8);
+  --shadow-card: 0 4px 20px rgba(0,0,0,0.6);
+  --glow-gold: 0 0 20px rgba(184,146,42,0.3);
+  --glow-caligo: 0 0 20px rgba(90,46,138,0.4);
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: 'Merriweather', 'Cambria', Georgia, serif;
+  background: var(--bg-deepest);
+  color: var(--text-primary);
+  font-size: 14px;
+  line-height: 1.7;
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.03'/%3E%3C/svg%3E");
+  pointer-events: none;
+  z-index: 0;
+  opacity: 0.4;
+}
+
+a { color: var(--gold); text-decoration: none; transition: color 0.2s; }
+a:hover { color: var(--gold-pale); }
+
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: var(--bg-deepest); }
+::-webkit-scrollbar-thumb { background: var(--gold-muted); border-radius: 3px; }
+
+/* ═══ HEADER ═══ */
+.site-header {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  z-index: 1000;
+  background: rgba(8,6,8,0.96);
+  border-bottom: 1px solid var(--border-gold);
+  backdrop-filter: blur(12px);
+  height: 56px;
+  display: flex;
+  align-items: center;
+  padding: 0 20px;
+  gap: 16px;
+  box-shadow: 0 2px 30px rgba(0,0,0,0.8);
+}
+
+.header-logo-wrap {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-shrink: 0;
+}
+
+.site-logo {
+  width: 36px; height: 36px;
+  border: 1px solid var(--border-gold);
+  border-radius: 4px;
+  background: var(--bg-elevated);
+  padding: 3px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 18px;
+}
+
+.header-site-name {
+  font-family: 'Cinzel', serif;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--gold-pale);
+  letter-spacing: 1.5px;
+  line-height: 1.2;
+  text-transform: uppercase;
+}
+.header-site-name span {
+  display: block;
+  font-size: 9px;
+  color: var(--text-muted);
+  letter-spacing: 2px;
+  font-weight: 400;
+}
+
+.header-nav {
+  display: flex;
+  gap: 4px;
+  align-items: center;
+  margin-left: 12px;
+  flex: 1;
+}
+
+.header-nav a {
+  font-family: 'Cinzel', serif;
+  font-size: 10px;
+  letter-spacing: 1px;
+  color: var(--text-secondary);
+  padding: 5px 10px;
+  border: 1px solid transparent;
+  border-radius: 2px;
+  transition: all 0.2s;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+.header-nav a:hover {
+  color: var(--gold-pale);
+  border-color: var(--border-dim);
+  background: rgba(184,146,42,0.08);
+}
+.header-nav a.active {
+  color: var(--gold-pale);
+  border-color: var(--border-gold);
+  background: rgba(184,146,42,0.1);
+}
+
+.header-right {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-left: auto;
+  flex-shrink: 0;
+}
+
+.search-wrap {
+  display: flex;
+  align-items: center;
+  border: 1px solid var(--border-dim);
+  border-radius: 3px;
+  overflow: hidden;
+  background: var(--bg-mid);
+  transition: border-color 0.2s;
+  position: relative;
+}
+.search-wrap:focus-within {
+  border-color: var(--gold);
+  box-shadow: 0 0 8px rgba(184,146,42,0.2);
+}
+.search-wrap input {
+  background: transparent;
+  border: none;
+  outline: none;
+  color: var(--text-primary);
+  font-family: 'Merriweather', serif;
+  font-size: 11px;
+  padding: 6px 10px;
+  width: 180px;
+}
+.search-wrap input::placeholder { color: var(--text-dim); }
+.search-wrap button {
+  background: var(--bg-elevated);
+  border: none;
+  border-left: 1px solid var(--border-dim);
+  color: var(--gold);
+  padding: 6px 10px;
+  cursor: pointer;
+  font-size: 12px;
+  transition: background 0.2s;
+}
+.search-wrap button:hover { background: rgba(184,146,42,0.15); }
+
+#search-results-overlay {
+  display: none;
+  position: fixed;
+  top: 57px; right: 20px;
+  width: 340px;
+  max-height: 400px;
+  overflow-y: auto;
+  background: var(--bg-elevated);
+  border: 1px solid var(--border-gold);
+  border-radius: 4px;
+  z-index: 999;
+  box-shadow: var(--shadow-deep);
+}
+#search-results-overlay.visible { display: block; }
+.search-result-item {
+  padding: 10px 14px;
+  border-bottom: 1px solid var(--border-faint);
+  cursor: pointer;
+  transition: background 0.15s;
+}
+.search-result-item:hover { background: rgba(184,146,42,0.1); }
+.search-result-item .sr-title {
+  font-family: 'Cinzel', serif;
+  font-size: 11px;
+  color: var(--gold-pale);
+  letter-spacing: 0.5px;
+}
+.search-result-item .sr-excerpt {
+  font-size: 11px;
+  color: var(--text-muted);
+  margin-top: 2px;
+  line-height: 1.5;
+}
+.search-no-result {
+  padding: 14px;
+  font-size: 12px;
+  color: var(--text-muted);
+  font-style: italic;
+  text-align: center;
+}
+mark.search-highlight {
+  background: rgba(184,146,42,0.3);
+  color: var(--gold-pale);
+  border-radius: 2px;
+  padding: 0 1px;
+}
+
+/* ═══ LAYOUT ═══ */
+.wiki-layout {
+  display: grid;
+  grid-template-columns: 210px 1fr;
+  min-height: 100vh;
+  padding-top: 56px;
+}
+
+/* ═══ SIDEBAR ═══ */
+.sidebar {
+  background: var(--bg-dark);
+  border-right: 1px solid var(--border-faint);
+  position: sticky;
+  top: 56px;
+  height: calc(100vh - 56px);
+  overflow-y: auto;
+  padding: 16px 0;
+  z-index: 100;
+}
+
+.sidebar-logo-mini {
+  padding: 0 14px 14px;
+  border-bottom: 1px solid var(--border-faint);
+  margin-bottom: 12px;
+  text-align: center;
+}
+.sidebar-logo-mini .sb-title {
+  font-family: 'Cinzel', serif;
+  font-size: 11px;
+  color: var(--gold);
+  letter-spacing: 2px;
+  text-transform: uppercase;
+}
+.sidebar-logo-mini .sb-sub {
+  font-size: 9px;
+  color: var(--text-muted);
+  letter-spacing: 1px;
+  margin-top: 2px;
+}
+
+.sidebar-section { margin-bottom: 6px; }
+.sidebar-heading {
+  font-family: 'Cinzel', serif;
+  font-size: 9px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  padding: 6px 14px 4px;
+  border-top: 1px solid var(--border-faint);
+}
+.sidebar ul { list-style: none; }
+.sidebar ul li a {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 14px 6px 16px;
+  color: var(--text-secondary);
+  font-size: 12px;
+  font-family: 'Crimson Text', serif;
+  border-left: 2px solid transparent;
+  transition: all 0.2s;
+  letter-spacing: 0.3px;
+}
+.sidebar ul li a .sb-icon { width: 14px; text-align: center; font-size: 12px; opacity: 0.7; }
+.sidebar ul li a:hover {
+  background: rgba(184,146,42,0.07);
+  border-left-color: var(--gold-muted);
+  color: var(--gold-pale);
+}
+.sidebar ul li a.active-nav {
+  background: rgba(184,146,42,0.12);
+  border-left-color: var(--gold);
+  color: var(--gold-pale);
+  font-weight: 600;
+}
+.sidebar-divider { height: 1px; background: var(--border-faint); margin: 8px 12px; }
+
+.sidebar-ms-widget {
+  margin: 12px 14px;
+  padding: 10px 12px;
+  background: var(--bg-elevated);
+  border: 1px solid var(--border-faint);
+  border-radius: 3px;
+}
+.sidebar-ms-widget .ms-label {
+  font-family: 'Cinzel', serif;
+  font-size: 9px;
+  color: var(--text-muted);
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  margin-bottom: 6px;
+}
+.ms-bar-track { height: 4px; background: var(--bg-mid); border-radius: 2px; overflow: hidden; margin-bottom: 4px; }
+.ms-bar-fill {
+  height: 100%;
+  width: 35%;
+  background: linear-gradient(90deg, var(--caligo), var(--caligo-bright));
+  border-radius: 2px;
+  animation: ms-pulse 3s ease-in-out infinite alternate;
+}
+@keyframes ms-pulse { from { opacity: 0.6; } to { opacity: 1; } }
+.ms-bar-text { font-size: 9px; color: var(--text-dim); text-align: right; }
+
+/* ═══ MAIN CONTENT ═══ */
+.main-content {
+  background: var(--bg-deepest);
+  position: relative;
+  overflow: hidden;
+}
+
+section { position: relative; z-index: 1; }
+
+/* ═══ PAGE HERO ═══ */
+.page-hero {
+  min-height: 44vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 70px 60px 50px;
+  position: relative;
+  overflow: hidden;
+  background:
+    radial-gradient(ellipse 80% 60% at 70% 40%, rgba(58,26,92,0.3) 0%, transparent 65%),
+    radial-gradient(ellipse 40% 40% at 10% 70%, rgba(139,26,26,0.15) 0%, transparent 60%),
+    var(--bg-deepest);
+}
+.page-hero::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--gold), transparent);
+  opacity: 0.5;
+}
+.page-hero-bg { position: absolute; inset: 0; pointer-events: none; }
+.star {
+  position: absolute;
+  width: 1px; height: 1px;
+  background: var(--gold-pale);
+  border-radius: 50%;
+  animation: twinkle var(--d, 4s) ease-in-out infinite alternate;
+  opacity: var(--o, 0.4);
+}
+@keyframes twinkle {
+  from { opacity: 0.1; transform: scale(0.8); }
+  to   { opacity: 0.7; transform: scale(1.4); }
+}
+.page-hero-tag {
+  font-family: 'Cinzel', serif;
+  font-size: 10px;
+  letter-spacing: 4px;
+  text-transform: uppercase;
+  color: var(--gold-muted);
+  margin-bottom: 16px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.page-hero-tag::before, .page-hero-tag::after {
+  content: '';
+  display: block;
+  height: 1px;
+  width: 40px;
+  background: var(--gold-muted);
+  opacity: 0.6;
+}
+.page-hero-title {
+  font-family: 'Cinzel', serif;
+  font-size: clamp(28px, 4vw, 52px);
+  font-weight: 900;
+  line-height: 1.1;
+  color: var(--white);
+  letter-spacing: 2px;
+  text-shadow: 0 4px 40px rgba(184,146,42,0.3);
+  margin-bottom: 8px;
+  animation: fadeInUp 0.8s ease both;
+}
+.page-hero-title .accent { color: var(--gold-pale); text-shadow: 0 0 30px rgba(212,168,60,0.5); }
+.page-hero-line { width: 80px; height: 2px; background: linear-gradient(90deg, var(--gold), transparent); margin: 14px 0; }
+.page-hero-subtitle {
+  font-family: 'Crimson Text', serif;
+  font-size: 17px;
+  font-style: italic;
+  color: var(--text-secondary);
+  max-width: 560px;
+  line-height: 1.7;
+  animation: fadeInUp 0.8s 0.2s ease both;
+}
+
+@keyframes fadeInUp {
+  from { opacity: 0; transform: translateY(24px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* ═══ SECTION DIVIDER ═══ */
+.section-divider {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 0 60px;
+}
+.section-divider .div-line {
+  flex: 1;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--border-gold), transparent);
+}
+.section-divider .div-icon { color: var(--gold-muted); font-size: 14px; flex-shrink: 0; }
+
+.section-header { text-align: center; margin-bottom: 44px; }
+.section-tag {
+  font-family: 'Cinzel', serif;
+  font-size: 9px;
+  letter-spacing: 4px;
+  color: var(--gold-muted);
+  text-transform: uppercase;
+  display: block;
+  margin-bottom: 10px;
+}
+.section-title {
+  font-family: 'Cinzel', serif;
+  font-size: 26px;
+  font-weight: 700;
+  color: var(--white);
+  letter-spacing: 1px;
+  text-shadow: 0 2px 20px rgba(184,146,42,0.2);
+}
+.section-title .gold { color: var(--gold-pale); }
+.section-desc {
+  font-family: 'Crimson Text', serif;
+  font-size: 15px;
+  font-style: italic;
+  color: var(--text-muted);
+  max-width: 600px;
+  margin: 10px auto 0;
+  line-height: 1.7;
+}
+
+/* ═══ WORLD MAP SECTION ═══ */
+.map-section {
+  padding: 70px 60px;
+  background:
+    radial-gradient(ellipse 80% 50% at 50% 100%, rgba(58,26,92,0.08) 0%, transparent 70%),
+    var(--bg-dark);
+}
+
+.world-map-container {
+  max-width: 900px;
+  margin: 0 auto 40px;
+  position: relative;
+}
+
+.world-map-frame {
+  position: relative;
+  border: 1px solid var(--border-gold);
+  border-radius: 4px;
+  overflow: hidden;
+  background: var(--bg-surface);
+  box-shadow: var(--shadow-deep), var(--glow-caligo);
+  cursor: crosshair;
+}
+
+.world-map-img {
+  width: 100%;
+  display: block;
+  height: 500px;
+  object-fit: cover;
+  background: linear-gradient(135deg, #0d0a12 0%, #1a1025 40%, #0f0c18 70%, #0a0810 100%);
+  transition: transform 0.4s ease;
+}
+
+.world-map-frame:hover .world-map-img { transform: scale(1.02); }
+
+/* Map region hotspots */
+.map-hotspot {
+  position: absolute;
+  cursor: pointer;
+  z-index: 10;
+}
+.map-hotspot-pin {
+  width: 14px; height: 14px;
+  border-radius: 50%;
+  background: var(--gold);
+  border: 2px solid var(--gold-pale);
+  box-shadow: 0 0 8px rgba(184,146,42,0.6);
+  transition: all 0.2s;
+  animation: pin-pulse 2s ease-in-out infinite;
+}
+.map-hotspot.danger .map-hotspot-pin {
+  background: var(--crimson-bright);
+  border-color: #e03030;
+  box-shadow: 0 0 8px rgba(176,32,32,0.7);
+}
+.map-hotspot.caligo .map-hotspot-pin {
+  background: var(--caligo-bright);
+  border-color: var(--caligo-pale);
+  box-shadow: 0 0 8px rgba(90,46,138,0.7);
+}
+@keyframes pin-pulse {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.3); }
+}
+.map-hotspot:hover .map-hotspot-pin { transform: scale(1.5); }
+
+.map-tooltip {
+  position: absolute;
+  bottom: calc(100% + 10px);
+  left: 50%;
+  transform: translateX(-50%);
+  background: rgba(8,6,8,0.97);
+  border: 1px solid var(--border-gold);
+  border-radius: 3px;
+  padding: 10px 14px;
+  min-width: 180px;
+  max-width: 220px;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.2s;
+  z-index: 50;
+  box-shadow: var(--shadow-deep);
+}
+.map-tooltip::after {
+  content: '';
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  border: 6px solid transparent;
+  border-top-color: var(--border-gold);
+}
+.map-hotspot:hover .map-tooltip { opacity: 1; }
+.map-tooltip-name {
+  font-family: 'Cinzel', serif;
+  font-size: 11px;
+  color: var(--gold-pale);
+  letter-spacing: 1px;
+  margin-bottom: 4px;
+}
+.map-tooltip-desc {
+  font-size: 10px;
+  color: var(--text-muted);
+  line-height: 1.5;
+}
+.map-tooltip-risk {
+  font-size: 9px;
+  margin-top: 5px;
+  letter-spacing: 1px;
+  font-family: 'Cinzel', serif;
+  text-transform: uppercase;
+}
+.map-tooltip-risk.safe { color: #4aaa66; }
+.map-tooltip-risk.danger { color: var(--crimson-bright); }
+.map-tooltip-risk.caligo { color: var(--caligo-pale); }
+
+/* Map placeholder visual */
+.map-placeholder-inner {
+  position: relative;
+  width: 100%;
+  height: 500px;
+  overflow: hidden;
+  background: linear-gradient(135deg, #0d0a12 0%, #1a1025 40%, #0f0c18 70%, #0a0810 100%);
+}
+.map-placeholder-svg {
+  width: 100%;
+  height: 100%;
+  opacity: 0.6;
+}
+
+/* Map legend */
+.map-legend {
+  display: flex;
+  gap: 24px;
+  justify-content: center;
+  margin-top: 20px;
+  flex-wrap: wrap;
+}
+.legend-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-family: 'Cinzel', serif;
+  font-size: 10px;
+  letter-spacing: 1px;
+  color: var(--text-muted);
+  text-transform: uppercase;
+}
+.legend-dot {
+  width: 10px; height: 10px;
+  border-radius: 50%;
+  border: 2px solid;
+}
+.legend-dot.safe { background: var(--gold); border-color: var(--gold-pale); }
+.legend-dot.danger { background: var(--crimson-bright); border-color: #e03030; }
+.legend-dot.caligo { background: var(--caligo-bright); border-color: var(--caligo-pale); }
+
+/* ═══ WORLD LORE SECTION ═══ */
+.lore-section {
+  padding: 70px 60px;
+  background:
+    radial-gradient(ellipse 100% 60% at 50% 0%, rgba(58,26,92,0.12) 0%, transparent 60%),
+    var(--bg-deepest);
+}
+
+.lore-intro-block {
+  max-width: 860px;
+  margin: 0 auto 60px;
+}
+
+.lore-chapter {
+  margin-bottom: 48px;
+  padding-bottom: 48px;
+  border-bottom: 1px solid var(--border-faint);
+}
+.lore-chapter:last-child { border-bottom: none; margin-bottom: 0; }
+
+.lore-chapter-label {
+  font-family: 'Cinzel', serif;
+  font-size: 9px;
+  letter-spacing: 4px;
+  color: var(--caligo-pale);
+  text-transform: uppercase;
+  margin-bottom: 8px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.lore-chapter-label::after { content: ''; flex: 1; height: 1px; background: rgba(139,92,191,0.2); }
+
+.lore-chapter-title {
+  font-family: 'Cinzel', serif;
+  font-size: 20px;
+  font-weight: 700;
+  color: var(--white);
+  letter-spacing: 1px;
+  margin-bottom: 20px;
+  text-shadow: 0 2px 15px rgba(184,146,42,0.15);
+}
+
+.lore-body {
+  font-family: 'Merriweather', serif;
+  font-size: 13px;
+  color: var(--text-secondary);
+  line-height: 1.9;
+  max-width: 780px;
+}
+.lore-body p { margin-bottom: 16px; }
+.lore-body p:last-child { margin-bottom: 0; }
+
+.lore-pull-quote {
+  margin: 28px 0;
+  padding: 20px 28px;
+  border-left: 3px solid var(--caligo-pale);
+  background: rgba(58,26,92,0.12);
+  border-radius: 0 4px 4px 0;
+  font-family: 'Crimson Text', serif;
+  font-size: 16px;
+  font-style: italic;
+  color: var(--caligo-pale);
+  line-height: 1.7;
+}
+
+.lore-emphasis {
+  color: var(--gold-pale);
+  font-style: italic;
+}
+.lore-caligo { color: var(--caligo-pale); }
+.lore-lumen { color: var(--gold-pale); }
+
+/* ═══ REGION INDEX ═══ */
+.region-index {
+  padding: 50px 60px;
+  background: var(--bg-dark);
+  border-top: 1px solid var(--border-faint);
+  border-bottom: 1px solid var(--border-faint);
+}
+
+.region-index-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+  gap: 12px;
+  max-width: 1100px;
+  margin: 0 auto;
+}
+
+.region-index-card {
+  background: var(--bg-elevated);
+  border: 1px solid var(--border-faint);
+  border-radius: 3px;
+  padding: 14px 16px;
+  cursor: pointer;
+  transition: all 0.25s;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+.region-index-card:hover {
+  border-color: var(--border-gold);
+  background: rgba(184,146,42,0.05);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 16px rgba(0,0,0,0.4);
+}
+.region-index-card .ric-name {
+  font-family: 'Cinzel', serif;
+  font-size: 11px;
+  color: var(--gold-pale);
+  letter-spacing: 0.5px;
+}
+.region-index-card .ric-type {
+  font-size: 10px;
+  color: var(--text-dim);
+  font-family: 'Crimson Text', serif;
+}
+.region-index-card .ric-risk {
+  font-size: 9px;
+  font-family: 'Cinzel', serif;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  margin-top: 4px;
+}
+.ric-risk.safe { color: #4aaa66; }
+.ric-risk.danger { color: var(--crimson-bright); }
+.ric-risk.dual { color: var(--gold); }
+
+/* ═══ REGIONS SECTION ═══ */
+.regions-section {
+  padding: 0 0 80px;
+}
+
+.region-entry {
+  padding: 70px 60px;
+  border-bottom: 1px solid var(--border-faint);
+  position: relative;
+  overflow: hidden;
+}
+.region-entry::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0;
+  width: 3px;
+  height: 100%;
+  background: linear-gradient(180deg, transparent, var(--gold-muted), transparent);
+  opacity: 0.4;
+}
+.region-entry.danger-zone::before {
+  background: linear-gradient(180deg, transparent, var(--crimson), transparent);
+}
+.region-entry.caligo-zone::before {
+  background: linear-gradient(180deg, transparent, var(--caligo-bright), transparent);
+}
+.region-entry.dual-zone::before {
+  background: linear-gradient(180deg, transparent, var(--gold), var(--crimson), transparent);
+}
+
+/* Region header */
+.region-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  margin-bottom: 30px;
+  gap: 20px;
+}
+
+.region-title-block {}
+.region-number {
+  font-family: 'Cinzel', serif;
+  font-size: 9px;
+  letter-spacing: 4px;
+  color: var(--text-dim);
+  text-transform: uppercase;
+  margin-bottom: 6px;
+}
+.region-name {
+  font-family: 'Cinzel', serif;
+  font-size: 28px;
+  font-weight: 900;
+  color: var(--white);
+  letter-spacing: 2px;
+  text-shadow: 0 2px 20px rgba(184,146,42,0.2);
+  line-height: 1.1;
+}
+.region-subtitle {
+  font-family: 'Crimson Text', serif;
+  font-size: 14px;
+  font-style: italic;
+  color: var(--text-muted);
+  margin-top: 6px;
+  letter-spacing: 0.3px;
+}
+
+.region-badges {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  align-items: flex-start;
+  flex-shrink: 0;
+}
+.region-badge {
+  font-family: 'Cinzel', serif;
+  font-size: 9px;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  padding: 4px 10px;
+  border-radius: 2px;
+  border: 1px solid;
+  white-space: nowrap;
+}
+.badge-safe { color: #4aaa66; border-color: rgba(74,170,102,0.4); background: rgba(74,170,102,0.07); }
+.badge-danger { color: #e03030; border-color: rgba(224,48,48,0.4); background: rgba(224,48,48,0.07); }
+.badge-caligo { color: var(--caligo-pale); border-color: rgba(139,92,191,0.4); background: rgba(58,26,92,0.15); }
+.badge-dual { color: var(--gold); border-color: rgba(184,146,42,0.4); background: rgba(184,146,42,0.07); }
+.badge-ms { color: #cc7722; border-color: rgba(204,119,34,0.4); background: rgba(204,119,34,0.07); }
+
+/* Region image */
+.region-img-wrap {
+  margin-bottom: 36px;
+  border: 1px solid var(--border-dim);
+  border-radius: 4px;
+  overflow: hidden;
+  position: relative;
+  height: 280px;
+  background: var(--bg-surface);
+}
+.region-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  transition: transform 0.5s ease;
+}
+.region-img-wrap:hover .region-img { transform: scale(1.04); }
+.region-img-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to top, rgba(8,6,8,0.7) 0%, transparent 50%);
+  pointer-events: none;
+}
+.region-img-label {
+  position: absolute;
+  bottom: 16px;
+  left: 20px;
+  font-family: 'Cinzel', serif;
+  font-size: 10px;
+  letter-spacing: 2px;
+  color: var(--gold-pale);
+  text-transform: uppercase;
+  text-shadow: 0 2px 8px rgba(0,0,0,0.8);
+}
+
+/* Region body columns */
+.region-body {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 40px;
+  margin-bottom: 40px;
+}
+@media (max-width: 900px) {
+  .region-body { grid-template-columns: 1fr; }
+}
+
+.region-description, .region-lore-block {}
+
+.rblock-label {
+  font-family: 'Cinzel', serif;
+  font-size: 9px;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  color: var(--gold-muted);
+  margin-bottom: 10px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.rblock-label::after { content: ''; flex: 1; height: 1px; background: var(--border-faint); }
+
+.rblock-title {
+  font-family: 'Cinzel', serif;
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--gold-pale);
+  letter-spacing: 0.5px;
+  margin-bottom: 12px;
+}
+
+.rblock-text {
+  font-family: 'Merriweather', serif;
+  font-size: 12px;
+  color: var(--text-secondary);
+  line-height: 1.85;
+}
+.rblock-text p { margin-bottom: 12px; }
+.rblock-text p:last-child { margin-bottom: 0; }
+
+/* Mind State warning */
+.ms-warning {
+  margin-bottom: 30px;
+  padding: 14px 18px;
+  background: rgba(58,26,92,0.2);
+  border: 1px solid rgba(90,46,138,0.3);
+  border-left: 3px solid var(--caligo-bright);
+  border-radius: 0 3px 3px 0;
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+}
+.ms-warning-icon { font-size: 18px; flex-shrink: 0; margin-top: 2px; }
+.ms-warning-content {}
+.ms-warning-title {
+  font-family: 'Cinzel', serif;
+  font-size: 9px;
+  letter-spacing: 2px;
+  color: var(--caligo-pale);
+  text-transform: uppercase;
+  margin-bottom: 5px;
+}
+.ms-warning-text {
+  font-size: 12px;
+  color: var(--text-muted);
+  line-height: 1.6;
+}
+
+/* Atmosphere stats */
+.atmo-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+.atmo-item {
+  background: var(--bg-elevated);
+  border: 1px solid var(--border-faint);
+  border-radius: 3px;
+  padding: 10px 12px;
+}
+.atmo-key {
+  font-family: 'Cinzel', serif;
+  font-size: 8px;
+  letter-spacing: 2px;
+  color: var(--text-dim);
+  text-transform: uppercase;
+  margin-bottom: 4px;
+}
+.atmo-val {
+  font-size: 11px;
+  color: var(--text-secondary);
+  line-height: 1.4;
+}
+
+/* Segments */
+.segments-section {
+  margin-top: 40px;
+}
+
+.segments-label {
+  font-family: 'Cinzel', serif;
+  font-size: 9px;
+  letter-spacing: 4px;
+  color: var(--gold-muted);
+  text-transform: uppercase;
+  margin-bottom: 20px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.segments-label::before, .segments-label::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: var(--border-faint);
+}
+
+.segments-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 20px;
+}
+
+.segment-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border-faint);
+  border-radius: 4px;
+  overflow: hidden;
+  transition: all 0.25s;
+}
+.segment-card:hover {
+  border-color: var(--border-dim);
+  box-shadow: 0 4px 20px rgba(0,0,0,0.5);
+  transform: translateY(-2px);
+}
+
+.segment-img-wrap {
+  position: relative;
+  height: 140px;
+  background: var(--bg-surface);
+  overflow: hidden;
+}
+.segment-img {
+  width: 100%; height: 100%;
+  object-fit: cover;
+  transition: transform 0.4s;
+}
+.segment-card:hover .segment-img { transform: scale(1.06); }
+.segment-img-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to top, rgba(8,6,8,0.8) 0%, transparent 60%);
+}
+.segment-img-label {
+  position: absolute;
+  bottom: 10px; left: 14px;
+  font-family: 'Cinzel', serif;
+  font-size: 9px;
+  letter-spacing: 1.5px;
+  color: var(--gold-pale);
+  text-transform: uppercase;
+}
+
+.segment-body { padding: 16px 18px; }
+.segment-name {
+  font-family: 'Cinzel', serif;
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--gold-pale);
+  letter-spacing: 0.5px;
+  margin-bottom: 8px;
+}
+.segment-desc {
+  font-size: 12px;
+  color: var(--text-muted);
+  line-height: 1.7;
+  margin-bottom: 12px;
+}
+
+.segment-lore {
+  font-family: 'Merriweather', serif;
+  font-size: 11px;
+  font-style: italic;
+  color: var(--text-secondary);
+  line-height: 1.7;
+  padding: 10px 12px;
+  background: rgba(58,26,92,0.08);
+  border-left: 2px solid var(--caligo-pale);
+  border-radius: 0 3px 3px 0;
+  margin-bottom: 12px;
+}
+
+.segment-items {
+  margin-top: 12px;
+  padding-top: 12px;
+  border-top: 1px solid var(--border-faint);
+}
+.segment-items-label {
+  font-family: 'Cinzel', serif;
+  font-size: 8px;
+  letter-spacing: 2px;
+  color: var(--text-dim);
+  text-transform: uppercase;
+  margin-bottom: 6px;
+}
+.segment-items-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 5px;
+}
+.item-tag {
+  font-family: 'Crimson Text', serif;
+  font-size: 11px;
+  color: var(--text-muted);
+  background: var(--bg-elevated);
+  border: 1px solid var(--border-faint);
+  border-radius: 2px;
+  padding: 2px 7px;
+  transition: all 0.15s;
+}
+.item-tag:hover {
+  border-color: var(--border-dim);
+  color: var(--gold-pale);
+}
+
+/* Rooms list */
+.rooms-list {
+  list-style: none;
+  margin-top: 8px;
+}
+.rooms-list li {
+  font-size: 12px;
+  color: var(--text-muted);
+  padding: 4px 0 4px 14px;
+  border-bottom: 1px solid var(--border-faint);
+  position: relative;
+  line-height: 1.5;
+}
+.rooms-list li::before {
+  content: '›';
+  position: absolute;
+  left: 0;
+  color: var(--gold-muted);
+  font-size: 14px;
+  line-height: 1;
+  top: 5px;
+}
+.rooms-list li:last-child { border-bottom: none; }
+
+/* Items found */
+.items-found {
+  margin-top: 30px;
+  padding: 20px 24px;
+  background: var(--bg-elevated);
+  border: 1px solid var(--border-faint);
+  border-radius: 4px;
+}
+.items-found-title {
+  font-family: 'Cinzel', serif;
+  font-size: 11px;
+  letter-spacing: 2px;
+  color: var(--gold);
+  text-transform: uppercase;
+  margin-bottom: 14px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.items-found-title::after { content: ''; flex: 1; height: 1px; background: var(--border-faint); }
+.items-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+.item-chip {
+  font-family: 'Crimson Text', serif;
+  font-size: 12px;
+  color: var(--text-secondary);
+  background: var(--bg-surface);
+  border: 1px solid var(--border-faint);
+  border-radius: 2px;
+  padding: 4px 10px;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  transition: all 0.15s;
+}
+.item-chip:hover {
+  border-color: var(--gold-muted);
+  color: var(--gold-pale);
+  background: rgba(184,146,42,0.05);
+}
+.item-chip .chip-icon { font-size: 11px; opacity: 0.7; }
+
+/* ═══ FOOTER ═══ */
+.site-footer {
+  background: var(--bg-dark);
+  border-top: 1px solid var(--border-gold);
+  padding: 40px 60px 24px;
+  position: relative;
+  z-index: 1;
+}
+.footer-inner {
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  gap: 30px;
+  align-items: start;
+  max-width: 1100px;
+  margin: 0 auto 24px;
+}
+.footer-logo-block {}
+.footer-logo-title {
+  font-family: 'Cinzel', serif;
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--gold-pale);
+  letter-spacing: 2px;
+  margin-bottom: 4px;
+}
+.footer-logo-sub {
+  font-size: 10px;
+  color: var(--text-dim);
+  letter-spacing: 0.5px;
+}
+.footer-links {
+  display: flex;
+  gap: 20px;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+.footer-links a {
+  font-family: 'Cinzel', serif;
+  font-size: 10px;
+  letter-spacing: 1px;
+  color: var(--text-dim);
+  text-transform: uppercase;
+  transition: color 0.2s;
+}
+.footer-links a:hover { color: var(--gold-pale); }
+.footer-copy {
+  text-align: right;
+  font-size: 10px;
+  color: var(--text-dim);
+  line-height: 1.7;
+}
+.footer-ornament {
+  text-align: center;
+  font-family: 'Crimson Text', serif;
+  font-size: 12px;
+  font-style: italic;
+  color: var(--text-dim);
+  border-top: 1px solid var(--border-faint);
+  padding-top: 18px;
+  letter-spacing: 1px;
+}
+
+/* ═══ SCROLL REVEAL ═══ */
+.reveal {
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity 0.5s ease, transform 0.5s ease;
+}
+.reveal.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* ═══ PLACEHOLDER VISUALS ═══ */
+.placeholder-map {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  gap: 12px;
+  background: linear-gradient(135deg, #0d0a12 0%, #1a1025 40%, #0f0c18 70%, #0a0810 100%);
+  color: var(--text-dim);
+  font-family: 'Cinzel', serif;
+  font-size: 11px;
+  letter-spacing: 2px;
+}
+.placeholder-region {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  gap: 8px;
+  color: var(--text-dim);
+  font-family: 'Cinzel', serif;
+  font-size: 10px;
+  letter-spacing: 1.5px;
+}
+</style>
+</head>
+<body>
+
+<!-- ═══ HEADER ═══ -->
+<header class="site-header">
+  <div class="header-logo-wrap">
+    <div class="site-logo">🌑</div>
+    <div class="header-site-name">
+      Elucidate RPG
+      <span>DLC Wiki</span>
+    </div>
+  </div>
+  <nav class="header-nav">
+    <a href="index.html">Home</a>
+    <a href="characters.html">Characters</a>
+    <a href="npcs.html">NPCs</a>
+    <a href="items.html">Items</a>
+    <a href="environments.html" class="active">Environments</a>
+    <a href="lore.html">Lore</a>
+    <a href="developers.html">Developers</a>
+    <a href="fanart.html">Fan Art</a>
+    <a href="download.html">Download</a>
+  </nav>
+  <div class="header-right">
+    <div class="search-wrap">
+      <input type="text" id="search-input" placeholder="Search regions, lore…" autocomplete="off"/>
+      <button>⌕</button>
+    </div>
+  </div>
+</header>
+
+<div id="search-results-overlay"></div>
+
+<!-- ═══ LAYOUT ═══ -->
+<div class="wiki-layout">
+
+  <!-- SIDEBAR -->
+  <aside class="sidebar">
+    <div class="sidebar-logo-mini">
+      <div class="sb-title">Elucidate</div>
+      <div class="sb-sub">RPG DLC Wiki</div>
+    </div>
+    <div class="sidebar-section">
+      <div class="sidebar-heading">Navigation</div>
+      <ul>
+        <li><a href="index.html"><span class="sb-icon">⌂</span>Home</a></li>
+        <li><a href="characters.html"><span class="sb-icon">⚔</span>Characters</a></li>
+        <li><a href="npcs.html"><span class="sb-icon">👤</span>NPCs</a></li>
+        <li><a href="items.html"><span class="sb-icon">🗡</span>Items</a></li>
+        <li><a href="environments.html" class="active-nav"><span class="sb-icon">🌍</span>Environments</a></li>
+        <li><a href="lore.html"><span class="sb-icon">📖</span>Lore</a></li>
+        <li><a href="developers.html"><span class="sb-icon">⚙</span>Developers</a></li>
+        <li><a href="fanart.html"><span class="sb-icon">🖼</span>Fan Art</a></li>
+        <li><a href="download.html"><span class="sb-icon">↓</span>Download</a></li>
+      </ul>
+    </div>
+    <div class="sidebar-divider"></div>
+    <div class="sidebar-section">
+      <div class="sidebar-heading">Regions</div>
+      <ul>
+        <li><a href="#walled-city"><span class="sb-icon">🏛</span>Walled City</a></li>
+        <li><a href="#theocratic-capital"><span class="sb-icon">⛪</span>Theocratic Capital</a></li>
+        <li><a href="#home-village"><span class="sb-icon">🔥</span>Home Village</a></li>
+        <li><a href="#outskirts-village"><span class="sb-icon">🌾</span>Outskirts Village</a></li>
+        <li><a href="#tribe-area"><span class="sb-icon">🪨</span>Tribe Area</a></li>
+        <li><a href="#port-city"><span class="sb-icon">⚓</span>Port City</a></li>
+        <li><a href="#cultist-island"><span class="sb-icon">🌑</span>Cultist Island</a></li>
+        <li><a href="#zones-of-terrors"><span class="sb-icon">👁</span>Zones of Terrors</a></li>
+        <li><a href="#underground-labs"><span class="sb-icon">🧪</span>Underground Labs</a></li>
+      </ul>
+    </div>
+    <div class="sidebar-divider"></div>
+    <div class="sidebar-ms-widget">
+      <div class="ms-label">Mind State</div>
+      <div class="ms-bar-track">
+        <div class="ms-bar-fill"></div>
+      </div>
+      <div class="ms-bar-text">Stable · 35%</div>
+    </div>
+  </aside>
+
+  <!-- MAIN CONTENT -->
+  <main class="main-content">
+
+    <!-- PAGE HERO -->
+    <section class="page-hero">
+      <div class="page-hero-bg" id="stars-container"></div>
+      <div class="page-hero-tag">World Atlas</div>
+      <h1 class="page-hero-title"><span class="accent">Environments</span></h1>
+      <div class="page-hero-line"></div>
+      <p class="page-hero-subtitle">A continent divided by war, corrupted by Caligo's eldritch tide — nine regions, each shaped by forces older than the Church and darker than its doctrine.</p>
+    </section>
+
+    <div class="section-divider"><div class="div-line"></div><div class="div-icon">✦</div><div class="div-line"></div></div>
+
+    <!-- WORLD MAP SECTION -->
+    <section class="map-section" id="world-map">
+      <div class="section-header">
+        <span class="section-tag">Cartography</span>
+        <h2 class="section-title">The <span class="gold">Known World</span></h2>
+        <p class="section-desc">Hover over a region to learn its nature. The continent breathes beneath the shadow of two great forces.</p>
+      </div>
+
+      <div class="world-map-container">
+        <div class="world-map-frame">
+          <div class="map-placeholder-inner" id="map-visual">
+            <img src="placeholder-world-map.jpg" alt="World Map of Elucidate RPG DLC" class="world-map-img" onerror="this.style.display='none'; document.getElementById('map-svg-fallback').style.display='block';">
+            <div id="map-svg-fallback" style="display:none; width:100%; height:100%; position:absolute; top:0; left:0;">
+              <svg viewBox="0 0 900 500" xmlns="http://www.w3.org/2000/svg" class="map-placeholder-svg" style="width:100%;height:100%">
+                <defs>
+                  <radialGradient id="bg1" cx="50%" cy="50%" r="70%"><stop offset="0%" stop-color="#1a1025"/><stop offset="100%" stop-color="#080608"/></radialGradient>
+                  <filter id="blur1"><feGaussianBlur stdDeviation="2"/></filter>
+                </defs>
+                <rect width="900" height="500" fill="url(#bg1)"/>
+                <!-- Sea -->
+                <ellipse cx="450" cy="250" rx="420" ry="230" fill="#0a0d1a" opacity="0.8"/>
+                <!-- Main continent -->
+                <path d="M200,120 Q260,80 340,90 Q420,85 480,100 Q560,95 620,115 Q680,130 710,160 Q740,190 730,230 Q720,270 700,300 Q680,330 650,350 Q610,380 570,390 Q520,405 460,400 Q400,395 350,380 Q300,360 260,340 Q220,315 200,280 Q175,245 175,200 Q175,155 200,120Z" fill="#1c1a28" stroke="rgba(180,140,80,0.15)" stroke-width="1" filter="url(#blur1)"/>
+                <!-- Region color blobs -->
+                <ellipse cx="340" cy="170" rx="60" ry="40" fill="#1e2a1e" opacity="0.7"/><!-- Tribe/Outskirts - green -->
+                <ellipse cx="420" cy="210" rx="50" ry="35" fill="#2a2218" opacity="0.7"/><!-- Home Village - ochre -->
+                <ellipse cx="350" cy="250" rx="55" ry="40" fill="#1e1a2e" opacity="0.7"/><!-- Theocratic - purple-tinge -->
+                <ellipse cx="460" cy="280" rx="40" ry="30" fill="#1e2a18" opacity="0.6"/><!-- Port - green-brown -->
+                <ellipse cx="280" cy="230" rx="45" ry="35" fill="#221818" opacity="0.7"/><!-- Walled City - grey -->
+                <ellipse cx="620" cy="300" rx="55" ry="40" fill="#1a0f1f" opacity="0.8"/><!-- Cultist Island - dark -->
+                <ellipse cx="540" cy="180" rx="60" ry="35" fill="#180f0f" opacity="0.7"/><!-- ZoT - dark red -->
+                <!-- Region labels -->
+                <text x="340" y="168" text-anchor="middle" font-family="serif" font-size="9" fill="#c8b898" opacity="0.8">Tribe &amp; Outskirts</text>
+                <text x="420" y="208" text-anchor="middle" font-family="serif" font-size="9" fill="#c8b898" opacity="0.8">Home Village</text>
+                <text x="350" y="249" text-anchor="middle" font-family="serif" font-size="9" fill="#c8b898" opacity="0.8">Theocratic Capital</text>
+                <text x="460" y="278" text-anchor="middle" font-family="serif" font-size="9" fill="#c8b898" opacity="0.8">Port City</text>
+                <text x="280" y="228" text-anchor="middle" font-family="serif" font-size="9" fill="#c8b898" opacity="0.8">Walled City</text>
+                <text x="620" y="298" text-anchor="middle" font-family="serif" font-size="9" fill="#8b5cbf" opacity="0.9">Cultist Island</text>
+                <text x="540" y="178" text-anchor="middle" font-family="serif" font-size="9" fill="#b02020" opacity="0.9">Zones of Terrors</text>
+                <!-- Underground label -->
+                <text x="350" y="340" text-anchor="middle" font-family="serif" font-size="8" fill="#9a8a72" opacity="0.6">⬇ Underground Labs (beneath Capital)</text>
+                <!-- Decorative lines -->
+                <line x1="0" y1="0" x2="900" y2="500" stroke="rgba(180,140,80,0.03)" stroke-width="1"/>
+                <line x1="900" y1="0" x2="0" y2="500" stroke="rgba(180,140,80,0.03)" stroke-width="1"/>
+                <text x="450" y="460" text-anchor="middle" font-family="serif" font-size="11" fill="#706050" letter-spacing="3">[ PLACEHOLDER — WORLD MAP OF ELUCIDATE ]</text>
+              </svg>
+            </div>
+          </div>
+
+          <!-- Map Hotspots -->
+          <div class="map-hotspot" style="left:30%;top:45%" data-region="walled-city">
+            <div class="map-hotspot-pin"></div>
+            <div class="map-tooltip">
+              <div class="map-tooltip-name">Walled City</div>
+              <div class="map-tooltip-desc">Primary military hub. Mercenary starting point. Church-controlled garrison.</div>
+              <div class="map-tooltip-risk safe">✦ Safe Zone</div>
+            </div>
+          </div>
+          <div class="map-hotspot" style="left:37%;top:52%" data-region="theocratic-capital">
+            <div class="map-hotspot-pin"></div>
+            <div class="map-tooltip">
+              <div class="map-tooltip-name">Theocratic Capital</div>
+              <div class="map-tooltip-desc">The Church's seat of power. Pristine facade, rotten core.</div>
+              <div class="map-tooltip-risk dual">✦ Dual-State Zone</div>
+            </div>
+          </div>
+          <div class="map-hotspot danger" style="left:46%;top:42%" data-region="home-village">
+            <div class="map-hotspot-pin"></div>
+            <div class="map-tooltip">
+              <div class="map-tooltip-name">Home Village</div>
+              <div class="map-tooltip-desc">Ruins of the Mercenary's childhood. Mind State doubles here.</div>
+              <div class="map-tooltip-risk danger">⚠ High-Risk Zone</div>
+            </div>
+          </div>
+          <div class="map-hotspot" style="left:36%;top:36%" data-region="outskirts-village">
+            <div class="map-hotspot-pin"></div>
+            <div class="map-tooltip">
+              <div class="map-tooltip-name">Outskirts Village</div>
+              <div class="map-tooltip-desc">Peaceful transition hub. Mind State recovers slightly here.</div>
+              <div class="map-tooltip-risk safe">✦ Safe Zone</div>
+            </div>
+          </div>
+          <div class="map-hotspot" style="left:32%;top:30%" data-region="tribe-area">
+            <div class="map-hotspot-pin"></div>
+            <div class="map-tooltip">
+              <div class="map-tooltip-name">Tribe Area</div>
+              <div class="map-tooltip-desc">Hidden survivor community. 30-minute rescue mission. Shaman's home.</div>
+              <div class="map-tooltip-risk safe">✦ Safe Zone (Timed)</div>
+            </div>
+          </div>
+          <div class="map-hotspot" style="left:50%;top:57%" data-region="port-city">
+            <div class="map-hotspot-pin"></div>
+            <div class="map-tooltip">
+              <div class="map-tooltip-name">Port City</div>
+              <div class="map-tooltip-desc">Merchant guild stronghold. The path-lock decision occurs here.</div>
+              <div class="map-tooltip-risk safe">✦ Safe Zone</div>
+            </div>
+          </div>
+          <div class="map-hotspot caligo" style="left:68%;top:60%" data-region="cultist-island">
+            <div class="map-hotspot-pin"></div>
+            <div class="map-tooltip">
+              <div class="map-tooltip-name">Cultist Island</div>
+              <div class="map-tooltip-desc">Fastest Mind State zone. Caligo's influence is strongest here.</div>
+              <div class="map-tooltip-risk caligo">☽ Caligo Zone</div>
+            </div>
+          </div>
+          <div class="map-hotspot danger" style="left:58%;top:35%" data-region="zones-of-terrors">
+            <div class="map-hotspot-pin"></div>
+            <div class="map-tooltip">
+              <div class="map-tooltip-name">Zones of Terrors</div>
+              <div class="map-tooltip-desc">Scattered corruption zones. Reality distorts. Eldritch Horrors roam.</div>
+              <div class="map-tooltip-risk danger">⚠ High-Risk Zone</div>
+            </div>
+          </div>
+          <div class="map-hotspot caligo" style="left:39%;top:65%" data-region="underground-labs">
+            <div class="map-hotspot-pin"></div>
+            <div class="map-tooltip">
+              <div class="map-tooltip-name">Underground Labs</div>
+              <div class="map-tooltip-desc">Forbidden subterranean labyrinth. The Church's darkest secret.</div>
+              <div class="map-tooltip-risk caligo">☽ Psychological Horror</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="map-legend">
+          <div class="legend-item"><div class="legend-dot safe"></div>Safe Zone</div>
+          <div class="legend-item"><div class="legend-dot danger"></div>High-Risk Zone</div>
+          <div class="legend-item"><div class="legend-dot caligo"></div>Caligo-Corrupted</div>
+        </div>
+      </div>
+    </section>
+
+    <div class="section-divider"><div class="div-line"></div><div class="div-icon">✦</div><div class="div-line"></div></div>
+
+    <!-- WORLD LORE SECTION -->
+    <section class="lore-section" id="world-lore">
+      <div class="section-header">
+        <span class="section-tag">Cosmology</span>
+        <h2 class="section-title">The <span class="gold">World of Elucidate</span></h2>
+        <p class="section-desc">Before light gave the world its name, there was only the formless dark.</p>
+      </div>
+
+      <div class="lore-intro-block">
+
+        <div class="lore-chapter reveal">
+          <div class="lore-chapter-label">Chapter I — Origin</div>
+          <h3 class="lore-chapter-title">Before the First Light: The Age of Caligo</h3>
+          <div class="lore-body">
+            <p>The world did not begin with creation. It began with <span class="lore-caligo">Caligo</span> — an absence so total, so vast in its formlessness, that to look upon it directly was to feel your own edges dissolve. The ancient texts do not call it evil. They call it <em>precedent</em>. Caligo predated everything: the mountains, the seas, the living things that would one day name themselves and fight wars over those names. It had no will. No preference. It existed the way weather exists — without intention, without malice, and without mercy.</p>
+            <p>For ages beyond reckoning, the world breathed in this darkness. Strange organisms adapted to it. Philosophies were built within it. And those who survived long enough in the black developed a relationship with Caligo that was less devotion and more <span class="lore-emphasis">mutual accommodation</span> — you do not worship the tide that swallows you; you simply learn which shores to avoid.</p>
+          </div>
+          <div class="lore-pull-quote">"The darkness does not hate the candle. It simply persists after the candle goes out." — Recovered inscription, Theocratic Capital Library</div>
+          <div class="lore-body">
+            <p>Then came light. Not the slow warming of a dawn, but a rupture — a <span class="lore-lumen">Vindication Lumen</span>, a cosmic declaration that illumination was not merely possible but <em>correct</em>. The event fractured the world's relationship with itself. Where Caligo had been the universal medium of existence, it was now a <span class="lore-caligo">contaminant</span>, a thing to be purged, an enemy defined by its opposition to something new.</p>
+          </div>
+        </div>
+
+        <div class="lore-chapter reveal">
+          <div class="lore-chapter-label">Chapter II — The Conflict</div>
+          <h3 class="lore-chapter-title">Vindication Lumen and the Church's First Lie</h3>
+          <div class="lore-body">
+            <p>The Church of Lumen was not built on falsehood. In its earliest form it was a genuine order — scholars and practitioners who had witnessed the Vindication and sought to understand what it meant to live in a world where light and darkness were now in active opposition. They built temples not to control but to <span class="lore-lumen">comprehend</span>. They named the cosmic force Lumen and offered themselves as its intermediaries.</p>
+            <p>But comprehension is expensive to maintain. Control is simpler to sell. Over generations, the scholars became administrators. The administrators became generals. The temples became fortresses. By the time the Church declared its first Holy War against the Cult of Caligo, it had so thoroughly inverted its own principles that its holy texts had been quietly rewritten at least four times — each revision granting the ruling body slightly more authority, slightly more justification, slightly more reason why the suffering of others was cosmically sanctioned.</p>
+            <p>The Cult of Caligo, by contrast, was never a philosophy. It was <span class="lore-caligo">a consequence</span>. Failed Church experiments. Orphans discarded when they proved insufficient. Soldiers abandoned in zones of eldritch corruption. People who had looked into the dark for so long that the dark had looked back — and offered something the Church never would: acknowledgment of what they truly were.</p>
+          </div>
+        </div>
+
+        <div class="lore-chapter reveal">
+          <div class="lore-chapter-label">Chapter III — The Corruption</div>
+          <h3 class="lore-chapter-title">Subject I-3 and the Spread of the Fracture</h3>
+          <div class="lore-body">
+            <p>The Church's most catastrophic error was not its wars or its doctrine or even its underground laboratories where children were remade into weapons. Its most catastrophic error was <span class="lore-caligo">Subject I-3</span> — the experiment that survived when it should not have, that thrived when it should not have, and that carried within it a piece of Caligo's ancient presence like a wound that never stopped weeping.</p>
+            <p>When Subject I-3 escaped containment, it did not flee. It <em>walked</em>. Through the laboratory corridors, through the restricted wings, through the capital, and out into the world. And wherever it moved, the geography of the land shifted slightly — not visibly, not measurably, but in the way a room shifts when someone leaves it who was not supposed to be there at all. Trees leaned at wrong angles. Water ran toward high ground. The sky remembered Caligo and turned colors it had not been permitted to turn since before the first Lumen burned.</p>
+            <p>These became the <span class="lore-caligo">Zones of Terrors</span>. Not places Caligo chose, but places that chose themselves — points where the membrane between the world's true nature and its imposed order grew thin enough to see through. The Church declared them blasphemous. The Cult called them sacred. The people who actually lived near them simply moved away and tried not to look back.</p>
+          </div>
+          <div class="lore-pull-quote">"Every region you will walk through has been shaped by something it cannot explain and cannot forget. That is the nature of this world. That is the nature of you." — Pluvia (Shaman), to the Mercenary</div>
+        </div>
+
+      </div>
+    </section>
+
+    <div class="section-divider"><div class="div-line"></div><div class="div-icon">✦</div><div class="div-line"></div></div>
+
+    <!-- REGION INDEX -->
+    <section class="region-index">
+      <div class="section-header" style="margin-bottom:24px;">
+        <span class="section-tag">Navigation</span>
+        <h2 class="section-title">Region <span class="gold">Index</span></h2>
+      </div>
+      <div class="region-index-grid">
+        <a href="#walled-city" class="region-index-card">
+          <div class="ric-name">Walled City</div>
+          <div class="ric-type">Military Hub · Starting Point</div>
+          <div class="ric-risk safe">Safe Zone</div>
+        </a>
+        <a href="#theocratic-capital" class="region-index-card">
+          <div class="ric-name">Theocratic Capital</div>
+          <div class="ric-type">Church Seat · Final Battle</div>
+          <div class="ric-risk dual">Dual-State Zone</div>
+        </a>
+        <a href="#home-village" class="region-index-card">
+          <div class="ric-name">Home Village</div>
+          <div class="ric-type">Trauma Zone · Orphanage</div>
+          <div class="ric-risk danger">High-Risk Zone</div>
+        </a>
+        <a href="#outskirts-village" class="region-index-card">
+          <div class="ric-name">Outskirts Village</div>
+          <div class="ric-type">Transition Hub</div>
+          <div class="ric-risk safe">Safe Zone</div>
+        </a>
+        <a href="#tribe-area" class="region-index-card">
+          <div class="ric-name">Tribe Area</div>
+          <div class="ric-type">Rescue Mission · Shaman</div>
+          <div class="ric-risk safe">Safe Zone (Timed)</div>
+        </a>
+        <a href="#port-city" class="region-index-card">
+          <div class="ric-name">Port City</div>
+          <div class="ric-type">Path Lock Decision</div>
+          <div class="ric-risk safe">Safe Zone</div>
+        </a>
+        <a href="#cultist-island" class="region-index-card">
+          <div class="ric-name">Cultist Island</div>
+          <div class="ric-type">Caligo Stronghold · Final Area</div>
+          <div class="ric-risk danger">High-Risk Zone</div>
+        </a>
+        <a href="#zones-of-terrors" class="region-index-card">
+          <div class="ric-name">Zones of Terrors</div>
+          <div class="ric-type">Eldritch Corruption</div>
+          <div class="ric-risk danger">High-Risk Zone</div>
+        </a>
+        <a href="#underground-labs" class="region-index-card">
+          <div class="ric-name">Underground Labs</div>
+          <div class="ric-type">Forbidden Labyrinth</div>
+          <div class="ric-risk danger">Psychological Horror</div>
+        </a>
+      </div>
+    </section>
+
+    <!-- REGIONS -->
+    <section class="regions-section">
+
+      <!-- ══ WALLED CITY ══ -->
+      <div class="region-entry" id="walled-city">
+        <div class="region-header">
+          <div class="region-title-block">
+            <div class="region-number">Region 01</div>
+            <h2 class="region-name">Walled City</h2>
+            <div class="region-subtitle">Military Hub — Starting Point (Mercenary)</div>
+          </div>
+          <div class="region-badges">
+            <span class="region-badge badge-safe">Safe Zone</span>
+            <span class="region-badge badge-ms">MS: +0</span>
+          </div>
+        </div>
+
+        <div class="region-img-wrap reveal">
+          <div class="placeholder-region" style="background: linear-gradient(135deg,#181220 0%,#221828 40%,#1a1520 100%);">
+            <span style="font-size:32px;opacity:0.3">🏛</span>
+            <span>[ Placeholder — Walled City Environment ]</span>
+          </div>
+          <div class="region-img-overlay"></div>
+          <div class="region-img-label">Walled City — Safe Zone</div>
+        </div>
+
+        <div class="region-body">
+          <div class="region-description">
+            <div class="rblock-label">Environment</div>
+            <div class="rblock-title">A City Built to Contain</div>
+            <div class="atmo-grid">
+              <div class="atmo-item"><div class="atmo-key">Palette</div><div class="atmo-val">Grey and brown stone. Torchlit interiors.</div></div>
+              <div class="atmo-item"><div class="atmo-key">Lighting</div><div class="atmo-val">Overcast daytime. Torches everywhere.</div></div>
+              <div class="atmo-item"><div class="atmo-key">Sounds</div><div class="atmo-val">Metal clanging, war drums distant, crowd murmur.</div></div>
+              <div class="atmo-item"><div class="atmo-key">Hazards</div><div class="atmo-val">None. Soldiers create psychological pressure.</div></div>
+            </div>
+            <div class="rblock-text">
+              <p>Imposing stone walls rise at every approach, blacksmith fires glow perpetually orange through iron-barred windows, and every citizen moves with the hurried intentionality of someone who has been told their purpose in life and accepted it. The Walled City is tense but controlled — the calm before a storm that the soldiers can smell coming but have not been given permission to discuss.</p>
+              <p>The city serves one function: produce soldiers and equip them. Everything here exists in service of that mandate. The markets sell weapons. The chapels pray for victory. The drafting offices process names like ledger entries. And yet something quiet persists — a blacksmith who asks too many questions, a notice board that hints at things the Church has not sanctioned, a silence between the drum beats that lasts a half-second longer than it should.</p>
+            </div>
+          </div>
+
+          <div class="region-lore-block">
+            <div class="rblock-label">Lore</div>
+            <div class="rblock-title">The Church's Outstretched Fist</div>
+            <div class="rblock-text">
+              <p>The Walled City predates the current war by at least four generations. Archaeological evidence buried beneath the armory suggests the city was originally a neutral trading post — its walls built for commerce protection, not military staging. The Church absorbed it during the First Expansion without violence, simply by making itself indispensable to the city's economy until the city could not function without Church infrastructure.</p>
+              <p>By the time Caligo's influence began spreading through the eastern territories and the Cult of Caligo emerged from the shadows of the Church's own failed experiments, the Walled City had been remade entirely. Its original identity exists only in the names of its streets — names that mean nothing to the soldiers who march through them now, and everything to the very few historians who survived the Church's archival purges.</p>
+              <p>Blacksmith Conrad has worked here for thirty years. He knows what the city was. He equips the Mercenary without enthusiasm and watches him leave with the practiced sadness of someone who has equipped too many and seen how few return with their certainties intact.</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="ms-warning">
+          <div class="ms-warning-icon">🧠</div>
+          <div class="ms-warning-content">
+            <div class="ms-warning-title">Mind State Effect</div>
+            <div class="ms-warning-text">No Mind State increase in Walled City. It is the baseline calm — the player's psychological zero point. This contrast is deliberate. Everything measured afterward is measured against what the Walled City felt like.</div>
+          </div>
+        </div>
+
+        <div class="segments-section">
+          <div class="segments-label">Map Segments</div>
+          <div class="segments-grid">
+            <div class="segment-card reveal">
+              <div class="segment-img-wrap">
+                <div class="placeholder-region" style="background:linear-gradient(135deg,#151015 0%,#1e1820 100%);font-size:8px;letter-spacing:1px">[ Outer Gate District ]</div>
+                <div class="segment-img-overlay"></div>
+                <div class="segment-img-label">Outer Gate District</div>
+              </div>
+              <div class="segment-body">
+                <div class="segment-name">Outer Gate District</div>
+                <div class="segment-desc">Entry zone. Guards check papers at the main gate. Merchants sell basic supplies to soldiers newly arrived and civilians trying to leave.</div>
+                <div class="segment-lore">The gate has never in living memory been breached. This fact is repeated often enough that it has begun to sound like a prayer.</div>
+                <div class="segment-items">
+                  <div class="segment-items-label">Items Found</div>
+                  <div class="segment-items-list">
+                    <span class="item-tag">Short Sword</span>
+                    <span class="item-tag">Ale</span>
+                    <span class="item-tag">Rum</span>
+                    <span class="item-tag">Leather Scraps</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="segment-card reveal">
+              <div class="segment-img-wrap">
+                <div class="placeholder-region" style="background:linear-gradient(135deg,#111010 0%,#1c1818 100%);font-size:8px;letter-spacing:1px">[ Inner Military District ]</div>
+                <div class="segment-img-overlay"></div>
+                <div class="segment-img-label">Inner Military District</div>
+              </div>
+              <div class="segment-body">
+                <div class="segment-name">Inner Military District</div>
+                <div class="segment-desc">Barracks, armory, and blacksmith workshops. The Mercenary receives his starting weapons here and is briefed at the Drafting Office.</div>
+                <div class="segment-lore">The armory chest is always full when a soldier is drafted. It is emptied and refilled so regularly that the blacksmith no longer tracks individual pieces — only quotas.</div>
+                <div class="segment-items">
+                  <div class="segment-items-label">Items Found</div>
+                  <div class="segment-items-list">
+                    <span class="item-tag">Makeshift Spear</span>
+                    <span class="item-tag">Blunderbuss</span>
+                    <span class="item-tag">Iron Ingot</span>
+                    <span class="item-tag">Book of Craftsmanship</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="segment-card reveal">
+              <div class="segment-img-wrap">
+                <div class="placeholder-region" style="background:linear-gradient(135deg,#131018 0%,#1e1825 100%);font-size:8px;letter-spacing:1px">[ Church Outpost ]</div>
+                <div class="segment-img-overlay"></div>
+                <div class="segment-img-label">Church Outpost</div>
+              </div>
+              <div class="segment-body">
+                <div class="segment-name">Church Outpost</div>
+                <div class="segment-desc">Small Church presence within the military complex. Priests monitor progress and offer blessings. The chapel is modest by Church standards — deliberately so, to avoid frightening the soldiers into thinking too hard about what they serve.</div>
+                <div class="segment-lore">The Priest's Office contains lore documents that predate the current war by sixty years. They have not been updated because no one in the Church wants to acknowledge what they record.</div>
+                <div class="segment-items">
+                  <div class="segment-items-label">Items Found</div>
+                  <div class="segment-items-list">
+                    <span class="item-tag">Lore Documents</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="items-found reveal">
+          <div class="items-found-title">All Items Found in Walled City</div>
+          <div class="items-grid">
+            <span class="item-chip"><span class="chip-icon">⚔</span>Makeshift Spear</span>
+            <span class="item-chip"><span class="chip-icon">🔫</span>Blunderbuss</span>
+            <span class="item-chip"><span class="chip-icon">🪵</span>Leather Scraps</span>
+            <span class="item-chip"><span class="chip-icon">⚙</span>Iron Ingot</span>
+            <span class="item-chip"><span class="chip-icon">⚔</span>Short Sword</span>
+            <span class="item-chip"><span class="chip-icon">🍺</span>Ale</span>
+            <span class="item-chip"><span class="chip-icon">🍶</span>Rum</span>
+            <span class="item-chip"><span class="chip-icon">📖</span>Book of Craftsmanship</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- ══ THEOCRATIC CAPITAL ══ -->
+      <div class="region-entry dual-zone" id="theocratic-capital">
+        <div class="region-header">
+          <div class="region-title-block">
+            <div class="region-number">Region 02</div>
+            <h2 class="region-name">Theocratic Capital</h2>
+            <div class="region-subtitle">Safe Zone (First Visit) — Final Battlefield (Ending B) — Starting Point (Priest)</div>
+          </div>
+          <div class="region-badges">
+            <span class="region-badge badge-dual">Dual-State Zone</span>
+            <span class="region-badge badge-ms">MS: +0 / +8</span>
+          </div>
+        </div>
+
+        <div class="region-img-wrap reveal">
+          <div class="placeholder-region" style="background: linear-gradient(135deg,#1a1228 0%,#241a34 40%,#1c1425 100%);">
+            <span style="font-size:32px;opacity:0.3">⛪</span>
+            <span>[ Placeholder — Theocratic Capital Environment ]</span>
+          </div>
+          <div class="region-img-overlay"></div>
+          <div class="region-img-label">Theocratic Capital — Dual-State Zone</div>
+        </div>
+
+        <div class="region-body">
+          <div class="region-description">
+            <div class="rblock-label">Environment</div>
+            <div class="rblock-title">Grand Gothic Architecture Hiding Rot</div>
+            <div class="atmo-grid">
+              <div class="atmo-item"><div class="atmo-key">Palette</div><div class="atmo-val">Pristine white marble. Gold-tinted stained glass.</div></div>
+              <div class="atmo-item"><div class="atmo-key">Lighting</div><div class="atmo-val">Rich candlelight. Dark restricted corridors.</div></div>
+              <div class="atmo-item"><div class="atmo-key">Sounds</div><div class="atmo-val">Choir hymns, tolling bells, whispering priests.</div></div>
+              <div class="atmo-item"><div class="atmo-key">Second Visit</div><div class="atmo-val">Battle erupts: knights, assassins, revolution.</div></div>
+            </div>
+            <div class="rblock-text">
+              <p>The Theocratic Capital is the most beautiful location in the game and the most dishonest. Its architects were given one instruction: build something that makes people feel small in comparison to the Church's authority. They succeeded completely. Every column is proportioned to make humans look like children. Every hall echoes in a way that makes private thought feel like trespass. The candlelight in the nave creates shadows that seem to move with purpose, tracking visitors who do not belong.</p>
+              <p>On a second visit, during Ending B, the beauty ruptures. The marble runs with blood. The choir's voices are replaced by screaming. Holy Knights pour from the administrative wing with the organized violence of men who have been waiting a long time to do exactly this.</p>
+            </div>
+          </div>
+
+          <div class="region-lore-block">
+            <div class="rblock-label">Lore</div>
+            <div class="rblock-title">The Church's Crowning Hypocrisy</div>
+            <div class="rblock-text">
+              <p>The capital was built on the site of a pre-Lumen settlement — a community of scholars who had, ironically, been attempting to understand Caligo academically before the Church declared such inquiry heretical and buried the ruins beneath new foundations. The library in the Main Cathedral still contains books from that original settlement, misfiled by accident and never discovered because no Church librarian would think to look for pre-Lumen scholarship in a Lumen holy site.</p>
+              <p>Father Calum rules this place not with warmth but with precision. He knows every room, every corridor, every confession booth where someone said something they should not have. He has been administering the Underground Laboratories beneath the capital for decades, and the calm in his voice when he discusses the experiments suggests a man who has redefined his own conscience so thoroughly that it no longer troubles him. He was, after all, Subject C-1 — the first fully successful outcome of the very experiments he now oversees.</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="ms-warning">
+          <div class="ms-warning-icon">🧠</div>
+          <div class="ms-warning-content">
+            <div class="ms-warning-title">Mind State Effect</div>
+            <div class="ms-warning-text">First visit: +0 (holy atmosphere initially suppresses psychological deterioration). Second visit (Ending B): +8 from battle trauma and the revelation of the Church's true nature. Priest DLC: each experiment session in the Labyrinth beneath raises Mind State significantly.</div>
+          </div>
+        </div>
+
+        <div class="segments-section">
+          <div class="segments-label">Map Segments</div>
+          <div class="segments-grid">
+            <div class="segment-card reveal">
+              <div class="segment-img-wrap">
+                <div class="placeholder-region" style="background:linear-gradient(135deg,#181320 0%,#221a2e 100%);font-size:8px">[ Cathedral Plaza ]</div>
+                <div class="segment-img-overlay"></div>
+                <div class="segment-img-label">Cathedral Plaza</div>
+              </div>
+              <div class="segment-body">
+                <div class="segment-name">Cathedral Plaza</div>
+                <div class="segment-desc">Public area with pilgrims, merchants, and Church attendants. The outdoor market sells holy items to the faithful.</div>
+                <div class="segment-lore">The Public Fountain in the plaza is fed by an underground spring whose source runs directly beneath the Laboratory. The water has been tested by three independent merchants and found chemically pure. This has never stopped tasting wrong to those who know what flows nearby.</div>
+                <div class="segment-items">
+                  <div class="segment-items-label">Items Found</div>
+                  <div class="segment-items-list">
+                    <span class="item-tag">Holy Items</span>
+                    <span class="item-tag">Ancient Paper</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="segment-card reveal">
+              <div class="segment-img-wrap">
+                <div class="placeholder-region" style="background:linear-gradient(135deg,#161220 0%,#201830 100%);font-size:8px">[ Main Cathedral ]</div>
+                <div class="segment-img-overlay"></div>
+                <div class="segment-img-label">Main Cathedral</div>
+              </div>
+              <div class="segment-body">
+                <div class="segment-name">Main Cathedral</div>
+                <div class="segment-desc">The grand church. Mission assignment occurs at the Priest's Altar. The library contains lore books if the player seeks them. Confession booths hold cryptic NPC dialogue about the experiments.</div>
+                <div class="segment-lore">The Library's restricted section contains records from the founding years — records that the current Church leadership believes were destroyed. The Librarian Scholar has read them all and teaches from them obliquely, in metaphors, to anyone patient enough to listen to his entire lecture.</div>
+                <div class="segment-items">
+                  <div class="segment-items-label">Items Found</div>
+                  <div class="segment-items-list">
+                    <span class="item-tag">Book of Knowledge</span>
+                    <span class="item-tag">Ink Vial</span>
+                    <span class="item-tag">Ancient Paper</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="segment-card reveal">
+              <div class="segment-img-wrap">
+                <div class="placeholder-region" style="background:linear-gradient(135deg,#180f0f 0%,#221515 100%);font-size:8px">[ Theocratic Battleground ]</div>
+                <div class="segment-img-overlay"></div>
+                <div class="segment-img-label">Theocratic Battleground (Ending B)</div>
+              </div>
+              <div class="segment-body">
+                <div class="segment-name">Theocratic Battleground</div>
+                <div class="segment-desc">Ending B exclusive. The capital erupts into battle as revolution overtakes Church authority. The Cathedral Nave becomes the arena for the final confrontation with Father Calum.</div>
+                <div class="segment-lore">During the battle, loyal citizens take up arms against the Mercenary — people who were never bad, only entirely convinced. Their faces show grief more than hatred. They die defending something that was never what they were told it was.</div>
+                <div class="segment-items">
+                  <div class="segment-items-label">Items Found</div>
+                  <div class="segment-items-list">
+                    <span class="item-tag">Priest's Robe</span>
+                    <span class="item-tag">Arming Cap</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="items-found reveal">
+          <div class="items-found-title">All Items Found in Theocratic Capital</div>
+          <div class="items-grid">
+            <span class="item-chip"><span class="chip-icon">✝</span>Holy Items</span>
+            <span class="item-chip"><span class="chip-icon">📖</span>Book of Knowledge</span>
+            <span class="item-chip"><span class="chip-icon">🖊</span>Ink Vial</span>
+            <span class="item-chip"><span class="chip-icon">📜</span>Ancient Paper (x2)</span>
+            <span class="item-chip"><span class="chip-icon">👘</span>Priest's Robe</span>
+            <span class="item-chip"><span class="chip-icon">🪖</span>Arming Cap</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- ══ HOME VILLAGE ══ -->
+      <div class="region-entry danger-zone" id="home-village">
+        <div class="region-header">
+          <div class="region-title-block">
+            <div class="region-number">Region 03</div>
+            <h2 class="region-name">Home Village</h2>
+            <div class="region-subtitle">High-Risk Zone — Trauma Zone — Mind State Accelerator</div>
+          </div>
+          <div class="region-badges">
+            <span class="region-badge badge-danger">High-Risk Zone</span>
+            <span class="region-badge badge-ms">MS: ×2 Rate</span>
+          </div>
+        </div>
+
+        <div class="region-img-wrap reveal">
+          <div class="placeholder-region" style="background: linear-gradient(135deg,#0e0b0b 0%,#181012 40%,#100d0d 100%);">
+            <span style="font-size:32px;opacity:0.3">🔥</span>
+            <span>[ Placeholder — Home Village Environment ]</span>
+          </div>
+          <div class="region-img-overlay"></div>
+          <div class="region-img-label">Home Village — High-Risk Zone</div>
+        </div>
+
+        <div class="region-body">
+          <div class="region-description">
+            <div class="rblock-label">Environment</div>
+            <div class="rblock-title">The Ruins of What You Were</div>
+            <div class="atmo-grid">
+              <div class="atmo-item"><div class="atmo-key">Palette</div><div class="atmo-val">Ash grey-brown. Permanent overcast sky.</div></div>
+              <div class="atmo-item"><div class="atmo-key">Lighting</div><div class="atmo-val">No direct sunlight. Dying torches flicker.</div></div>
+              <div class="atmo-item"><div class="atmo-key">Sounds</div><div class="atmo-val">Wind through ruins. Distant eldritch groaning.</div></div>
+              <div class="atmo-item"><div class="atmo-key">Hazards</div><div class="atmo-val">Eldritch Horrors. Structural collapse zones.</div></div>
+            </div>
+            <div class="rblock-text">
+              <p>Everything here burned. Not quickly — the ash still carries the particular smell of wood that was given time to become something else before it stopped burning entirely. The village center is three years of overgrowth consuming what the fire left. The orphanage at the edge stands longest, because it was built to last, because someone wanted what happened inside it to last, and now it stands as evidence that permanence and goodness have no necessary relationship.</p>
+              <p>Eldritch Horrors patrol the ruins in humanoid form, their shapes suggesting what they once were without confirming it. At low Mind State they are disturbing. At higher Mind State they become recognizable, and that is worse.</p>
+            </div>
+          </div>
+
+          <div class="region-lore-block">
+            <div class="rblock-label">Lore</div>
+            <div class="rblock-title">Where Everything Began</div>
+            <div class="rblock-text">
+              <p>The village was not destroyed by the Cult. It was not destroyed by a war. It was destroyed by a retrieval operation — Church soldiers who came not to burn but to collect, and burned only because what they found was messier than anticipated. The children the orphanage sheltered were the Church's raw material: orphans without family connections, without anyone who would ask questions, without anyone whose silence could not be assured through careful administrative procedure.</p>
+              <p>The Mercenary grew up here. So did the Cultist. So did Pluvia the Shaman, and Konrad the Merchant, and Father Calum himself — though he returned differently than he left. The village is where all five protagonists were first made into subjects. Every playthrough, regardless of character, traces back to these ruins. Every answer the game offers has its roots in this ash.</p>
+              <p>The orphanage headmaster's office contains a note written in a hand that the Mercenary will recognize subconsciously without being able to explain why. The note says: "The successful ones will not remember. The unsuccessful ones will remember everything."</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="ms-warning">
+          <div class="ms-warning-icon">⚠️</div>
+          <div class="ms-warning-content">
+            <div class="ms-warning-title">Mind State Effect — DOUBLED ACCELERATION</div>
+            <div class="ms-warning-text">+15 on entry from traumatic environment. Each Eldritch Horror encounter: +8. Each memory fragment triggered: +5. Extended stay: +3 per in-game minute. The Home Village is the first true test of Mind State management. No Blue Gems available here.</div>
+          </div>
+        </div>
+
+        <div class="segments-section">
+          <div class="segments-label">Map Segments</div>
+          <div class="segments-grid">
+            <div class="segment-card reveal">
+              <div class="segment-img-wrap">
+                <div class="placeholder-region" style="background:linear-gradient(135deg,#0e0a0a 0%,#181010 100%);font-size:8px">[ Village Entry ]</div>
+                <div class="segment-img-overlay"></div>
+                <div class="segment-img-label">Village Entry</div>
+              </div>
+              <div class="segment-body">
+                <div class="segment-name">Village Entry</div>
+                <div class="segment-desc">Entry to the ruined village. Signs of battle and fire everywhere. A collapsed gate frames the first view of what remains. The mass grave area should not be looked at directly but cannot be avoided.</div>
+                <div class="segment-lore">The burnt farmhouses still contain salvageable items. Someone lived here, had tools, had food, had ordinary plans for the following week. The ordinary weight of that is its own form of horror.</div>
+                <div class="segment-items">
+                  <div class="segment-items-label">Items Found</div>
+                  <div class="segment-items-list">
+                    <span class="item-tag">Leather Scraps</span>
+                    <span class="item-tag">Raw Iron</span>
+                    <span class="item-tag">Green Herb</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="segment-card reveal">
+              <div class="segment-img-wrap">
+                <div class="placeholder-region" style="background:linear-gradient(135deg,#100c0c 0%,#1c1212 100%);font-size:8px">[ The Old Orphanage ]</div>
+                <div class="segment-img-overlay"></div>
+                <div class="segment-img-label">The Old Orphanage</div>
+              </div>
+              <div class="segment-body">
+                <div class="segment-name">The Old Orphanage</div>
+                <div class="segment-desc">The Mercenary's childhood home. The front triggers a tutorial memory. The dormitory holds skill books. A hidden basement documents what was done to the children who lived here. The headmaster's office contains the most important single piece of paper in the game's first act.</div>
+                <div class="segment-lore">The hidden basement connects conceptually to the Underground Laboratory, though physically they are not linked. The same hands designed both. The same logic justified both. One was practice; the other was purpose.</div>
+                <div class="segment-items">
+                  <div class="segment-items-label">Items Found</div>
+                  <div class="segment-items-list">
+                    <span class="item-tag">Craftsmanship Skill Book</span>
+                    <span class="item-tag">Experimental Notes</span>
+                    <span class="item-tag">Empty Vials</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="items-found reveal">
+          <div class="items-found-title">All Items Found in Home Village</div>
+          <div class="items-grid">
+            <span class="item-chip"><span class="chip-icon">📖</span>Craftsmanship Skill Book</span>
+            <span class="item-chip"><span class="chip-icon">📋</span>Experimental Notes</span>
+            <span class="item-chip"><span class="chip-icon">📚</span>Books (scattered)</span>
+            <span class="item-chip"><span class="chip-icon">🪵</span>Leather Scraps</span>
+            <span class="item-chip"><span class="chip-icon">⚙</span>Raw Iron</span>
+            <span class="item-chip"><span class="chip-icon">🧪</span>Empty Vials</span>
+            <span class="item-chip"><span class="chip-icon">🌿</span>Green Herb</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- ══ OUTSKIRTS VILLAGE ══ -->
+      <div class="region-entry" id="outskirts-village">
+        <div class="region-header">
+          <div class="region-title-block">
+            <div class="region-number">Region 04</div>
+            <h2 class="region-name">Outskirts Village</h2>
+            <div class="region-subtitle">Safe Zone — Transition Hub</div>
+          </div>
+          <div class="region-badges">
+            <span class="region-badge badge-safe">Safe Zone</span>
+            <span class="region-badge badge-ms">MS: −3 (Recovery)</span>
+          </div>
+        </div>
+
+        <div class="region-img-wrap reveal">
+          <div class="placeholder-region" style="background: linear-gradient(135deg,#111510 0%,#1a201a 40%,#131510 100%);">
+            <span style="font-size:32px;opacity:0.3">🌾</span>
+            <span>[ Placeholder — Outskirts Village Environment ]</span>
+          </div>
+          <div class="region-img-overlay"></div>
+          <div class="region-img-label">Outskirts Village — Safe Zone</div>
+        </div>
+
+        <div class="region-body">
+          <div class="region-description">
+            <div class="rblock-label">Environment</div>
+            <div class="rblock-title">Warmth Before the Storm</div>
+            <div class="atmo-grid">
+              <div class="atmo-item"><div class="atmo-key">Palette</div><div class="atmo-val">Warm earth tones. Daytime sunlight.</div></div>
+              <div class="atmo-item"><div class="atmo-key">Lighting</div><div class="atmo-val">Warm daytime sun. Interior candlelight.</div></div>
+              <div class="atmo-item"><div class="atmo-key">Sounds</div><div class="atmo-val">Birdsong, children, marketplace chatter.</div></div>
+              <div class="atmo-item"><div class="atmo-key">Hazards</div><div class="atmo-val">None. NPCs anxious about war.</div></div>
+            </div>
+            <div class="rblock-text">
+              <p>After Home Village's ash and silence, the Outskirts Village is almost unbearably ordinary. Children run in the streets. A merchant argues about the price of grain. Someone is mending a fence that does not urgently need mending but gives them something to do with their hands while they worry. The contrast is not accidental — this is what the war is being fought over, or what both sides claim they are fighting for, while neither side particularly considers what the people in the middle of it actually need.</p>
+              <p>The village knows about the Tribe but will not say so directly. NPCs speak about the forest to the north with carefully calibrated non-specificity: it is a fine forest, there are many trees in it, one should be careful of the paths. The Village Chief speaks more plainly, but only after trust is established.</p>
+            </div>
+          </div>
+
+          <div class="region-lore-block">
+            <div class="rblock-label">Lore</div>
+            <div class="rblock-title">The Silence of Ordinary People</div>
+            <div class="rblock-text">
+              <p>The Outskirts Village has survived the war by practicing a disciplined collective discretion. When Church soldiers pass through, the village presents itself as loyal and unremarkable. When the Cult sends scouts, the village presents itself as too poor to be worth intimidating. This is not cowardice — it is a strategy for survival refined over generations by people who learned early that visibility is dangerous when powerful forces are in conflict.</p>
+              <p>The traveling bard who appears in the village square sings songs about Caligo that could be interpreted as historical folk music by anyone who did not know better. He is not Church, not Cult. He is something older — a carrier of the stories that both sides want forgotten, wrapped in melodies pleasant enough that no one thinks to silence him.</p>
+              <p>The Village Chief's hidden basement passage connects to the Tribe through a route that has been maintained in secret for years. It is the most important door in the Outskirts Village and looks like a floor. This is intentional.</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="ms-warning" style="border-color:rgba(74,170,102,0.3); background:rgba(74,170,102,0.05);">
+          <div class="ms-warning-icon">🌿</div>
+          <div class="ms-warning-content">
+            <div class="ms-warning-title" style="color:#4aaa66">Mind State Effect — Recovery Zone</div>
+            <div class="ms-warning-text">No Mind State increase. Outskirts Village acts as a psychological recovery zone — the resting mechanic reduces Mind State by −3. The only location in the game where passive MS reduction occurs naturally.</div>
+          </div>
+        </div>
+
+        <div class="segments-section">
+          <div class="segments-label">Map Segments</div>
+          <div class="segments-grid">
+            <div class="segment-card reveal">
+              <div class="segment-img-wrap">
+                <div class="placeholder-region" style="background:linear-gradient(135deg,#101510 0%,#1a2018 100%);font-size:8px">[ Village Market ]</div>
+                <div class="segment-img-overlay"></div>
+                <div class="segment-img-label">Village Market</div>
+              </div>
+              <div class="segment-body">
+                <div class="segment-name">Village Market</div>
+                <div class="segment-desc">Small but stocked market. Food stall, general merchant, and a notice board offering optional side quests. The opportunity to rest and resupply after Home Village.</div>
+                <div class="segment-lore">The merchants here buy and sell without asking where things came from. This policy exists because asking where things come from, in wartime, frequently leads to answers that make commerce impossible.</div>
+                <div class="segment-items">
+                  <div class="segment-items-label">Items Found</div>
+                  <div class="segment-items-list">
+                    <span class="item-tag">Ale / Rum / Wine</span>
+                    <span class="item-tag">Green Herb</span>
+                    <span class="item-tag">Blue Herb</span>
+                    <span class="item-tag">Bowstring</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="segment-card reveal">
+              <div class="segment-img-wrap">
+                <div class="placeholder-region" style="background:linear-gradient(135deg,#111412 0%,#1c1e1a 100%);font-size:8px">[ Village Chief's Home ]</div>
+                <div class="segment-img-overlay"></div>
+                <div class="segment-img-label">Village Chief's Home</div>
+              </div>
+              <div class="segment-body">
+                <div class="segment-name">Village Chief's Home</div>
+                <div class="segment-desc">Key location. The Chief's dialogue unlocks access to the hidden basement trapdoor that connects underground to the Tribe Area. The most important floor in the village.</div>
+                <div class="segment-lore">The Chief has been protecting this passage for eleven years. He built the room above the trapdoor himself, specifically to make it look like every other room in the house. He has had the conversation that happens next many times and has not yet gotten better at it.</div>
+                <div class="segment-items">
+                  <div class="segment-items-label">Items Found</div>
+                  <div class="segment-items-list">
+                    <span class="item-tag">Dirk (via trade)</span>
+                    <span class="item-tag">Leather Scraps</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="items-found reveal">
+          <div class="items-found-title">All Items Found in Outskirts Village</div>
+          <div class="items-grid">
+            <span class="item-chip"><span class="chip-icon">🍺</span>Ale / Rum / Wine</span>
+            <span class="item-chip"><span class="chip-icon">🌿</span>Green Herb</span>
+            <span class="item-chip"><span class="chip-icon">💎</span>Blue Herb</span>
+            <span class="item-chip"><span class="chip-icon">🏹</span>Bowstring</span>
+            <span class="item-chip"><span class="chip-icon">🪵</span>Leather Scraps</span>
+            <span class="item-chip"><span class="chip-icon">⚔</span>Dirk (Optional)</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- ══ TRIBE AREA ══ -->
+      <div class="region-entry" id="tribe-area">
+        <div class="region-header">
+          <div class="region-title-block">
+            <div class="region-number">Region 05</div>
+            <h2 class="region-name">Tribe Area</h2>
+            <div class="region-subtitle">Safe Zone — Timed Rescue Event — Starting Point (Shaman)</div>
+          </div>
+          <div class="region-badges">
+            <span class="region-badge badge-safe">Safe Zone</span>
+            <span class="region-badge badge-ms">MS: +5/encounter</span>
+          </div>
+        </div>
+
+        <div class="region-img-wrap reveal">
+          <div class="placeholder-region" style="background: linear-gradient(135deg,#0f1210 0%,#1a1c14 40%,#111310 100%);">
+            <span style="font-size:32px;opacity:0.3">🪨</span>
+            <span>[ Placeholder — Tribe Area Environment ]</span>
+          </div>
+          <div class="region-img-overlay"></div>
+          <div class="region-img-label">Tribe Area — Timed Safe Zone</div>
+        </div>
+
+        <div class="region-body">
+          <div class="region-description">
+            <div class="rblock-label">Environment</div>
+            <div class="rblock-title">Ancient and Hidden, Now Under Attack</div>
+            <div class="atmo-grid">
+              <div class="atmo-item"><div class="atmo-key">Palette</div><div class="atmo-val">Earthy tones. Natural firelight. Rocky terrain.</div></div>
+              <div class="atmo-item"><div class="atmo-key">Lighting</div><div class="atmo-val">Natural firelight and torches. No Church influence.</div></div>
+              <div class="atmo-item"><div class="atmo-key">Sounds</div><div class="atmo-val">Tribal chants, crackling fires, urgent battle sounds.</div></div>
+              <div class="atmo-item"><div class="atmo-key">Hazards</div><div class="atmo-val">Church attack forces. 30-minute countdown.</div></div>
+            </div>
+            <div class="rblock-text">
+              <p>The Tribe's settlement is carved into rock formations that the Church's maps don't acknowledge. It exists in the negative space of the official cartography — a place that should be wilderness according to Church records and is instead a living community. Tribal symbols mark the walls in pigments that predate the Church by centuries. The firelight is warm. The Tribe Elder's face suggests an old argument with the world that the world has not yet won.</p>
+              <p>During the rescue sequence, the warmth cracks. Church soldiers pour through the perimeter watchtowers. Every thirty minutes, if the Shaman is not secured and extracted, she dies. The game does not soften this. The timer does not pause for dialogue. The Tribe does not wait for the player to be ready.</p>
+            </div>
+          </div>
+
+          <div class="region-lore-block">
+            <div class="rblock-label">Lore</div>
+            <div class="rblock-title">The Survivors of the Purge</div>
+            <div class="rblock-text">
+              <p>The Tribe exists because of a single act of mercy performed by a Church soldier two decades before the game's events — a soldier who, given orders to eliminate the settlement, chose instead to file a report stating that no settlement had been found. He is long dead. The Tribe does not know his name. They know only that someone, once, declined to do the thing they were ordered to do.</p>
+              <p>Pluvia, the Shaman, was brought here after she escaped the Underground Laboratory as a child. Her Foresight ability — a result of the Church's experiments — has been both her protection and her burden. She has seen the next three weeks of any future she focuses on since she was nine years old. She has never been able to unsee anything she has seen. This is why the Tribe Elder looks at her sometimes with a specific kind of grief that has no word.</p>
+              <p>The Fragment of Caligo stored in the cave was not placed here by the Tribe. It arrived. It moved, over years, from the eastern corruption zones, through the forest, and settled in the cave as if it had chosen to. The Tribe Elder does not discuss this. She treats it as she treats other things that arrive without being invited: with caution, with respect, and without looking directly at it.</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="ms-warning">
+          <div class="ms-warning-icon">⏱️</div>
+          <div class="ms-warning-content">
+            <div class="ms-warning-title">Mind State Effect — Rescue Sequence</div>
+            <div class="ms-warning-text">During rescue: +5 per Church soldier encounter. Failure to save Shaman: +20 Mind State spike — the single largest non-Zone event in the game. If saved, Shaman's presence reduces Mercenary's MS growth rate by 30% for the remainder of the playthrough.</div>
+          </div>
+        </div>
+
+        <div class="segments-section">
+          <div class="segments-label">Map Segments</div>
+          <div class="segments-grid">
+            <div class="segment-card reveal">
+              <div class="segment-img-wrap">
+                <div class="placeholder-region" style="background:linear-gradient(135deg,#0f1208 0%,#181c10 100%);font-size:8px">[ Tribe Perimeter ]</div>
+                <div class="segment-img-overlay"></div>
+                <div class="segment-img-label">Tribe Perimeter</div>
+              </div>
+              <div class="segment-body">
+                <div class="segment-name">Tribe Perimeter</div>
+                <div class="segment-desc">Outer defenses carved into rocky terrain. Watchtowers are the first contact points with Church forces during the rescue sequence. Ambush Alley requires combat or evasion.</div>
+                <div class="segment-lore">The watchtowers were built facing outward, toward the forest, watching for Church scouts. During the rescue, Church soldiers come from the same direction the Tribe has been watching for years. They were expected. Not expected to succeed.</div>
+                <div class="segment-items"><div class="segment-items-label">Items Found</div><div class="segment-items-list"><span class="item-tag">Red Vial</span></div></div>
+              </div>
+            </div>
+
+            <div class="segment-card reveal">
+              <div class="segment-img-wrap">
+                <div class="placeholder-region" style="background:linear-gradient(135deg,#101510 0%,#181e16 100%);font-size:8px">[ Tribe Settlement ]</div>
+                <div class="segment-img-overlay"></div>
+                <div class="segment-img-label">Tribe Settlement</div>
+              </div>
+              <div class="segment-body">
+                <div class="segment-name">Tribe Settlement</div>
+                <div class="segment-desc">Core living area. The Healing Hut holds Pluvia. The Storage Cave contains the Fragment of Caligo. The Tribe Chief offers Wind Essence after the successful rescue.</div>
+                <div class="segment-lore">The Communal Fire Pit has been burning continuously for sixty years. The Tribe considers its flame a living entity distinct from the wood that feeds it. Eldritch scholars would find this interpretation more accurate than poetic.</div>
+                <div class="segment-items">
+                  <div class="segment-items-label">Items Found</div>
+                  <div class="segment-items-list">
+                    <span class="item-tag">Fragment of Caligo</span>
+                    <span class="item-tag">Wind Essence</span>
+                    <span class="item-tag">Blue Gem</span>
+                    <span class="item-tag">Green Herb</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="items-found reveal">
+          <div class="items-found-title">All Items Found in Tribe Area</div>
+          <div class="items-grid">
+            <span class="item-chip"><span class="chip-icon">🌑</span>Fragment of Caligo</span>
+            <span class="item-chip"><span class="chip-icon">💨</span>Wind Essence</span>
+            <span class="item-chip"><span class="chip-icon">💎</span>Blue Gem</span>
+            <span class="item-chip"><span class="chip-icon">🌿</span>Green Herb (×3)</span>
+            <span class="item-chip"><span class="chip-icon">🧪</span>Red Vial</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- ══ PORT CITY ══ -->
+      <div class="region-entry" id="port-city">
+        <div class="region-header">
+          <div class="region-title-block">
+            <div class="region-number">Region 06</div>
+            <h2 class="region-name">Port City</h2>
+            <div class="region-subtitle">Safe Zone — Key Decision Hub — Starting Point (Merchant)</div>
+          </div>
+          <div class="region-badges">
+            <span class="region-badge badge-safe">Safe Zone</span>
+            <span class="region-badge badge-ms">MS: +3 (Revelation)</span>
+          </div>
+        </div>
+
+        <div class="region-img-wrap reveal">
+          <div class="placeholder-region" style="background: linear-gradient(135deg,#101518 0%,#181e22 40%,#101318 100%);">
+            <span style="font-size:32px;opacity:0.3">⚓</span>
+            <span>[ Placeholder — Port City Environment ]</span>
+          </div>
+          <div class="region-img-overlay"></div>
+          <div class="region-img-label">Port City — Key Decision Hub</div>
+        </div>
+
+        <div class="region-body">
+          <div class="region-description">
+            <div class="rblock-label">Environment</div>
+            <div class="rblock-title">The City That Trades in Everything</div>
+            <div class="atmo-grid">
+              <div class="atmo-item"><div class="atmo-key">Palette</div><div class="atmo-val">Bright coastal light. Lantern-lit taverns at night.</div></div>
+              <div class="atmo-item"><div class="atmo-key">Lighting</div><div class="atmo-val">Coastal sun by day. Warm market glow by night.</div></div>
+              <div class="atmo-item"><div class="atmo-key">Sounds</div><div class="atmo-val">Seagulls, ship bells, tavern music, crowd noise.</div></div>
+              <div class="atmo-item"><div class="atmo-key">Hazards</div><div class="atmo-val">None. Church spies observe. Konrad waits.</div></div>
+            </div>
+            <div class="rblock-text">
+              <p>Port City is the loudest location in the game, and the most comfortable, and the most dangerous in ways that have nothing to do with enemies. The Merchant Guild controls the peace here through economic leverage rather than force — no one fights in a city where fighting disrupts trade, and the Guild has ensured that every resident's livelihood depends on trade continuing undisrupted. It is an impressive achievement and a deeply fragile one.</p>
+              <p>The Gilded Anchor tavern at the heart of the Merchant Quarter is where the world's decisions get made by proxy. Information flows here. Konrad Merchant has been sitting in the same corner booth for twenty years, gathering the evidence for a case that the Church will never allow to be tried, waiting for someone who can actually do something with what he knows.</p>
+            </div>
+          </div>
+
+          <div class="region-lore-block">
+            <div class="rblock-label">Lore</div>
+            <div class="rblock-title">The Weight of What Konrad Knows</div>
+            <div class="rblock-text">
+              <p>Konrad was at the orphanage. He was there when the Church soldiers came. He was seven years old and small enough to fit under the floor of the cellar and intelligent enough to stay silent for six hours while everything above him was resolved. What he witnessed he has spent twenty years translating into evidence — shipping records, financial documents, testimony from survivors he tracked down one by one across the continent.</p>
+              <p>The decision that occurs in Port City — whether to believe Konrad's revelation or dismiss it — is the central path lock of the game. It is framed as an information question but it is actually a question about the player's character: can you hold a truth that requires everything you have been told to be wrong? The game does not judge either answer. It simply shows you where each road goes.</p>
+              <p>Church spies watch the Guild Hall from a hidden office behind a bookshelf in the harbor district. They have been watching long enough that they know about Konrad. They have never moved against him because his death would make his evidence more credible, not less. The Church is patient. It has had a lot of practice.</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="ms-warning" style="border-color:rgba(184,146,42,0.3); background:rgba(184,146,42,0.05);">
+          <div class="ms-warning-icon">💡</div>
+          <div class="ms-warning-content">
+            <div class="ms-warning-title" style="color:var(--gold)">Mind State Effect — Revelation Shock</div>
+            <div class="ms-warning-text">No Mind State increase in Port City itself. However, if Konrad's revelations are accepted, the emotional weight of the truth causes a minor +3 Mind State from revelation shock. This is the only Mind State increase in the game triggered purely by knowledge rather than threat.</div>
+          </div>
+        </div>
+
+        <div class="segments-section">
+          <div class="segments-label">Map Segments</div>
+          <div class="segments-grid">
+            <div class="segment-card reveal">
+              <div class="segment-img-wrap">
+                <div class="placeholder-region" style="background:linear-gradient(135deg,#0e1215 0%,#161c20 100%);font-size:8px">[ Harbor District ]</div>
+                <div class="segment-img-overlay"></div>
+                <div class="segment-img-label">Harbor District</div>
+              </div>
+              <div class="segment-body">
+                <div class="segment-name">Harbor District</div>
+                <div class="segment-desc">Docking bay, customs office, and warehouse row. Arriving travelers and shipping cargo flow through here. The Harbor Captain offers passage to Cultist Island for certain paths.</div>
+                <div class="segment-lore">The warehouse district contains shipments the customs office has been paid not to examine. This is openly acknowledged and never spoken aloud — a condition of commerce that everyone in the harbor maintains through tacit agreement.</div>
+                <div class="segment-items"><div class="segment-items-label">Items Found</div><div class="segment-items-list"><span class="item-tag">Iron Ingots</span><span class="item-tag">Silver Wire</span></div></div>
+              </div>
+            </div>
+
+            <div class="segment-card reveal">
+              <div class="segment-img-wrap">
+                <div class="placeholder-region" style="background:linear-gradient(135deg,#121016 0%,#1c1820 100%);font-size:8px">[ Church Spy Outpost ]</div>
+                <div class="segment-img-overlay"></div>
+                <div class="segment-img-label">Church Spy Outpost (Hidden)</div>
+              </div>
+              <div class="segment-body">
+                <div class="segment-name">Church Spy Outpost</div>
+                <div class="segment-desc">Hidden behind a bookshelf in the harbor district. The Church observers have documented every Guild transaction for years. Spy documents reveal the Church's true motives and interest in the Merchant Guild.</div>
+                <div class="segment-lore">The escape ladder at the back of the outpost has never been used. Whoever built it assumed this observation post would one day need evacuating. The fact that it has not needed evacuating does not mean nothing bad has happened here — it means the bad things have been authorized.</div>
+                <div class="segment-items"><div class="segment-items-label">Items Found</div><div class="segment-items-list"><span class="item-tag">Spy Documents</span><span class="item-tag">Red Gem</span></div></div>
+              </div>
+            </div>
+
+            <div class="segment-card reveal">
+              <div class="segment-img-wrap">
+                <div class="placeholder-region" style="background:linear-gradient(135deg,#131018 0%,#1e1825 100%);font-size:8px">[ Merchant Quarter ]</div>
+                <div class="segment-img-overlay"></div>
+                <div class="segment-img-label">Merchant Quarter — The Gilded Anchor</div>
+              </div>
+              <div class="segment-body">
+                <div class="segment-name">Merchant Quarter</div>
+                <div class="segment-desc">Heart of the city. Merchant Guild Hall, the Gilded Anchor tavern, general market, and bank. Konrad's permanent base. The central path lock interaction happens in the Guild Hall.</div>
+                <div class="segment-lore">The tavern keeper at The Gilded Anchor has been brokering information for thirty years. He knows where every significant person in Port City has been, what they bought, who they spoke to. He is the most dangerous man in the city and presents himself as a man who refills cups.</div>
+                <div class="segment-items">
+                  <div class="segment-items-label">Items Found</div>
+                  <div class="segment-items-list">
+                    <span class="item-tag">Fragment of Caligo</span>
+                    <span class="item-tag">Book of Trade I–III</span>
+                    <span class="item-tag">Flintlock</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="items-found reveal">
+          <div class="items-found-title">All Items Found in Port City</div>
+          <div class="items-grid">
+            <span class="item-chip"><span class="chip-icon">⚙</span>Iron Ingots</span>
+            <span class="item-chip"><span class="chip-icon">🧵</span>Silver Wire</span>
+            <span class="item-chip"><span class="chip-icon">🌑</span>Fragment of Caligo</span>
+            <span class="item-chip"><span class="chip-icon">📖</span>Book of Trade I–III</span>
+            <span class="item-chip"><span class="chip-icon">🔫</span>Flintlock</span>
+            <span class="item-chip"><span class="chip-icon">💎</span>Red Gem</span>
+            <span class="item-chip"><span class="chip-icon">🏹</span>Bowstring</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- ══ CULTIST ISLAND ══ -->
+      <div class="region-entry caligo-zone" id="cultist-island">
+        <div class="region-header">
+          <div class="region-title-block">
+            <div class="region-number">Region 07</div>
+            <h2 class="region-name">Cultist Island</h2>
+            <div class="region-subtitle">High-Risk Zone — Final Mission Area — Starting Point (Cultist)</div>
+          </div>
+          <div class="region-badges">
+            <span class="region-badge badge-danger">High-Risk Zone</span>
+            <span class="region-badge badge-caligo">Caligo Zone</span>
+            <span class="region-badge badge-ms">MS: Fastest</span>
+          </div>
+        </div>
+
+        <div class="region-img-wrap reveal">
+          <div class="placeholder-region" style="background: linear-gradient(135deg,#0a0612 0%,#140a20 40%,#0c0815 100%);">
+            <span style="font-size:32px;opacity:0.3">🌑</span>
+            <span>[ Placeholder — Cultist Island Environment ]</span>
+          </div>
+          <div class="region-img-overlay"></div>
+          <div class="region-img-label">Cultist Island — Caligo Zone</div>
+        </div>
+
+        <div class="region-body">
+          <div class="region-description">
+            <div class="rblock-label">Environment</div>
+            <div class="rblock-title">The World as Caligo Prefers It</div>
+            <div class="atmo-grid">
+              <div class="atmo-item"><div class="atmo-key">Palette</div><div class="atmo-val">Purple-black. Organic architecture. Wrongness.</div></div>
+              <div class="atmo-item"><div class="atmo-key">Lighting</div><div class="atmo-val">Pulsing bioluminescent growths. Flickering.</div></div>
+              <div class="atmo-item"><div class="atmo-key">Sounds</div><div class="atmo-val">Cult chants, distant screaming, heartbeat ambience.</div></div>
+              <div class="atmo-item"><div class="atmo-key">Hazards</div><div class="atmo-val">Passive corruption damage at very high MS. Eldritch Manifestations at 75%+.</div></div>
+            </div>
+            <div class="rblock-text">
+              <p>Cultist Island does not look like a place people chose to live. It looks like a place that chose them — a geography that grew to accommodate its inhabitants by becoming something they could feel at home in, which means something no one else could stand to look at for long. The architecture is partially stone and partially something else: growth patterns that follow no biological logic, surfaces that pulse slowly under touch, structures that cast shadows in directions the light does not suggest.</p>
+              <p>Caligo's influence is most concentrated here. The bioluminescent growths that serve as light sources respond to Mind State levels, brightening and pulsing faster as the player's psychological stability decreases. At very high Mind State, the light begins to look like breathing. This is not a graphical effect — the growths are alive, in whatever sense Caligo's expressions can be described as alive.</p>
+            </div>
+          </div>
+
+          <div class="region-lore-block">
+            <div class="rblock-label">Lore</div>
+            <div class="rblock-title">The Church's Other Children</div>
+            <div class="rblock-text">
+              <p>The Cult of Caligo was not founded. It accumulated. Failed experiments who survived their abandonment, soldiers left in corrupted zones who adapted instead of dying, civilians from villages the Church destroyed who found that Caligo's presence offered something the Church never had: an acknowledgment that the darkness was real, that it could not be prayed away, and that survival within it was possible if you stopped pretending it was not there.</p>
+              <p>Funeris — the Cultist — was expelled from the Church at nine years old when her experimental results proved too unstable for their purposes. The Cult took her in not out of compassion but out of pragmatism: she was useful to them. Over time the relationship became more complex than utility. In Path A she is an obstacle. In the Cultist DLC she is the lens through which everything else in the game is reread — because from her perspective, the Mercenary is not a hero, and the Church is not a villain to be defeated. Both of them are just more children from the same orphanage, trying to make sense of what was done to them.</p>
+              <p>The largest Fragment of Caligo rests in the Cult Leader's fortress vault. The Cult did not bring it there. It arrived the same way the Tribe Area's fragment arrived, the same way the Port City fragment surfaced, the same way all of them have been moving — slowly, over years, toward the people most entangled with Caligo's influence. They are not tools. They are not weapons. They are, as the Library of Caligo's most carefully preserved text states, "the places where Caligo remembers having been."</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="ms-warning">
+          <div class="ms-warning-icon">💀</div>
+          <div class="ms-warning-content">
+            <div class="ms-warning-title">Mind State Effect — FASTEST ZONE</div>
+            <div class="ms-warning-text">+5 per minute of exploration. Each Cultist combat: +6. Eldritch Manifestation encounter: +12. Blue Gems scattered throughout are critical resources. Path C: Mind State reaches 100 during this zone — insanity ending triggered. The island is designed to be unmanageable without careful resource preparation.</div>
+          </div>
+        </div>
+
+        <div class="segments-section">
+          <div class="segments-label">Map Segments</div>
+          <div class="segments-grid">
+            <div class="segment-card reveal">
+              <div class="segment-img-wrap">
+                <div class="placeholder-region" style="background:linear-gradient(135deg,#08060f 0%,#120c1c 100%);font-size:8px">[ Coastal Landing ]</div>
+                <div class="segment-img-overlay"></div>
+                <div class="segment-img-label">Coastal Landing</div>
+              </div>
+              <div class="segment-body">
+                <div class="segment-name">Coastal Landing</div>
+                <div class="segment-desc">Entry point. Cult watchers launch an immediate ambush from the shore. The Signal Tower can be disabled for a stealth approach. A coastal cave offers an alternate entry path for careful players.</div>
+                <div class="segment-lore">The shore has no natural harbor. Ships dock by driving ashore and the beach reforms around them within hours, as if the island accepts arrivals it has chosen and refuses those it has not.</div>
+                <div class="segment-items"><div class="segment-items-label">Items Found</div><div class="segment-items-list"><span class="item-tag">Scimitar (drop)</span><span class="item-tag">Blue Gem</span></div></div>
+              </div>
+            </div>
+
+            <div class="segment-card reveal">
+              <div class="segment-img-wrap">
+                <div class="placeholder-region" style="background:linear-gradient(135deg,#0c0818 0%,#160e24 100%);font-size:8px">[ Inner Sanctum ]</div>
+                <div class="segment-img-overlay"></div>
+                <div class="segment-img-label">Inner Sanctum</div>
+              </div>
+              <div class="segment-body">
+                <div class="segment-name">Inner Sanctum</div>
+                <div class="segment-desc">Core cult territory. Heavily guarded. The Library of Caligo here contains the most complete lore documentation about Caligo's nature in the entire game. Prison cells hold experimented subjects with critical backstory.</div>
+                <div class="segment-lore">The Library was assembled over decades from every source the Cult could obtain — Church records stolen during raids, scholarly texts from pre-Lumen civilizations, and direct transcriptions of what cult members experienced during deep Caligo communion. It is more complete than anything in the Theocratic Capital's library, and far more honest.</div>
+                <div class="segment-items">
+                  <div class="segment-items-label">Items Found</div>
+                  <div class="segment-items-list">
+                    <span class="item-tag">Ancient Paper</span>
+                    <span class="item-tag">Ink Vial</span>
+                    <span class="item-tag">Dark Priest's Robe</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="segment-card reveal">
+              <div class="segment-img-wrap">
+                <div class="placeholder-region" style="background:linear-gradient(135deg,#0a0610 0%,#14081e 100%);font-size:8px">[ Cult Leader's Fortress ]</div>
+                <div class="segment-img-overlay"></div>
+                <div class="segment-img-label">Cult Leader's Fortress</div>
+              </div>
+              <div class="segment-body">
+                <div class="segment-name">Cult Leader's Fortress</div>
+                <div class="segment-desc">Final area. The Throne Room Approach is a single atmospheric corridor. The Boss Chamber houses the Cult Leader encounter. The Fragment Vault unlocks only after the leader is defeated.</div>
+                <div class="segment-lore">The Cult Leader does not consider himself a villain. He considers himself the only person who looked at what the Church did to the orphans and reached the correct conclusion: that if the Church could use Caligo as a tool, Caligo could use the Church as a medium — and could, in time, use everything else.</div>
+                <div class="segment-items">
+                  <div class="segment-items-label">Items Found</div>
+                  <div class="segment-items-list">
+                    <span class="item-tag">Largest Fragment of Caligo</span>
+                    <span class="item-tag">Blue Gems ×5</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="items-found reveal">
+          <div class="items-found-title">All Items Found in Cultist Island</div>
+          <div class="items-grid">
+            <span class="item-chip"><span class="chip-icon">🌑</span>Largest Fragment of Caligo</span>
+            <span class="item-chip"><span class="chip-icon">💎</span>Blue Gems ×5</span>
+            <span class="item-chip"><span class="chip-icon">📜</span>Ancient Paper</span>
+            <span class="item-chip"><span class="chip-icon">⚔</span>Scimitar</span>
+            <span class="item-chip"><span class="chip-icon">👘</span>Dark Priest's Robe</span>
+            <span class="item-chip"><span class="chip-icon">🖊</span>Ink Vial</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- ══ ZONES OF TERRORS ══ -->
+      <div class="region-entry danger-zone" id="zones-of-terrors">
+        <div class="region-header">
+          <div class="region-title-block">
+            <div class="region-number">Region 08</div>
+            <h2 class="region-name">Zones of Terrors</h2>
+            <div class="region-subtitle">High-Risk Zone — Eldritch Horror Area — Mind State Accelerator</div>
+          </div>
+          <div class="region-badges">
+            <span class="region-badge badge-danger">High-Risk Zone</span>
+            <span class="region-badge badge-ms">MS: +3/min</span>
+          </div>
+        </div>
+
+        <div class="region-img-wrap reveal">
+          <div class="placeholder-region" style="background: linear-gradient(135deg,#0f0808 0%,#1a0c0c 40%,#100a0a 100%);">
+            <span style="font-size:32px;opacity:0.3">👁</span>
+            <span>[ Placeholder — Zones of Terrors Environment ]</span>
+          </div>
+          <div class="region-img-overlay"></div>
+          <div class="region-img-label">Zones of Terrors — Eldritch Corruption</div>
+        </div>
+
+        <div class="region-body">
+          <div class="region-description">
+            <div class="rblock-label">Environment</div>
+            <div class="rblock-title">Reality As It Remembers Being Wrong</div>
+            <div class="atmo-grid">
+              <div class="atmo-item"><div class="atmo-key">Palette</div><div class="atmo-val">Wrong colors. Skies that shouldn't be.</div></div>
+              <div class="atmo-item"><div class="atmo-key">Lighting</div><div class="atmo-val">Pulsing eldritch glow. Purple and red hues.</div></div>
+              <div class="atmo-item"><div class="atmo-key">Sounds</div><div class="atmo-val">Distorted ambience. Backward music. Wet organic sounds.</div></div>
+              <div class="atmo-item"><div class="atmo-key">Hazards</div><div class="atmo-val">Environmental corruption damage. Hallucination enemies at high MS.</div></div>
+            </div>
+            <div class="rblock-text">
+              <p>The Zones of Terrors are not a single location. They are the seams. Everywhere the world was sutured together after Caligo's disruption, the stitching shows. Trees lean against gravity. Reflections in water show places that are not there. Structures from eras that the world does not acknowledge stand partially dissolved into biological-looking formations, as if the world is slowly digesting the evidence that it once was otherwise.</p>
+              <p>Eldritch Horrors are most concentrated here, and their appearance reflects the Mind State of the player observing them. At low MS they are recognizably wrong — humanoid in general shape, incorrect in proportion and motion. As MS increases they become more detailed in their wrongness: additional limbs, composite faces, movements that suggest two bodies operating a single form. At maximum Mind State, they look recognizably human, and that is the point at which they become hardest to fight.</p>
+            </div>
+          </div>
+
+          <div class="region-lore-block">
+            <div class="rblock-label">Lore</div>
+            <div class="rblock-title">The Memory Scars of the World</div>
+            <div class="rblock-text">
+              <p>Subject I-3's passage through the world created the first Zones of Terrors, but it did not create all of them. The zones spread because the conditions for their creation — places where the membrane between the world's order and its underlying chaos grew thin — were pre-existing. Subject I-3 did not corrupt the world. The world was already seamed. I-3 simply showed where the seams were under sufficient pressure.</p>
+              <p>The Caligo Shrines found in the deep zones were not built by the Cult. Scholars who have reached them describe them as pre-construction — formations that assembled themselves from the surrounding material over decades, accreting meaning the way mineral deposits accrete minerals. They store no blessing, give no power. Touching them simply costs something, which is the most honest transaction in the game.</p>
+              <p>The Zones of Terrors are heaviest in the Cultist and Shaman DLCs because both characters have a fundamental relationship with Caligo that the Mercenary does not. What threatens the Mercenary from outside is navigated from within by Funeris and Pluvia — they are not threatened by the Zones so much as recognized by them.</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="ms-warning">
+          <div class="ms-warning-icon">👁️</div>
+          <div class="ms-warning-content">
+            <div class="ms-warning-title">Mind State Effect</div>
+            <div class="ms-warning-text">+3 per in-game minute of traversal. +10 per Eldritch Horror combat. Nexus Points: +15 upon entering. Apex form encounters: +12. Hallucination enemies appear at MS 75+ and cannot be defeated — only survived. Designed to punish the unprepared while rewarding careful navigation.</div>
+          </div>
+        </div>
+
+        <div class="segments-section">
+          <div class="segments-label">Map Segments</div>
+          <div class="segments-grid">
+            <div class="segment-card reveal">
+              <div class="segment-img-wrap">
+                <div class="placeholder-region" style="background:linear-gradient(135deg,#100808 0%,#1a1010 100%);font-size:8px">[ Corrupted Frontier ]</div>
+                <div class="segment-img-overlay"></div>
+                <div class="segment-img-label">Corrupted Frontier</div>
+              </div>
+              <div class="segment-body">
+                <div class="segment-name">Corrupted Frontier</div>
+                <div class="segment-desc">The border zone where visual distortion begins. First Horror encounters. An abandoned waystation serves as a temporary rest point — the last normal architecture before the Zones proper begin.</div>
+                <div class="segment-lore">The waystation's previous occupants left food and medical supplies arranged as if they had stepped out briefly. The food has not decayed at a normal rate. Time in the frontier zones does not behave consistently — this is not metaphor.</div>
+                <div class="segment-items"><div class="segment-items-label">Items Found</div><div class="segment-items-list"><span class="item-tag">Red Vials</span><span class="item-tag">Blue Gem</span></div></div>
+              </div>
+            </div>
+
+            <div class="segment-card reveal">
+              <div class="segment-img-wrap">
+                <div class="placeholder-region" style="background:linear-gradient(135deg,#0e0608 0%,#180c10 100%);font-size:8px">[ Caligo Nexus Points ]</div>
+                <div class="segment-img-overlay"></div>
+                <div class="segment-img-label">Caligo Nexus Points</div>
+              </div>
+              <div class="segment-body">
+                <div class="segment-name">Caligo Nexus Points</div>
+                <div class="segment-desc">The game's most dangerous areas. Heaviest Caligo concentration. The Nexus Core triggers environmental events when Mind State is high. The Fragment Echo holds an optional Fragment shard for completionists.</div>
+                <div class="segment-lore">At high Mind State, the Nexus Core shows hallucinations drawn from the character's own history. These are not random — they are specific. The game does not explain how Caligo knows these things. This is intentional.</div>
+                <div class="segment-items">
+                  <div class="segment-items-label">Items Found</div>
+                  <div class="segment-items-list">
+                    <span class="item-tag">Fragment of Caligo (shard)</span>
+                    <span class="item-tag">Blue Gems</span>
+                    <span class="item-tag">Rare Eldritch Materials</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="items-found reveal">
+          <div class="items-found-title">All Items Found in Zones of Terrors</div>
+          <div class="items-grid">
+            <span class="item-chip"><span class="chip-icon">💎</span>Blue Gems (critical)</span>
+            <span class="item-chip"><span class="chip-icon">🌑</span>Fragment of Caligo Shard</span>
+            <span class="item-chip"><span class="chip-icon">💀</span>Eldritch Horror Drops</span>
+            <span class="item-chip"><span class="chip-icon">🧪</span>Red Vials</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- ══ UNDERGROUND LABS ══ -->
+      <div class="region-entry caligo-zone" id="underground-labs">
+        <div class="region-header">
+          <div class="region-title-block">
+            <div class="region-number">Region 09</div>
+            <h2 class="region-name">Underground Orphan Laboratories</h2>
+            <div class="region-subtitle">Forbidden Subterranean Labyrinth — Psychological Horror Area — Critical Lore Location</div>
+          </div>
+          <div class="region-badges">
+            <span class="region-badge badge-danger">High-Risk Zone</span>
+            <span class="region-badge badge-caligo">Psychological Horror</span>
+            <span class="region-badge badge-ms">MS: No Reducers</span>
+          </div>
+        </div>
+
+        <div class="region-img-wrap reveal">
+          <div class="placeholder-region" style="background: linear-gradient(135deg,#080808 0%,#100a10 40%,#0a0808 100%);">
+            <span style="font-size:32px;opacity:0.3">🧪</span>
+            <span>[ Placeholder — Underground Laboratories Environment ]</span>
+          </div>
+          <div class="region-img-overlay"></div>
+          <div class="region-img-label">Underground Laboratories — Forbidden Zone</div>
+        </div>
+
+        <div class="region-body">
+          <div class="region-description">
+            <div class="rblock-label">Environment</div>
+            <div class="rblock-title">Sterile Horror Meets Decay</div>
+            <div class="atmo-grid">
+              <div class="atmo-item"><div class="atmo-key">Old Section</div><div class="atmo-val">Rusted equipment. Water-stained stone. Bones.</div></div>
+              <div class="atmo-item"><div class="atmo-key">New Section</div><div class="atmo-val">Clinical white tiles stained with blood. Active machinery.</div></div>
+              <div class="atmo-item"><div class="atmo-key">Sounds</div><div class="atmo-val">Muffled screaming. Machinery hum. Dripping water.</div></div>
+              <div class="atmo-item"><div class="atmo-key">Hazards</div><div class="atmo-val">Illusion enemies. Experimental subjects as enemies. Priest's forces.</div></div>
+            </div>
+            <div class="rblock-text">
+              <p>Two versions of the same nightmare exist simultaneously in the Underground Laboratories. The Old Section is what the Church built decades ago: stone corridors made wrong by their purpose, surgical theaters where the equipment has long since rusted but the stains remain to indicate what the equipment was for. Memory Fragments play as non-interactive sequences here — the past does not require the player's participation to continue being true.</p>
+              <p>The New Section is active. It is clinical in the way that only institutions that have normalized their practices become clinical — everything labeled, everything organized, everything proceeding according to documented protocols that Father Calum reviews quarterly to ensure efficiency. Imprisoned subjects in the holding cells provide more information about the experiments than any document, if the player can bear to listen to them.</p>
+            </div>
+          </div>
+
+          <div class="region-lore-block">
+            <div class="rblock-label">Lore</div>
+            <div class="rblock-title">The Truth the Church Built Its Walls Around</div>
+            <div class="rblock-text">
+              <p>The Underground Laboratory is the answer to every question the game has been asking. Where did the Mercenary's enhanced physiology come from? Why does the Shaman see the future in three-week intervals? How does Funeris the Cultist channel Caligo directly? Why is Father Calum immune to Mind State deterioration? Why does Konrad know what he knows?</p>
+              <p>All five protagonists were experimented on here as children. The experiments used Fragments of Caligo as catalysts — exposing orphan subjects to controlled eldritch influence and observing what adaptations developed. Most subjects did not survive. Some survived in forms the Church could not use and were disposed of. The successful subjects — designated by series identifier — were either recruited into Church service (Calum, as Subject C-1) or escaped (the others).</p>
+              <p>Father Calum's Office contains the documents that prove all of this in bureaucratic detail. The documents are written in the same calm, administrative tone as every other Church record — because they were written by the same people, following the same procedural standards, treating the experiments as a logistics problem rather than a moral one. The horror of the documents is not their content but their register: the Church did not lose its humanity doing this. It simply never consulted it.</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="ms-warning">
+          <div class="ms-warning-icon">🔬</div>
+          <div class="ms-warning-content">
+            <div class="ms-warning-title">Mind State Effect — NO REDUCTION AVAILABLE</div>
+            <div class="ms-warning-text">+10 on entry. Each active chamber: +8. Witnessing Priest's operations: +12. Each experiment subject interaction: +5 from emotional weight. Old section memory fragments: +6. Illusion enemies (MS 75+): non-removable +5 per encounter. The Underground Laboratory contains no Mind State reduction options. Stock Blue Gems before entry.</div>
+          </div>
+        </div>
+
+        <div class="segments-section">
+          <div class="segments-label">Map Segments</div>
+          <div class="segments-grid">
+            <div class="segment-card reveal">
+              <div class="segment-img-wrap">
+                <div class="placeholder-region" style="background:linear-gradient(135deg,#080808 0%,#121012 100%);font-size:8px">[ Old Laboratory ]</div>
+                <div class="segment-img-overlay"></div>
+                <div class="segment-img-label">Old Laboratory (Decayed)</div>
+              </div>
+              <div class="segment-body">
+                <div class="segment-name">Old Laboratory (Decayed)</div>
+                <div class="segment-desc">The original experimentation chambers, now abandoned. Document cache at the Reception Ruins. The Surgical Theater triggers Memory Fragments. Hidden Records Room contains critical experiment documentation.</div>
+                <div class="segment-lore">Ghost Memory NPCs appear in the old section as psychic echoes of past victims — children at the ages they were when the experiments were conducted. They do not respond to interaction. They simply repeat the last thing they were doing when the experiments ended. Some of them are still waiting to be told they can go home.</div>
+                <div class="segment-items">
+                  <div class="segment-items-label">Items Found</div>
+                  <div class="segment-items-list">
+                    <span class="item-tag">Book of Pestilence (series)</span>
+                    <span class="item-tag">Key to Restricted Archive</span>
+                    <span class="item-tag">Subject Notes</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="segment-card reveal">
+              <div class="segment-img-wrap">
+                <div class="placeholder-region" style="background:linear-gradient(135deg,#080a08 0%,#101410 100%);font-size:8px">[ Active Laboratory ]</div>
+                <div class="segment-img-overlay"></div>
+                <div class="segment-img-label">Active Laboratory (New Section)</div>
+              </div>
+              <div class="segment-body">
+                <div class="segment-name">Active Laboratory (New Section)</div>
+                <div class="segment-desc">Currently operating under Priest Father Calum's leadership. Subject Holding Cells with NPCs. Active Surgical Theater as encounter point. Priest's Office holds the most important documents in the game.</div>
+                <div class="segment-lore">Father Calum moves through the Active Laboratory with the proprietary comfort of a man overseeing his life's work. He does not see the subjects as people. He sees them as processes — incomplete transformations in progress. This is not madness. It is the end state of a philosophy that began with a reasonable-sounding premise and was never interrupted.</div>
+                <div class="segment-items">
+                  <div class="segment-items-label">Items Found</div>
+                  <div class="segment-items-list">
+                    <span class="item-tag">Critical Experiment Documents</span>
+                    <span class="item-tag">Antibiotics / Betadine</span>
+                    <span class="item-tag">Red Vials</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="segment-card reveal">
+              <div class="segment-img-wrap">
+                <div class="placeholder-region" style="background:linear-gradient(135deg,#080608 0%,#100c12 100%);font-size:8px">[ Connecting Passage ]</div>
+                <div class="segment-img-overlay"></div>
+                <div class="segment-img-label">Connecting Passage</div>
+              </div>
+              <div class="segment-body">
+                <div class="segment-name">Connecting Passage</div>
+                <div class="segment-desc">The transitional corridor between old and new sections. A flooding corridor serves as environmental hazard. Guard checkpoints staffed by Priest's soldiers. One-way emergency exit for certain paths.</div>
+                <div class="segment-lore">The flooding in the corridor occurs at regular intervals — a drainage failure that has been documented and unfixed for six years. The maintenance report sits in the Priest's Office, filed under a category that means it will not be reviewed until the quarterly inspection, which is nine months away, which suggests the Priest has decided that flooding is an acceptable condition for a corridor used only by people who are already imprisoned.</div>
+                <div class="segment-items"><div class="segment-items-label">Items Found</div><div class="segment-items-list"><span class="item-tag">Red Vials</span></div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="items-found reveal">
+          <div class="items-found-title">All Items Found in Underground Laboratories</div>
+          <div class="items-grid">
+            <span class="item-chip"><span class="chip-icon">📋</span>Critical Experiment Documents</span>
+            <span class="item-chip"><span class="chip-icon">📖</span>Book of Pestilence (series)</span>
+            <span class="item-chip"><span class="chip-icon">💊</span>Antibiotics / Betadine</span>
+            <span class="item-chip"><span class="chip-icon">📝</span>Subject Notes</span>
+            <span class="item-chip"><span class="chip-icon">🧪</span>Red Vials</span>
+            <span class="item-chip"><span class="chip-icon">🔑</span>Key to Restricted Archive</span>
+          </div>
+        </div>
+      </div>
+
+    </section>
+
+    <!-- FOOTER -->
+    <footer class="site-footer">
+      <div class="footer-inner">
+        <div class="footer-logo-block">
+          <div class="footer-logo-title">Elucidate RPG</div>
+          <div class="footer-logo-sub">Pamantasan ng Lungsod ng Maynila · BS Information Technology</div>
+        </div>
+        <div class="footer-links">
+          <a href="characters.html">Characters</a>
+          <a href="lore.html">Lore</a>
+          <a href="items.html">Items</a>
+          <a href="environments.html">Environments</a>
+          <a href="developers.html">Developers</a>
+        </div>
+        <div class="footer-copy">
+          <span>©2026. Elucidate RPG DLC. All Rights Reserved.<br>
+          Made by Group WOZ. · Powered by FGC UNAUX</span>
+        </div>
+      </div>
+      <div class="footer-ornament">
+        ✦ &nbsp; Between what you were told and what is true — that distance is everything &nbsp; ✦
+      </div>
+    </footer>
+
+  </main>
+</div>
+
+<script>
+// ─── STAR FIELD ───────────────────────────
+(function() {
+  const c = document.getElementById('stars-container');
+  if (!c) return;
+  for (let i = 0; i < 70; i++) {
+    const s = document.createElement('div');
+    s.className = 'star';
+    s.style.cssText = `left:${Math.random()*100}%;top:${Math.random()*100}%;--d:${3+Math.random()*5}s;--o:${0.2+Math.random()*0.5};animation-delay:${Math.random()*6}s;width:${Math.random()<0.15?2:1}px;height:${Math.random()<0.15?2:1}px;`;
+    c.appendChild(s);
+  }
+})();
+
+// ─── SEARCH ───────────────────────────────
+const searchData = [
+  { title:'Walled City', section:'Environments', excerpt:'Safe Zone. Military hub. Mercenary starting point. Armory, Blacksmith, Church Outpost.', anchor:'#walled-city' },
+  { title:'Outer Gate District', section:'Environments', excerpt:'Entry zone to the Walled City. Guards check papers. Merchants sell basic supplies.', anchor:'#walled-city' },
+  { title:'Inner Military District', section:'Environments', excerpt:'Barracks, armory, blacksmiths. Mercenary receives starting weapons here.', anchor:'#walled-city' },
+  { title:'Church Outpost', section:'Environments', excerpt:'Small Church presence in Walled City. Priests monitor military progress.', anchor:'#walled-city' },
+  { title:'Theocratic Capital', section:'Environments', excerpt:'Dual-State Zone. Church seat of power. Beautiful facade, rotten core. Final Battle in Ending B.', anchor:'#theocratic-capital' },
+  { title:'Cathedral Plaza', section:'Environments', excerpt:'Public area. Pilgrims, merchants, attendants. Outdoor market for holy items.', anchor:'#theocratic-capital' },
+  { title:'Main Cathedral', section:'Environments', excerpt:'Grand church. Mission assignment. Library with lore books. Confession booths.', anchor:'#theocratic-capital' },
+  { title:'Theocratic Battleground', section:'Environments', excerpt:'Ending B exclusive. Capital erupts into battle. Father Calum final boss arena.', anchor:'#theocratic-capital' },
+  { title:'Home Village', section:'Environments', excerpt:'High-Risk Zone. Mind State DOUBLED rate. Mercenary childhood ruins. Old Orphanage.', anchor:'#home-village' },
+  { title:'The Old Orphanage', section:'Environments', excerpt:'Childhood home. Memory fragments. Hidden basement. Headmaster office critical lore.', anchor:'#home-village' },
+  { title:'Outskirts Village', section:'Environments', excerpt:'Safe Zone. Transition hub. Mind State recovery -3. Village Chief hidden basement to Tribe.', anchor:'#outskirts-village' },
+  { title:'Village Chief Home', section:'Environments', excerpt:'Key location. Hidden trapdoor connects to Tribe Area.', anchor:'#outskirts-village' },
+  { title:'Tribe Area', section:'Environments', excerpt:'Safe Zone. 30-minute timed rescue. Shaman Pluvia must be saved. Fragment of Caligo here.', anchor:'#tribe-area' },
+  { title:'Tribe Settlement', section:'Environments', excerpt:'Core living area. Healing Hut holds Shaman. Storage Cave has Fragment of Caligo.', anchor:'#tribe-area' },
+  { title:'Port City', section:'Environments', excerpt:'Safe Zone. Key Decision Hub. Konrad reveals Church truth. Path lock decision here.', anchor:'#port-city' },
+  { title:'Merchant Quarter', section:'Environments', excerpt:'Heart of Port City. Guild Hall. Gilded Anchor tavern. Konrad permanent base.', anchor:'#port-city' },
+  { title:'Church Spy Outpost', section:'Environments', excerpt:'Hidden behind bookshelf. Church observers watch the Merchant Guild.', anchor:'#port-city' },
+  { title:'Cultist Island', section:'Environments', excerpt:'Fastest Mind State Zone. Caligo stronghold. Largest Fragment of Caligo. Cult Leader boss.', anchor:'#cultist-island' },
+  { title:'Inner Sanctum', section:'Environments', excerpt:'Core cult territory. Library of Caligo. Prison cells with experimented subjects.', anchor:'#cultist-island' },
+  { title:'Cult Leader Fortress', section:'Environments', excerpt:'Final area. Boss chamber. Fragment Vault unlocks after leader defeated.', anchor:'#cultist-island' },
+  { title:'Zones of Terrors', section:'Environments', excerpt:'Scattered eldritch corruption zones. Reality distorts. Eldritch Horrors roam. +3 MS per minute.', anchor:'#zones-of-terrors' },
+  { title:'Caligo Nexus Points', section:'Environments', excerpt:'Heaviest Caligo concentration. Most dangerous areas. +15 MS on entering.', anchor:'#zones-of-terrors' },
+  { title:'Underground Laboratories', section:'Environments', excerpt:'Forbidden Labyrinth. Church experiments on orphans. Father Calum leads active section.', anchor:'#underground-labs' },
+  { title:'Active Laboratory', section:'Environments', excerpt:'Currently operating. Priest Father Calum oversees. Subject Holding Cells. Priest Office.', anchor:'#underground-labs' },
+  { title:'Old Laboratory', section:'Environments', excerpt:'Decayed original chambers. Memory Fragments. Ghost Memory NPCs. Hidden Records Room.', anchor:'#underground-labs' },
+  { title:'Caligo', section:'Lore', excerpt:'Ancient formless presence preceding all light. Corruption spreads through its influence on subjects.', anchor:'#world-lore' },
+  { title:'Vindication Lumen', section:'Lore', excerpt:'Cosmic event that ruptured world relationship with Caligo. Foundation of Church of Lumen.', anchor:'#world-lore' },
+  { title:'Subject I-3', section:'Lore', excerpt:'The experiment that escaped. Walking through the world created the Zones of Terrors.', anchor:'#world-lore' },
+  { title:'Fragment of Caligo', section:'Items', excerpt:'Physical manifestations of Caligo presence. Move toward those most entangled with it.', anchor:'#tribe-area' },
+  { title:'Blue Gem', section:'Items', excerpt:'Critical Mind State reducer. Essential before Cultist Island. No reducers in Underground Labs.', anchor:'#cultist-island' },
+  { title:'Wind Essence', section:'Items', excerpt:'Quest reward from Tribe Chief after successful Shaman rescue.', anchor:'#tribe-area' },
+  { title:'Book of Craftsmanship', section:'Items', excerpt:'Found in Home Village orphanage dormitory. Unlocks Craftsmanship skill.', anchor:'#home-village' },
+];
+
+const inp = document.getElementById('search-input');
+const ovr = document.getElementById('search-results-overlay');
+
+function doSearch() {
+  const q = inp.value.trim().toLowerCase();
+  ovr.innerHTML = '';
+  if (!q || q.length < 2) { ovr.classList.remove('visible'); return; }
+  const results = searchData.filter(i =>
+    i.title.toLowerCase().includes(q) ||
+    i.excerpt.toLowerCase().includes(q) ||
+    i.section.toLowerCase().includes(q)
+  ).slice(0, 10);
+  if (!results.length) {
+    ovr.innerHTML = '<div class="search-no-result">No results found.</div>';
+  } else {
+    results.forEach(item => {
+      const d = document.createElement('div');
+      d.className = 'search-result-item';
+      d.innerHTML = `<div class="sr-title">${hl(item.title, q)} <span style="font-size:9px;color:var(--text-dim);margin-left:6px;">${item.section}</span></div><div class="sr-excerpt">${hl(item.excerpt.slice(0,80)+'…', q)}</div>`;
+      d.onclick = () => {
+        const target = document.querySelector(item.anchor);
+        if (target) { target.scrollIntoView({ behavior: 'smooth', block: 'start' }); }
+        ovr.classList.remove('visible');
+      };
+      ovr.appendChild(d);
+    });
+  }
+  ovr.classList.add('visible');
+}
+
+function hl(text, q) {
+  const i = text.toLowerCase().indexOf(q);
+  if (i < 0) return esc(text);
+  return esc(text.slice(0,i)) + '<mark class="search-highlight">' + esc(text.slice(i,i+q.length)) + '</mark>' + esc(text.slice(i+q.length));
+}
+function esc(s) { return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
+
+inp.addEventListener('input', doSearch);
+inp.addEventListener('keydown', e => { if (e.key === 'Escape') { ovr.classList.remove('visible'); inp.blur(); } });
+document.addEventListener('click', e => {
+  if (!e.target.closest('.search-wrap') && !e.target.closest('#search-results-overlay')) ovr.classList.remove('visible');
+});
+
+// ─── SMOOTH SCROLL FOR ANCHORS ────────────
+document.querySelectorAll('a[href^="#"]').forEach(a => {
+  a.addEventListener('click', e => {
+    const t = document.querySelector(a.getAttribute('href'));
+    if (t) { e.preventDefault(); t.scrollIntoView({ behavior: 'smooth', block: 'start' }); }
+  });
+});
+
+// ─── SCROLL REVEAL ────────────────────────
+const obs = new IntersectionObserver(entries => {
+  entries.forEach(e => {
+    if (e.isIntersecting) e.target.classList.add('visible');
+  });
+}, { threshold: 0.06, rootMargin: '0px 0px -30px 0px' });
+document.querySelectorAll('.reveal').forEach(el => obs.observe(el));
+
+// ─── REGION INDEX SCROLL ─────────────────
+document.querySelectorAll('.region-index-card').forEach(card => {
+  card.addEventListener('click', () => {
+    const href = card.getAttribute('href');
+    if (href) {
+      const t = document.querySelector(href);
+      if (t) t.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+  });
+});
+</script>
+</body>
+</html>

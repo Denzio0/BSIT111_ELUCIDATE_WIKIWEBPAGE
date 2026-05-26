@@ -1,0 +1,2270 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>NPCs — Elucidate RPG Wiki</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Merriweather:ital,wght@0,300;0,400;0,700;0,900;1,300;1,400&family=Cinzel:wght@400;600;700;900&family=Crimson+Text:ital,wght@0,400;0,600;1,400&display=swap');
+
+:root {
+  --bg-deepest:    #080608;
+  --bg-dark:       #0e0b0f;
+  --bg-mid:        #140f16;
+  --bg-surface:    #1c1520;
+  --bg-elevated:   #221829;
+  --bg-card:       #1a1220;
+  --border-faint:  rgba(180,140,80,0.12);
+  --border-dim:    rgba(180,140,80,0.25);
+  --border-gold:   rgba(180,140,80,0.55);
+  --gold:          #b8922a;
+  --gold-bright:   #d4a83c;
+  --gold-pale:     #e8c96a;
+  --gold-muted:    #8a6a1e;
+  --crimson:       #8b1a1a;
+  --crimson-bright:#b02020;
+  --caligo:        #dc281e;
+  --caligo-bright: #5a2e8a;
+  --caligo-pale:   #8b5cbf;
+  --lumen:         #c8a84a;
+  --text-primary:  #e8dcc8;
+  --text-secondary:#c8b898;
+  --text-muted:    #9a8a72;
+  --text-dim:      #706050;
+  --white:         #f2ead8;
+  --shadow-deep: 0 8px 40px rgba(0,0,0,0.8);
+  --shadow-card: 0 4px 20px rgba(0,0,0,0.6);
+  --glow-gold: 0 0 20px rgba(184,146,42,0.3);
+  --glow-caligo: 0 0 20px rgba(90,46,138,0.4);
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: 'Merriweather', 'Cambria', Georgia, serif;
+  background: var(--bg-deepest);
+  color: var(--text-primary);
+  font-size: 14px;
+  line-height: 1.7;
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.03'/%3E%3C/svg%3E");
+  pointer-events: none;
+  z-index: 0;
+  opacity: 0.4;
+}
+
+a { color: var(--gold); text-decoration: none; transition: color 0.2s; }
+a:hover { color: var(--gold-pale); }
+
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: var(--bg-deepest); }
+::-webkit-scrollbar-thumb { background: var(--gold-muted); border-radius: 3px; }
+
+.site-header {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  z-index: 1000;
+  background: rgba(8,6,8,0.96);
+  border-bottom: 1px solid var(--border-gold);
+  backdrop-filter: blur(12px);
+  height: 56px;
+  display: flex;
+  align-items: center;
+  padding: 0 20px;
+  gap: 16px;
+  box-shadow: 0 2px 30px rgba(0,0,0,0.8);
+}
+
+.header-logo-wrap {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-shrink: 0;
+}
+
+.site-logo-img {
+  width: 36px;
+  height: 36px;
+  object-fit: contain;
+}
+
+.header-site-name {
+  font-family: 'Cinzel', serif;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--gold-pale);
+  letter-spacing: 1.5px;
+  line-height: 1.2;
+  text-transform: uppercase;
+}
+.header-site-name span {
+  display: block;
+  font-size: 9px;
+  color: var(--text-muted);
+  letter-spacing: 2px;
+  font-weight: 400;
+}
+
+.header-nav {
+  display: flex;
+  gap: 4px;
+  align-items: center;
+  margin-left: 12px;
+  flex: 1;
+}
+
+.header-nav a {
+  font-family: 'Cinzel', serif;
+  font-size: 10px;
+  letter-spacing: 1px;
+  color: var(--text-secondary);
+  padding: 5px 10px;
+  border: 1px solid transparent;
+  border-radius: 2px;
+  transition: all 0.2s;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+.header-nav a:hover {
+  color: var(--gold-pale);
+  border-color: var(--border-dim);
+  background: rgba(184,146,42,0.08);
+}
+.header-nav a.active {
+  color: var(--gold-pale);
+  border-color: var(--border-gold);
+  background: rgba(184,146,42,0.1);
+}
+
+.header-right {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-left: auto;
+  flex-shrink: 0;
+}
+
+.search-wrap {
+  display: flex; align-items: center;
+  border: 1px solid var(--border-dim); border-radius: 3px;
+  overflow: hidden; background: var(--bg-mid); transition: border-color 0.2s;
+}
+.search-wrap:focus-within { border-color: var(--gold); box-shadow: 0 0 8px rgba(184,146,42,0.2); }
+.search-wrap input {
+  background: transparent; border: none; outline: none;
+  color: var(--text-primary); font-family: 'Merriweather', serif;
+  font-size: 11px; padding: 6px 10px; width: 180px;
+}
+.search-wrap input::placeholder { color: var(--text-dim); }
+.search-wrap button {
+  background: var(--bg-elevated); border: none;
+  border-left: 1px solid var(--border-dim);
+  color: var(--gold); padding: 6px 10px; cursor: pointer;
+  font-size: 12px; transition: background 0.2s;
+}
+.search-wrap button:hover { background: rgba(184,146,42,0.15); }
+
+#search-results-overlay {
+  display: none; position: fixed;
+  top: 57px; right: 20px;
+  width: 340px; max-height: 400px; overflow-y: auto;
+  background: var(--bg-elevated); border: 1px solid var(--border-gold);
+  border-radius: 4px; z-index: 999; box-shadow: var(--shadow-deep);
+}
+#search-results-overlay.visible { display: block; }
+.search-result-item { padding: 10px 14px; border-bottom: 1px solid var(--border-faint); cursor: pointer; transition: background 0.15s; }
+.search-result-item:hover { background: rgba(184,146,42,0.1); }
+.search-result-item .sr-title { font-family: 'Cinzel', serif; font-size: 11px; color: var(--gold-pale); letter-spacing: 0.5px; }
+.search-result-item .sr-excerpt { font-size: 11px; color: var(--text-muted); margin-top: 2px; line-height: 1.5; }
+.search-no-result { padding: 14px; font-size: 12px; color: var(--text-muted); font-style: italic; text-align: center; }
+mark.search-highlight { background: rgba(184,146,42,0.3); color: var(--gold-pale); border-radius: 2px; }
+
+.wiki-layout { display: grid; grid-template-columns: 210px 1fr; min-height: 100vh; padding-top: 56px; }
+
+.sidebar {
+  background: var(--bg-dark); border-right: 1px solid var(--border-faint);
+  position: sticky; top: 56px; height: calc(100vh - 56px);
+  overflow-y: auto; padding: 16px 0; z-index: 100;
+}
+.sidebar-logo-mini { padding: 0 14px 14px; border-bottom: 1px solid var(--border-faint); margin-bottom: 12px; text-align: center; }
+.sidebar-logo-mini .sb-title { font-family: 'Cinzel', serif; font-size: 11px; color: var(--gold); letter-spacing: 2px; text-transform: uppercase; }
+.sidebar-logo-mini .sb-sub { font-size: 9px; color: var(--text-muted); letter-spacing: 1px; margin-top: 2px; }
+.sidebar-heading { font-family: 'Cinzel', serif; font-size: 9px; letter-spacing: 2px; text-transform: uppercase; color: var(--text-muted); padding: 6px 14px 4px; border-top: 1px solid var(--border-faint); }
+.sidebar ul { list-style: none; }
+.sidebar ul li a {
+  display: flex; align-items: center; gap: 8px;
+  padding: 6px 14px 6px 16px; color: var(--text-secondary);
+  font-size: 12px; font-family: 'Crimson Text', serif;
+  border-left: 2px solid transparent; transition: all 0.2s; letter-spacing: 0.3px;
+}
+.sidebar ul li a .sb-icon { width: 14px; text-align: center; font-size: 12px; opacity: 0.7; }
+.sidebar ul li a:hover { background: rgba(184,146,42,0.07); border-left-color: var(--gold-muted); color: var(--gold-pale); }
+.sidebar ul li a.active-nav { background: rgba(184,146,42,0.12); border-left-color: var(--gold); color: var(--gold-pale); font-weight: 600; }
+.sidebar-divider { height: 1px; background: var(--border-faint); margin: 8px 12px; }
+
+.sidebar-ms-widget { margin: 12px 14px; padding: 10px 12px; background: var(--bg-elevated); border: 1px solid var(--border-faint); border-radius: 3px; }
+.sidebar-ms-widget .ms-label { font-family: 'Cinzel', serif; font-size: 9px; color: var(--text-muted); letter-spacing: 1.5px; text-transform: uppercase; margin-bottom: 6px; }
+.ms-bar-track { height: 4px; background: var(--bg-mid); border-radius: 2px; overflow: hidden; margin-bottom: 4px; }
+.ms-bar-fill { height: 100%; width: 50%; background: linear-gradient(90deg, var(--caligo), var(--caligo-bright)); border-radius: 2px; animation: ms-pulse 3s ease-in-out infinite alternate; }
+@keyframes ms-pulse { from { opacity: 0.6; } to { opacity: 1; } }
+.ms-bar-text { font-size: 9px; color: var(--text-dim); text-align: right; }
+
+.main-content { background: var(--bg-deepest); position: relative; overflow: hidden; }
+
+.page-hero {
+  padding: 60px 60px 50px;
+  background:
+    radial-gradient(ellipse 70% 60% at 80% 40%, rgba(58,26,92,0.25) 0%, transparent 65%),
+    radial-gradient(ellipse 50% 50% at 10% 80%, rgba(139,26,26,0.12) 0%, transparent 60%),
+    var(--bg-deepest);
+  border-bottom: 1px solid var(--border-faint);
+  position: relative; overflow: hidden;
+}
+.page-hero::before {
+  content: ''; position: absolute; top: 0; left: 0; right: 0;
+  height: 1px; background: linear-gradient(90deg, transparent, var(--gold), transparent); opacity: 0.5;
+}
+.page-hero-tag { font-family: 'Cinzel', serif; font-size: 9px; letter-spacing: 4px; text-transform: uppercase; color: var(--gold-muted); margin-bottom: 14px; display: flex; align-items: center; gap: 12px; }
+.page-hero-tag::before, .page-hero-tag::after { content: ''; display: block; height: 1px; width: 40px; background: var(--gold-muted); opacity: 0.6; }
+.page-hero-title { font-family: 'Cinzel', serif; font-size: clamp(28px, 4vw, 52px); font-weight: 900; color: var(--white); letter-spacing: 2px; text-shadow: 0 4px 40px rgba(184,146,42,0.3); margin-bottom: 14px; }
+.page-hero-title .accent { color: var(--gold-pale); }
+.page-hero-sub { font-family: 'Crimson Text', serif; font-size: 16px; font-style: italic; color: var(--text-secondary); max-width: 620px; line-height: 1.7; margin-bottom: 20px; }
+.page-hero-line { width: 80px; height: 2px; background: linear-gradient(90deg, var(--gold), transparent); margin-bottom: 20px; }
+
+.filter-bar {
+  display: flex; align-items: center; gap: 10px;
+  padding: 18px 60px; border-bottom: 1px solid var(--border-faint);
+  background: var(--bg-dark); flex-wrap: wrap;
+}
+.filter-label { font-family: 'Cinzel', serif; font-size: 9px; letter-spacing: 2px; text-transform: uppercase; color: var(--text-muted); }
+.filter-btn {
+  font-family: 'Cinzel', serif; font-size: 9px; letter-spacing: 1px;
+  text-transform: uppercase; color: var(--text-secondary);
+  background: transparent; border: 1px solid var(--border-faint);
+  padding: 5px 12px; border-radius: 2px; cursor: pointer; transition: all 0.2s;
+}
+.filter-btn:hover { color: var(--gold-pale); border-color: var(--border-dim); background: rgba(184,146,42,0.07); }
+.filter-btn.active { color: var(--gold-pale); border-color: var(--border-gold); background: rgba(184,146,42,0.1); }
+
+.npcs-section { padding: 50px 60px; position: relative; z-index: 1; }
+
+.npcs-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  gap: 24px;
+  margin-bottom: 50px;
+}
+/
+.npc-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border-faint);
+  position: relative;
+  transition: border-color 0.3s, box-shadow 0.3s, transform 0.3s;
+  overflow: hidden;
+  display: flex; flex-direction: column;
+  opacity: 0; transform: translateY(20px);
+}
+.npc-card.revealed { opacity: 1; transform: translateY(0); transition: opacity 0.5s ease, transform 0.5s ease, border-color 0.3s, box-shadow 0.3s; }
+.npc-card:hover { border-color: var(--border-gold); box-shadow: 0 6px 30px rgba(184,146,42,0.1); transform: translateY(-3px); }
+
+.npc-card::before {
+  content: ''; position: absolute; top: 0; left: 0; right: 0; height: 1px;
+  background: linear-gradient(90deg, transparent, var(--npc-color, var(--gold)), transparent);
+  opacity: 0; transition: opacity 0.3s;
+}
+.npc-card:hover::before { opacity: 1; }
+
+.npc-card[data-zone="walled-city"] { --npc-color: #b8922a; }
+.npc-card[data-zone="theocratic-capital"] { --npc-color: #c8c8d4; }
+.npc-card[data-zone="port-city"] { --npc-color: #4a9abf; }
+.npc-card[data-zone="tribe"] { --npc-color: #6abf6a; }
+.npc-card[data-zone="cultist-island"] { --npc-color: #8b5cbf; }
+.npc-card[data-zone="home-village"] { --npc-color: #b04040; }
+.npc-card[data-zone="outskirts"] { --npc-color: #c8a45a; }
+.npc-card[data-zone="zones-of-terrors"] { --npc-color: #5a2e8a; }
+.npc-card[data-zone="lab"] { --npc-color: #7a9a6a; }
+
+.npc-image-wrap {
+  width: 100%; height: 180px;
+  background: var(--bg-mid);
+  border-bottom: 1px solid var(--border-faint);
+  position: relative; overflow: hidden;
+  display: flex; align-items: center; justify-content: center;
+}
+.npc-image-wrap::after {
+  content: ''; position: absolute; bottom: 0; left: 0; right: 0;
+  height: 50px;
+  background: linear-gradient(to top, var(--bg-card), transparent);
+}
+.npc-image-wrap img {
+  width: 172px; height: 172px; object-fit: cover;
+  filter: sepia(15%) brightness(0.85) contrast(1.05);
+  transition: filter 0.4s, transform 0.4s;
+}
+.npc-card:hover .npc-image-wrap img { filter: sepia(0%) brightness(0.95) contrast(1.05); transform: scale(1.03); }
+
+.npc-zone-tag {
+  position: absolute; bottom: 10px; left: 12px;
+  font-family: 'Cinzel', serif; font-size: 8px; letter-spacing: 2px;
+  text-transform: uppercase; color: var(--npc-color, var(--gold));
+  z-index: 2; background: rgba(8,6,8,0.7); padding: 3px 7px; border-radius: 2px;
+  border: 1px solid var(--npc-color, var(--border-dim));
+}
+
+.npc-body { padding: 20px 22px; flex: 1; display: flex; flex-direction: column; }
+
+.npc-role { font-family: 'Cinzel', serif; font-size: 8px; letter-spacing: 3px; text-transform: uppercase; color: var(--npc-color, var(--gold-muted)); margin-bottom: 6px; }
+.npc-name { font-family: 'Cinzel', serif; font-size: 18px; font-weight: 700; color: var(--white); letter-spacing: 0.5px; margin-bottom: 10px; }
+
+.npc-lore-short {
+  font-family: 'Crimson Text', serif; font-size: 14px; font-style: italic;
+  color: var(--text-secondary); line-height: 1.7; margin-bottom: 14px;
+  border-left: 2px solid var(--npc-color, var(--gold-muted));
+  padding-left: 10px;
+}
+
+.npc-expand-btn {
+  display: flex; align-items: center; gap: 8px;
+  cursor: pointer; border: none; background: none;
+  font-family: 'Cinzel', serif; font-size: 9px; letter-spacing: 2px;
+  text-transform: uppercase; color: var(--text-dim);
+  padding: 0; margin-top: auto; transition: color 0.2s;
+}
+.npc-expand-btn:hover { color: var(--gold-pale); }
+.npc-expand-btn .expand-icon { transition: transform 0.3s; }
+.npc-expand-btn.open .expand-icon { transform: rotate(180deg); }
+
+.npc-lore-full {
+  display: none; margin-top: 14px;
+  padding-top: 14px; border-top: 1px solid var(--border-faint);
+}
+.npc-lore-full.open { display: block; }
+.npc-lore-full p {
+  font-family: 'Merriweather', serif; font-size: 12px;
+  color: var(--text-secondary); line-height: 1.9; margin-bottom: 12px;
+}
+.npc-lore-full p:last-child { margin-bottom: 0; }
+.npc-lore-full p strong { color: var(--gold-pale); }
+.npc-lore-full p em { color: var(--text-muted); }
+
+.npc-quote {
+  margin: 12px 0;
+  padding: 12px 14px;
+  border-left: 2px solid var(--npc-color, var(--gold-muted));
+  background: rgba(0,0,0,0.3);
+  font-family: 'Crimson Text', serif; font-size: 14px;
+  font-style: italic; color: var(--text-secondary); line-height: 1.7;
+}
+.npc-quote cite { display: block; margin-top: 6px; font-size: 10px; color: var(--text-dim); font-style: normal; font-family: 'Cinzel', serif; letter-spacing: 1px; }
+
+.npc-faction-row { display: flex; gap: 6px; flex-wrap: wrap; margin-top: 12px; }
+.npc-faction-tag {
+  font-family: 'Cinzel', serif; font-size: 8px; letter-spacing: 1px;
+  text-transform: uppercase; padding: 3px 8px;
+  border: 1px solid var(--border-faint); color: var(--text-dim);
+  border-radius: 2px; background: rgba(0,0,0,0.3);
+}
+
+.npcs-heading {
+  margin-bottom: 28px;
+  padding-bottom: 14px;
+  border-bottom: 1px solid var(--border-faint);
+  display: flex; align-items: center; gap: 16px;
+}
+.npcs-heading-text { font-family: 'Cinzel', serif; font-size: 12px; letter-spacing: 3px; text-transform: uppercase; color: var(--text-muted); }
+.npcs-heading-line { flex: 1; height: 1px; background: var(--border-faint); }
+
+.section-divider { display: flex; align-items: center; gap: 16px; padding: 0 60px; }
+.section-divider .div-line { flex: 1; height: 1px; background: linear-gradient(90deg, transparent, var(--border-gold), transparent); }
+.section-divider .div-icon { color: var(--gold-muted); font-size: 14px; }
+
+.site-footer {
+  background: var(--bg-dark); border-top: 1px solid var(--border-faint);
+  padding: 32px 60px; position: relative; z-index: 1;
+}
+.footer-inner {
+  max-width: 1100px; margin: 0 auto;
+  display: flex; justify-content: space-between; align-items: center;
+  flex-wrap: wrap; gap: 16px;
+}
+.footer-logo-block {}
+.footer-logo-title { font-family: 'Cinzel', serif; font-size: 13px; font-weight: 700; color: var(--gold-pale); letter-spacing: 2px; text-transform: uppercase; }
+.footer-logo-sub { font-size: 10px; color: var(--text-dim); margin-top: 3px; letter-spacing: 0.5px; }
+.footer-links { display: flex; gap: 20px; flex-wrap: wrap; }
+.footer-links a { font-family: 'Cinzel', serif; font-size: 9px; letter-spacing: 1.5px; color: var(--text-muted); text-transform: uppercase; transition: color 0.2s; }
+.footer-links a:hover { color: var(--gold); }
+.footer-copy { font-size: 10px; color: var(--text-muted); letter-spacing: 0.5px; }
+.footer-copy span { color: var(--text-secondary); }
+.footer-ornament { text-align: center; margin-top: 20px; padding-top: 16px; border-top: 1px solid var(--border-faint); font-family: 'Cinzel', serif; font-size: 9px; letter-spacing: 3px; color: var(--text-muted); text-transform: uppercase; }
+
+.sidebar-section { margin-bottom: 6px; }
+
+.no-results { text-align: center; padding: 60px 20px; color: var(--text-muted); font-family: 'Crimson Text', serif; font-size: 16px; font-style: italic; display: none; }
+.no-results.visible { display: block; }
+
+@media (max-width: 900px) {
+  .wiki-layout { grid-template-columns: 1fr; }
+  .sidebar { display: none; }
+  .page-hero, .npcs-section, .filter-bar { padding-left: 24px; padding-right: 24px; }
+  .npcs-grid { grid-template-columns: 1fr; }
+  .footer-inner { grid-template-columns: 1fr; }
+  .footer-copy { text-align: left; }
+}
+</style>
+</head>
+<body>
+
+<header class="site-header">
+  <div class="header-logo-wrap">
+    <img src="http://elucidate.unaux.com/wp-content/uploads/2026/04/ELUCIDATE-WEBSITE-EYE-LOGO.png" alt="Elucidate RPG Wiki Logo" class="site-logo-img">
+    <div class="header-site-name">
+      Elucidate RPG
+      <span>OFFICIAL WIKI</span>
+    </div>
+  </div>
+  <nav class="header-nav">
+    <a href="#">Home</a>
+    <a href="characters.html">Characters</a>
+    <a href="npcs.html" class="active">NPCs</a>
+    <a href="items.html">Items</a>
+    <a href="environments.html">Environments</a>
+    <a href="lore.html">Lore</a>
+    <a href="developers.html">Developers</a>
+    <a href="fanart.html">Fan Art</a>
+    <a href="download.html">Download</a>
+  </nav>
+  <div class="header-right">
+    <div class="search-wrap">
+      <input type="text" id="search-input" placeholder="Search wiki…" autocomplete="off">
+      <button onclick="performSearch()">⌕</button>
+    </div>
+    <img src="http://elucidate.unaux.com/wp-content/uploads/2026/04/ELUCIDATE-LOGO-WITH-BG-2.png" alt="Elucidate RPG DLC Logo" class="site-logo-img" style="display:none;">
+  </div>
+</header>
+
+<div id="search-results-overlay"></div>
+
+<div class="wiki-layout">
+
+  <aside class="sidebar">
+    <div class="sidebar-logo-mini">
+      <div class="sb-title">Elucidate Wiki</div>
+      <div class="sb-sub">DLC · Complete Guide</div>
+    </div>
+
+    <div class="sidebar-section">
+      <div class="sidebar-heading">Navigation</div>
+      <ul>
+        <li><a href="index.html"><span class="sb-icon">⌂</span> Home</a></li>
+        <li><a href="characters.html"><span class="sb-icon">⚔</span> Characters</a></li>
+        <li><a href="npcs.html" class="active-nav"><span class="sb-icon">👤</span> NPCs</a></li>
+        <li><a href="items.html"><span class="sb-icon">🗡</span> Items</a></li>
+        <li><a href="environments.html"><span class="sb-icon">🗺</span> Environments</a></li>
+        <li><a href="lore.html"><span class="sb-icon">📜</span> Lore</a></li>
+      </ul>
+    </div>
+
+    <div class="sidebar-divider"></div>
+
+    <div class="sidebar-section">
+      <div class="sidebar-heading">Community</div>
+      <ul>
+        <li><a href="developers.html"><span class="sb-icon">🛠</span> Developers</a></li>
+        <li><a href="fanart.html"><span class="sb-icon">🎨</span> Fan Art</a></li>
+        <li><a href="download.html"><span class="sb-icon">↓</span> Download</a></li>
+      </ul>
+    </div>
+
+    <div class="sidebar-divider"></div>
+
+    <div class="sidebar-ms-widget">
+      <div class="ms-label">Mind State System</div>
+      <div class="ms-bar-track"><div class="ms-bar-fill"></div></div>
+      <div class="ms-bar-text">Stability: 50%</div>
+    </div>
+  </aside>
+
+  <main class="main-content">
+
+    <section class="page-hero">
+      <div class="page-hero-tag">Elucidate RPG · DLC</div>
+      <h1 class="page-hero-title">Non-Player <span class="accent">Characters</span></h1>
+      <div class="page-hero-line"></div>
+      <p class="page-hero-sub">The world of Elucidate lives in the people who stay. Every NPC holds a fragment of lore the documents never confirm outright — in the weight of what they don't say as much as what they do.</p>
+    </section>
+
+    <div class="filter-bar">
+      <span class="filter-label">Filter by Zone</span>
+      <button class="filter-btn active" data-filter="all">All NPCs</button>
+      <button class="filter-btn" data-filter="walled-city">Walled City</button>
+      <button class="filter-btn" data-filter="theocratic-capital">Capital</button>
+      <button class="filter-btn" data-filter="outskirts">Outskirts</button>
+      <button class="filter-btn" data-filter="tribe">Tribe</button>
+      <button class="filter-btn" data-filter="port-city">Port City</button>
+      <button class="filter-btn" data-filter="cultist-island">Cult Island</button>
+      <button class="filter-btn" data-filter="zones-of-terrors">Zones</button>
+      <button class="filter-btn" data-filter="lab">Laboratory</button>
+	  <button class="filter-btn" data-filter="home">Home Village</button>
+    </div>
+
+    <section class="npcs-section">
+
+      <div class="npcs-heading">
+        <div class="npcs-heading-text">World Inhabitants</div>
+        <div class="npcs-heading-line"></div>
+      </div>
+
+      <div class="npcs-grid" id="npcs-grid">
+
+        <article class="npc-card" data-zone="walled-city" data-search="blacksmith conrad walled city weapons armory blunderbuss spear soldiers">
+          <div class="npc-image-wrap">
+            <img src="http://elucidate.unaux.com/wp-content/uploads/2026/04/Copy-of-elucidate_idle_blacksmith_npc_down.png" alt="NPC Portrait — Blacksmith Conrad">
+            <div class="npc-zone-tag">Walled City</div>
+          </div>
+          <div class="npc-body">
+            <div class="npc-role">Blacksmith · Armorer</div>
+            <div class="npc-name">Blacksmith Conrad</div>
+            <div class="npc-lore-short">"The ones who ask questions — like you just did — they tend to last a little longer. The ones who take the weapon and walk out without a word, those are the ones I never see again."</div>
+            <div class="npc-faction-row">
+              <span class="npc-faction-tag">Walled City</span>
+              <span class="npc-faction-tag">Church-Adjacent</span>
+              <span class="npc-faction-tag">Mercenary Route</span>
+            </div>
+            <button class="npc-expand-btn" onclick="toggleNPC(this)">
+              Full Lore <span class="expand-icon">▾</span>
+            </button>
+            <div class="npc-lore-full">
+              <p>Blacksmith Conrad has equipped soldiers for the Church of Lumen long enough to know which ones come back. He has been watching them for years — watching the ones who ask questions and the ones who don't, cataloging the difference in how they walk out of the workshop, noting which set of eyes belongs to a man who is thinking and which belongs to a man who has stopped. He is, in a quiet way, the game's first truth-teller. He delivers it sideways, in the language of a craftsman assessing material.</p>
+              <p>When he hands Ignis the Blunderbuss, he looks at him the way someone looks at a thing they recognize from memory rather than from acquaintance. This is not accidental. Conrad has seen so many Church soldiers that he has developed an almost clinical ability to categorize them. Ignis is unusual. Ignis asks. Conrad registers this as significant with the same precision he uses to assess iron ore — practical, experienced, quiet.</p>
+              <p><strong>Connection to Caligo and the World:</strong> Conrad operates in a safe zone, physically removed from Caligo's corrupted spaces. But his workshop sits at the beginning of every road that leads into those zones. Every weapon he makes goes toward them. He knows this. He has made peace with it in the way craftsmen make peace with the uses of their work — by caring about the quality of what he makes and not asking too much about what happens after. The Blunderbuss he gives Ignis will, in Path B, be used to help end the Church that commissioned its creation. Conrad might not find that ironic. He might find it inevitable.</p>
+              <p><strong>Relationship to Ignis:</strong> Conrad tells Ignis to keep asking questions. He does this without preamble or explanation. For a man who equips soldiers without names for wars without endings, this is an unusual act of investment. The game implies that Conrad has seen what happens when the questions stop. He is trying, in the only way available to him, to make sure this one doesn't.</p>
+              <div class="npc-quote">"Keep it that way. And keep the Spear close — the Blunderbuss is loud and the world out there has learned to run toward the sound before you can reload."<cite>— Blacksmith Conrad, Walled City Armory</cite></div>
+            </div>
+          </div>
+        </article>
+
+        <article class="npc-card" data-zone="walled-city" data-search="draft officer soldier mission walled city orders church assignment briefing">
+          <div class="npc-image-wrap">
+            <img src="http://elucidate.unaux.com/wp-content/uploads/2026/04/elucidate_idle_draft_officer_npc_down.png" alt="NPC Portrait — Draft Officer">
+            <div class="npc-zone-tag">Walled City</div>
+          </div>
+          <div class="npc-body">
+            <div class="npc-role">Military Official · Mission Handler</div>
+            <div class="npc-name">Draft Officer</div>
+            <div class="npc-lore-short">"They never do. You'll learn what they want you to know when they want you to know it. That is the Church's way."</div>
+            <div class="npc-faction-row">
+              <span class="npc-faction-tag">Church of Lumen</span>
+              <span class="npc-faction-tag">Walled City</span>
+              <span class="npc-faction-tag">Military Branch</span>
+            </div>
+            <button class="npc-expand-btn" onclick="toggleNPC(this)">
+              Full Lore <span class="expand-icon">▾</span>
+            </button>
+            <div class="npc-lore-full">
+              <p>The Draft Officer is the Church of Lumen as it presents itself to the world: efficient, impersonal, entirely comfortable with the opacity of its own processes. He knows no more than he needs to know and appears to have made peace with this long ago. When Ignis asks what the Fragments are, the Draft Officer's response is not evasion — it is honest institutional description. The Church operates on a need-to-know basis at every level, and the Draft Officer genuinely does not know what he has not been told.</p>
+              <p>This makes him, paradoxically, one of the game's more honest characters. He does not pretend the briefing sheets are useful. He does not dress up his ignorance in authority. He simply delivers the mission with the practiced efficiency of someone who has been delivering missions for a long time and has learned that soldiers who ask too many questions before deployment tend to receive less satisfying answers than soldiers who simply go.</p>
+              <p><strong>Connection to the World:</strong> The Draft Officer represents the Church's outer face — the layer of institutional structure that processes people without understanding what is being processed. He is not complicit in the experimental program in any way he would recognize. He receives orders. He issues orders. In the Theocratic Capital's architecture of controlled information, he is one of many people whose function depends on not knowing what their function serves. This is, the game implies, the Church's most reliable defense: the sincere ignorance of its own administrators.</p>
+              <p><strong>Significance:</strong> His early line — "You'll learn what they want you to know when they want you to know it" — lands differently on replay. It is not a warning he intends to give. But it is, structurally, the first warning Ignis receives about the nature of the institution he serves.</p>
+            </div>
+          </div>
+        </article>
+
+        <article class="npc-card" data-zone="theocratic-capital" data-search="librarian scholar caligo history lore theocratic capital cathedral knowledge truth">
+          <div class="npc-image-wrap">
+            <img src="http://elucidate.unaux.com/wp-content/uploads/2026/04/elucidate_idle_librarian_scholar_npc_down.png" alt="NPC Portrait — Librarian Scholar">
+            <div class="npc-zone-tag">Theocratic Capital</div>
+          </div>
+          <div class="npc-body">
+            <div class="npc-role">Archivist · Lore Keeper</div>
+            <div class="npc-name">Librarian Scholar</div>
+            <div class="npc-lore-short">"The question our more honest historians ask — and ask quietly, mind you — is whether the Church is trying to stop Caligo, or simply trying to be the only institution permitted to touch it."</div>
+            <div class="npc-faction-row">
+              <span class="npc-faction-tag">Theocratic Capital</span>
+              <span class="npc-faction-tag">Church-Adjacent</span>
+              <span class="npc-faction-tag">Passive Resistance</span>
+            </div>
+            <button class="npc-expand-btn" onclick="toggleNPC(this)">
+              Full Lore <span class="expand-icon">▾</span>
+            </button>
+            <div class="npc-lore-full">
+              <p>The Librarian Scholar is the most dangerous person in the Theocratic Capital, and he is dangerous specifically because no one in authority has noticed. He maintains the Cathedral Library with impeccable institutional loyalty — the shelves are organized, the records are current, the approved summaries are available in their approved forms. And then, when a soldier with one eye asks for the real history of Caligo, he gives it. Quietly. Precisely. And then he smiles, tucks his book back onto the shelf, and walks away as if he has said nothing remarkable at all.</p>
+              <p>He has been saying unremarkable things for years. He is very good at it. The Cathedral Library, under his stewardship, has become a double architecture: the official records the Church sanctions, and the marginal conversations and contextual framings that quietly erode their authority. He does not write sedition. He practices it in dialogue, one soldier at a time.</p>
+              <p><strong>Connection to Caligo:</strong> His account of Caligo is the game's most philosophically precise. He describes it as weather: existing without intention, but with terrible consequence. He contextualizes the Church's founding not as a response to evil but as a response to influence — and then poses the question that the entire narrative is built around. Is the Church trying to protect the world from Caligo, or trying to be the only entity allowed to use it? This question, posed in the first hour of gameplay, is answered definitively only in the final acts.</p>
+              <p><strong>Significance to the World:</strong> The Librarian Scholar represents what the game identifies as the rarest institutional type: a person who works within a corrupt system and uses that position to incrementally undermine it, without spectacle, without martyrdom, and without any certainty that any individual conversation will matter. He is playing a very long game with very small moves. Ignis is one of them.</p>
+              <div class="npc-quote">"Caligo the Formless predates the Church by centuries. It does not desire worship. It does not respond to prayer. It exists the way weather exists — without intention, but with terrible consequence."<cite>— Librarian Scholar, Cathedral Library</cite></div>
+            </div>
+          </div>
+        </article>
+
+        <article class="npc-card" data-zone="theocratic-capital" data-search="confession booth whisper children church experiments orphan nephew changed soldiers">
+          <div class="npc-image-wrap">
+            <img src="http://elucidate.unaux.com/wp-content/uploads/2026/04/elucidate_idle_female_faithful_citizen_npc_down.png" alt="NPC Portrait — Confession Booth Witness">
+            <div class="npc-zone-tag">Theocratic Capital</div>
+          </div>
+          <div class="npc-body">
+            <div class="npc-role">Civilian · Whispered Testimony</div>
+            <div class="npc-name">Confession Booth Witnesses</div>
+            <div class="npc-lore-short">"My nephew went in at nine years old. He came back at eleven. He did not remember my name. He called me 'civilian.' He was eleven years old."</div>
+            <div class="npc-faction-row">
+              <span class="npc-faction-tag">Theocratic Capital</span>
+              <span class="npc-faction-tag">Civilian Witness</span>
+              <span class="npc-faction-tag">MS Trigger</span>
+            </div>
+            <button class="npc-expand-btn" onclick="toggleNPC(this)">
+              Full Lore <span class="expand-icon">▾</span>
+            </button>
+            <div class="npc-lore-full">
+              <p>The confession booths along the Cathedral's east wall are among the game's most quietly devastating design choices. Each booth contains a civilian NPC who will whisper their testimony to anyone who enters — stories of missing children, soldiers returned wrong, experiments that left no visible mark except in the eyes. They speak in the dark because the light belongs to the Church, and the Church's light does not illuminate what happened to their children.</p>
+              <p>None of these witnesses are combatants. None of them have special abilities or mission-critical information. They have what the game's other information sources cannot provide: the ground-level human cost, described by the people who absorbed it without being able to name it. A nephew who came back calling his aunt 'civilian.' Soldiers who could not meet your eyes anymore. Children who were special and then were not the same.</p>
+              <p><strong>Connection to Ignis and the Orphanage:</strong> At MS above 50, Ignis begins to recognize fragments of the booth testimonies as his own. Not explicitly — not as a cutscene revelation — but in the way a specific phrase or cadence will surface a memory that was not supposed to be there. This is the game's most precise use of environmental storytelling: the booth witnesses are giving Ignis pieces of his own history from the outside, in the voices of the people who watched the carriages and could not stop them.</p>
+              <p><strong>World Impact:</strong> The booth witnesses collectively represent the Church's civilian footprint — the ordinary families who have been quietly absorbing the cost of the Vindication Lumen program for decades without a framework to understand what they experienced. They are not organized. They are not resistant. They are simply people with grief they cannot explain, whispering it into the dark in the one space the Church designed for private testimony.</p>
+            </div>
+          </div>
+        </article>
+
+        <article class="npc-card" data-zone="port-city" data-search="tavern keeper gilded anchor port city konrad merchant storm intelligence information">
+          <div class="npc-image-wrap">
+            <img src="http://elucidate.unaux.com/wp-content/uploads/2026/04/elucidate_idle_tavern_keeper_npc_down.png" alt="NPC Portrait — Tavern Keeper">
+            <div class="npc-zone-tag">Port City</div>
+          </div>
+          <div class="npc-body">
+            <div class="npc-role">Innkeeper · Port Intelligence</div>
+            <div class="npc-name">Tavern Keeper — The Gilded Anchor</div>
+            <div class="npc-lore-short">"I have run this tavern for twenty years and I have learned to read which conversations matter and which ones are just noise. This one matters."</div>
+            <div class="npc-faction-row">
+              <span class="npc-faction-tag">Port City</span>
+              <span class="npc-faction-tag">Neutral</span>
+              <span class="npc-faction-tag">Konrad's Ally</span>
+            </div>
+            <button class="npc-expand-btn" onclick="toggleNPC(this)">
+              Full Lore <span class="expand-icon">▾</span>
+            </button>
+            <div class="npc-lore-full">
+              <p>The Tavern Keeper of the Gilded Anchor occupies a specific and undervalued social position: she is the most connected civilian in Port City and the one most carefully presenting as ordinary. Twenty years of operating a harbor-front tavern have given her an intelligence network assembled not through any deliberate design but through the simple, persistent reality that people talk more freely in taverns than in offices, and she has been listening. She knows which Church shipments get flagged as untouchable by the harbor customs office. She knows that the Harbor Captain stopped asking about certain manifests a long time ago. She knows what that silence means.</p>
+              <p>When Konrad begins his investigation, she is one of the first people to understand what he is doing and one of the first to quietly support it — not through action but through information freely offered and the occasional complimentary dark ale at the right moment. She reads storms. She read Konrad's approach the way a harbor master reads weather: with sufficient professional distance and appropriate preparation for what comes next.</p>
+              <p><strong>Connection to the World:</strong> The Tavern Keeper is the Port City's collective conscience given individual form. She has watched Church corruption operate through the harbor for two decades without the institutional leverage to stop it or the personal courage to expose it alone. Konrad gives her neither of those things, but he gives her someone to give her information to, and that is different enough that she takes the risk. The second dark ale is on the house. He looks like he needs his hands free.</p>
+              <p><strong>Impact on Caligo and the Broader Conflict:</strong> She knows nothing about Caligo directly. She knows that Church shipments arrive with labels that do not make sense, that customs officers who ask about them stop working there, and that the people who come back from Cultist Island do not like talking about what they saw. She has assembled the shape of the thing without knowing its name. The game positions this as a different kind of knowing — imprecise but lived-in, and therefore in some ways more reliable than official records.</p>
+              <div class="npc-quote">"Drink something. You look like you need to sit for a moment before whatever comes next."<cite>— Tavern Keeper, The Gilded Anchor, Port City</cite></div>
+            </div>
+          </div>
+        </article>
+
+        <article class="npc-card" data-zone="port-city" data-search="harbor captain passage cultist island ship vessel sea crossing full fare">
+          <div class="npc-image-wrap">
+            <img src="http://elucidate.unaux.com/wp-content/uploads/2026/04/Copy-of-elucidate_idle_harbor_captain_npc_down.png" alt="NPC Portrait — Harbor Captain">
+            <div class="npc-zone-tag">Port City</div>
+          </div>
+          <div class="npc-body">
+            <div class="npc-role">Seafarer · Transport Gate</div>
+            <div class="npc-name">Harbor Captain</div>
+            <div class="npc-lore-short">"Three of the last seven vessels to make that passage came back with fewer crew than they left with, and the ones who made it back did not like talking about what they saw. I'll take you. But you pay up front, and I don't wait."</div>
+            <div class="npc-faction-row">
+              <span class="npc-faction-tag">Port City</span>
+              <span class="npc-faction-tag">Neutral</span>
+              <span class="npc-faction-tag">Transit Gate</span>
+            </div>
+            <button class="npc-expand-btn" onclick="toggleNPC(this)">
+              Full Lore <span class="expand-icon">▾</span>
+            </button>
+            <div class="npc-lore-full">
+              <p>The Harbor Captain is the game's transit gate between the known world and Cultist Island — and his mechanics are exactly as demanding as the journey deserves. He is not a man who dramatizes danger. He states it, professionally, with the flat affect of someone who has watched what happens to people who underestimate a crossing and has lost the desire to soften that information for anyone's comfort. Three of seven vessels. Fewer crew coming back. The survivors who didn't want to talk.</p>
+              <p>He will take you. He has no particular moral position on where you are going or why — navigating morally complex passengers is an occupational hazard he factored into his rates a long time ago. He requires full payment in advance and he does not wait at the dock for anyone except a storm or something worse. These are not unreasonable terms for someone making a crossing that kills experienced sailors.</p>
+              <p><strong>World Significance:</strong> The Harbor Captain is one of the few Port City NPCs who has direct, lived experience of what Cultist Island represents physically. The sailors who came back from those crossings and did not want to talk were encountering the Zones of Terrors from the sea — the ambient Caligo corruption that warps the approaches to the island long before the island is visible. He does not have a name for what they saw. He has a casualty rate and a professional understanding that some things are better not named until you absolutely have to face them.</p>
+              <p><strong>Relationship to All Characters:</strong> Every path that leads to Cultist Island passes through the Harbor Captain. Ignis books passage. Funeris has crossed this water before, in the opposite direction. Konrad, in Path A, arranges his own transit when the evidence points him toward the island's documentation. The Harbor Captain is a hinge point — the last neutral figure any character will encounter before the world becomes definitively dangerous.</p>
+            </div>
+          </div>
+        </article>
+
+        <article class="npc-card" data-zone="port-city" data-search="guild master konrad merchant guild port city evidence church contracts warning">
+          <div class="npc-image-wrap">
+            <img src="http://elucidate.unaux.com/wp-content/uploads/2026/04/Copy-of-elucidate_idle_merchant_guild_master_npc_down.png" alt="NPC Portrait — Guild Master">
+            <div class="npc-zone-tag">Port City</div>
+          </div>
+          <div class="npc-body">
+            <div class="npc-role">Merchant Guild Superior</div>
+            <div class="npc-name">Guild Master</div>
+            <div class="npc-lore-short">"I cannot protect you if you do this. You understand that."</div>
+            <div class="npc-faction-row">
+              <span class="npc-faction-tag">Merchant Guild</span>
+              <span class="npc-faction-tag">Port City</span>
+              <span class="npc-faction-tag">Institutional Witness</span>
+            </div>
+            <button class="npc-expand-btn" onclick="toggleNPC(this)">
+              Full Lore <span class="expand-icon">▾</span>
+            </button>
+            <div class="npc-lore-full">
+              <p>The Guild Master represents the game's most honest expression of institutional cowardice — and the game handles him with notable fairness. He is not a villain. He is a man who knows what Konrad knows, has known it longer, and has spent longer finding ways to continue functioning within a system he recognizes as corrupt. His argument against Konrad's investigation is not self-interested in any simple way: he is genuinely warning Konrad that the Church controls half the Guild's contracts and that exposure will burn the Guild alongside it.</p>
+              <p>He is right about this. The game does not argue that he is wrong. What the game argues — through Konrad's reply — is that being right about the cost is not the same as being right about the choice. A clean conscience is an extraordinary thing to offer in exchange for institutional survival, and the Guild Master knows this too. His long pause before speaking is the game's acknowledgment that he is working through a genuine moral calculation, not simply declining out of selfishness.</p>
+              <p><strong>Significance to the Konrad Narrative:</strong> The Guild Master is the mirror version of Konrad — the person Konrad has been in danger of becoming. They have watched the same carriages. The Guild Master resolved it by becoming very good at not watching. Konrad resolved it by watching until he could not justify the watching anymore. The conversation between them is not an argument. It is two resolutions to the same impossible situation, standing in the same room, each recognizing the cost of the other's choice.</p>
+              <p><strong>World Impact:</strong> The Guild Master's silence — maintained for decades — represents the Church's most effective tool: the cooperation of people who know, who could act, and who have calculated that they cannot afford to. In a world where Caligo's corruption spreads through broken balance and institutional decay, the Guild Master is the institutional decay. Not through malice. Through exactly the kind of reasonable, considered, long-term self-preservation that keeps systems alive long past their moral expiration.</p>
+            </div>
+          </div>
+        </article>
+
+        <article class="npc-card" data-zone="tribe" data-search="tribe elder shaman rescue settlement fighters pluvia wind essence choice watchtower">
+          <div class="npc-image-wrap">
+            <img src="http://elucidate.unaux.com/wp-content/uploads/2026/04/Copy-of-elucidate_idle_tribe_elder_npc_down.png" alt="NPC Portrait — Tribe Elder">
+            <div class="npc-zone-tag">Tribe Area</div>
+          </div>
+          <div class="npc-body">
+            <div class="npc-role">Settlement Leader · Guardian</div>
+            <div class="npc-name">Tribe Elder</div>
+            <div class="npc-lore-short">"You wear the Church's armor but you stopped outside the gate and looked at our fallen watchtower for almost a full minute. A Church soldier would have walked past it. Who are you?"</div>
+            <div class="npc-faction-row">
+              <span class="npc-faction-tag">Tribe Area</span>
+              <span class="npc-faction-tag">Independent</span>
+              <span class="npc-faction-tag">Pluvia's Guardian</span>
+            </div>
+            <button class="npc-expand-btn" onclick="toggleNPC(this)">
+              Full Lore <span class="expand-icon">▾</span>
+            </button>
+            <div class="npc-lore-full">
+              <p>The Tribe Elder has twelve fighters left. She knows this because she has been counting them — because she is the kind of leader who counts, who tracks, who assesses survival with a pragmatism that has nothing to do with despair and everything to do with having learned precisely how much the world costs. She is not welcoming when Ignis arrives. She is precise. She asks the right question: if you are here to help, help. If you are here for another reason, tell me now so she knows whether to ask him to leave or simply run.</p>
+              <p>Her observation about the watchtower is the entry point to Ignis's character from the outside. A Church soldier would have walked past it. Ignis stopped and looked for almost a full minute. This registers to her as significant — not because she knows what it means, but because she has developed a practitioner's eye for the gap between what Church soldiers are and what this one is. She makes a calculated decision to trust him, based on a sixty-second behavioral observation. This is what leadership looks like when the margin for error is twelve fighters and a Shaman who has not left in thirty years.</p>
+              <p><strong>Relationship to Pluvia:</strong> The Tribe has protected Pluvia for three decades. The Tribe Elder does not control Pluvia's choice to leave — she makes this clear when she gives Ignis the Wind Essence. <em>She chose.</em> The Elder has spent thirty years trying to keep her safe, hidden, contained within the one geography that could manage what she was. And then the soldier with one eye arrived and Pluvia decided to go, and the Elder's job shifted in an instant from protection to provision. The Wind Essence is not a gift. It is a promise that the Tribe believes in what Pluvia is walking toward. Bring her back, if you can.</p>
+              <p><strong>Connection to the Broader Conflict:</strong> The Tribe exists outside both Church and Cult authority — a pocket of genuine independence in a world increasingly divided between two corrupt expressions of cosmic principle. The Elder maintains this independence through tactical precision and very careful counting. She knows the Church soldiers entered the northern perimeter four minutes before Ignis arrived. She knows the Shaman is in the Healing Hut. She is not surprised by any of it. She is simply managing it, because managing things is what she does.</p>
+              <div class="npc-quote">"Sometimes that is enough. Go."<cite>— Tribe Elder, after Ignis says he is there to help but doesn't know why</cite></div>
+            </div>
+          </div>
+        </article>
+
+        <article class="npc-card" data-zone="tribe" data-search="tribe chief wind essence pluvia chosen departure promise return believe">
+          <div class="npc-image-wrap">
+            <img src="http://elucidate.unaux.com/wp-content/uploads/2026/04/Copy-of-elucidate_idle_tribe_chief_npc_down.png" alt="NPC Portrait — Tribe Chief">
+            <div class="npc-zone-tag">Tribe Area</div>
+          </div>
+          <div class="npc-body">
+            <div class="npc-role">Tribal Authority · Wind Essence Keeper</div>
+            <div class="npc-name">Tribe Chief</div>
+            <div class="npc-lore-short">"She chose to go with you. After everything we have tried to keep her here, safe, hidden — she chose. Bring her back when it is done. If you can."</div>
+            <div class="npc-faction-row">
+              <span class="npc-faction-tag">Tribe Area</span>
+              <span class="npc-faction-tag">Independent</span>
+              <span class="npc-faction-tag">Pluvia's Origin</span>
+            </div>
+            <button class="npc-expand-btn" onclick="toggleNPC(this)">
+              Full Lore <span class="expand-icon">▾</span>
+            </button>
+            <div class="npc-lore-full">
+              <p>The Tribe Chief holds the Wind Essence — the artifact that has been Pluvia's since the moment of her birth, kept safe by the Tribe until she needed it. He gives it to Ignis not because he trusts Ignis but because Pluvia chose, and Pluvia's choice is the most reliable intelligence the Tribe has access to. She can see the future. She chose to walk toward it alongside this soldier. That is the endorsement the Wind Essence travels on.</p>
+              <p>His final words — <em>bring her back when it is done, if you can</em> — carry the weight of thirty years of stewardship ending in a single afternoon. He does not know if Ignis will succeed. He does not know if the future Pluvia chose is survivable. He knows she can see it and she walked toward it anyway, and he has spent three decades understanding that what Pluvia sees, she sees clearly. The <em>if you can</em> is not an expression of doubt in Ignis. It is an honest acknowledgment of what the world is.</p>
+              <p><strong>Significance to the Lore:</strong> The Wind Essence is described as a promise rather than a gift — the Tribe's formal commitment to what Pluvia is walking toward. This distinction matters. A gift has no obligations. A promise has two parties. By giving Ignis the Wind Essence, the Chief is binding the Tribe to the outcome of whatever Pluvia has Foreseen, even though he will not be there to see it. This is an act of profound institutional trust in a woman whose visions the Tribe has spent thirty years managing. He trusts her. The Wind Essence travels as that trust made portable.</p>
+            </div>
+          </div>
+        </article>
+
+        <article class="npc-card" data-zone="cultist-island" data-search="cult priest cultist island fire ritual caligo thrown away defect not what they told">
+          <div class="npc-image-wrap">
+            <img src="http://elucidate.unaux.com/wp-content/uploads/2026/04/elucidate_idle_cultist_priest_npc_down.png" alt="NPC Portrait — Cult Priest">
+            <div class="npc-zone-tag">Cultist Island</div>
+          </div>
+          <div class="npc-body">
+            <div class="npc-role">Ritual Leader · Cultural Voice</div>
+            <div class="npc-name">Cult Priest</div>
+            <div class="npc-lore-short">"We are not what they told you we were. We are the ones they threw away. Remember that, when you make your choices here."</div>
+            <div class="npc-faction-row">
+              <span class="npc-faction-tag">Cultist Island</span>
+              <span class="npc-faction-tag">Cult of Caligo</span>
+              <span class="npc-faction-tag">Ignis Moral Pivot</span>
+            </div>
+            <button class="npc-expand-btn" onclick="toggleNPC(this)">
+              Full Lore <span class="expand-icon">▾</span>
+            </button>
+            <div class="npc-lore-full">
+              <p>The Cult Priest who speaks to Ignis at the Ritual Fire Square is one of the Cult Leader's note-worthy detail: Ignis stopped outside the walls and listened to this priest for four minutes before entering. The Cult Leader registers this as significant. A fully programmed soldier would not have done that. The four minutes are, in miniature, the entire arc of Ignis's Path B decision — the space between received orders and the discomfort of actually listening to what the supposed enemy is saying.</p>
+              <p>The priest does not argue theology. He offers testimony: we are the ones they threw away. This is not rhetorical. It is literally accurate. Every person on Cultist Island was expelled from the Vindication Lumen program — they are failed experiments who found each other, who built a community around the ambient influence that the Church labeled their defect. Their gathering is not primarily ideological. It is a survival response by people who had nowhere else to go and found, in each other, the first place that did not require them to be something other than what they were.</p>
+              <p><strong>Impact on the Narrative:</strong> The Cult Priest's line — <em>remember that, when you make your choices here</em> — is the game's most direct instruction to the player, delivered through a minor NPC in the middle of a high-risk zone. It is asking Ignis, and through him the player, to hold onto contextual information while making combat decisions. The people he is about to fight are not what he was told. That information is supposed to cost something. The Cult Priest ensures it has been delivered.</p>
+              <p><strong>Connection to Caligo:</strong> The Cult Priest practices what Funeris calls the honest version of Caligo faith — not the ritual chanting and fire, but the quieter understanding that they are shaped by something indifferent. He does not claim Caligo chose them. He claims they learned to move around it without disturbing it. This is meaningfully different from the Cult Leader's more instrumental theology, and it represents the Cult's internal philosophical divide that Funeris's Path B arc makes explicit.</p>
+            </div>
+          </div>
+        </article>
+
+        <article class="npc-card" data-zone="cultist-island" data-search="imprisoned experiment subject prison cells father calum kind eyes orphanage production data">
+          <div class="npc-image-wrap">
+            <img src="http://elucidate.unaux.com/wp-content/uploads/2026/04/elucidate_idle_imprisoned_experiment_hostile_npc_down.png" alt="NPC Portrait — Imprisoned Experiment Subject">
+            <div class="npc-zone-tag">Cultist Island</div>
+          </div>
+          <div class="npc-body">
+            <div class="npc-role">Prisoner · Former Church Subject</div>
+            <div class="npc-name">Imprisoned Experiment Subject</div>
+            <div class="npc-lore-short">"He knew all our names the way a manufacturer knows the numbers on a production run. We mattered to him as data. Not as people."</div>
+            <div class="npc-faction-row">
+              <span class="npc-faction-tag">Cultist Island Prison</span>
+              <span class="npc-faction-tag">Cult-Affiliated</span>
+              <span class="npc-faction-tag">Orphanage Connection</span>
+            </div>
+            <button class="npc-expand-btn" onclick="toggleNPC(this)">
+              Full Lore <span class="expand-icon">▾</span>
+            </button>
+            <div class="npc-lore-full">
+              <p>The imprisoned subject in Cultist Island's prison cells is, in the game's structural logic, Ignis's reflection seen from seven years earlier. Taken from an orphanage in the northern province at age seven. Enrolled in Father Calum's program. Given the distinct memory of Calum's kind eyes saying their name — and the specific, devastating realization that kind eyes saying a name do not mean the name's bearer matters to the person saying it. He knew all their names. He knew them the way a manufacturer knows production numbers.</p>
+              <p>This NPC exists in the cells because the Cult, for all its community-building, also holds people who did not choose to be part of the community. The game does not explain the circumstances of the imprisonment directly — the ethical complexity is left for the player to sit with. The Cult that positions itself as the refuge of the discarded maintains prisons. This is the crack in the Cult's moral architecture that Funeris's Path B arc begins to excavate.</p>
+              <p><strong>Connection to Ignis:</strong> The imprisoned subject's description of Calum — the kind eyes, the deliberate learning of names as data management rather than human recognition — is the most direct character portrait of Father Calum available from a victim's perspective. When Ignis hears this testimony, the Cult Leader's observation is confirmed: he is running out of ways to tell himself the Cult is the enemy and the Church is not. The imprisoned subject has experienced both institutions and found them comparable in what they took. That accounting is not available from any other NPC in the game.</p>
+              <p><strong>World Significance:</strong> The prison cells on Cultist Island represent the limit of the Cult's claim to moral authority. A community founded by the discarded that maintains its own prisoners is not a liberation — it is a power structure with different aesthetics. The imprisoned subject does not make this argument explicitly. Their presence makes it unavoidably.</p>
+              <div class="npc-quote">"He had kind eyes when he said my name. I remember thinking: he knows my name, so I must matter. It took me years to understand that he knew all our names the way a manufacturer knows the numbers on a production run."<cite>— Imprisoned Experiment Subject, Cultist Island Prison Cells</cite></div>
+            </div>
+          </div>
+        </article>
+
+        <article class="npc-card" data-zone="theocratic-capital" data-search="church attendant adverse reaction experimental lab recursive hallucination calum documentation failure">
+          <div class="npc-image-wrap">
+            <img src="http://elucidate.unaux.com/wp-content/uploads/2026/04/Copy-of-elucidate_idle_sprite_chuAttendants_down.png" alt="NPC Portrait — Church Attendant">
+            <div class="npc-zone-tag">Theocratic Capital</div>
+          </div>
+          <div class="npc-body">
+            <div class="npc-role">Administrative Staff · Lab Reporter</div>
+            <div class="npc-name">Church Attendant</div>
+            <div class="npc-lore-short">"Father. The underground facility — there are complications. Two subjects in the current cohort have demonstrated adverse reactions beyond the expected parameters."</div>
+            <div class="npc-faction-row">
+              <span class="npc-faction-tag">Theocratic Capital</span>
+              <span class="npc-faction-tag">Church of Lumen</span>
+              <span class="npc-faction-tag">Calum's Scenes</span>
+            </div>
+            <button class="npc-expand-btn" onclick="toggleNPC(this)">
+              Full Lore <span class="expand-icon">▾</span>
+            </button>
+            <div class="npc-lore-full">
+              <p>The Church Attendant appears in Father Calum's starting-zone scenes as the bearer of bad news from the Underground Laboratory — consistently, professionally, with the slight hesitation of someone who knows that the news they are delivering will be acknowledged and filed rather than acted upon in the way the news seems to require. They report adverse reactions. They report recursive hallucinations. They report children who have stopped responding and children who cannot distinguish experimental stimuli from their own perception.</p>
+              <p>Father Calum's responses — <em>document it, improve the next procedure, let them rest</em> — are delivered without cruelty or indifference but with the particular flatness of someone who has converted their response to suffering into an administrative process so efficient it no longer requires feeling. The Attendant witnesses this. They continue working. This is what institutions sustain themselves on: the people close enough to see what is happening, professional enough to report it correctly, and embedded enough in the system to file the paperwork rather than leave.</p>
+              <p><strong>World Significance:</strong> The Church Attendant is the institutional body that processes Calum's decisions into actions. They do not make policy. They implement it, which means they are closer to the children in the laboratory than Calum is, and further from the power to change anything than Calum is. This position — between the harm and the authority, with insufficient leverage at either end — is the game's sharpest portrait of complicity that is not quite choice. The Attendant is not choosing to continue. They are continuing, which is different, and the game does not resolve whether that difference is morally meaningful.</p>
+            </div>
+          </div>
+        </article>
+		
+		<article class="npc-card" data-zone="theocratic-capital" data-search="faithful citizen church lumen loyal hostile ending b civilian control doctrine">
+		  <div class="npc-image-wrap">
+			<img src="http://elucidate.unaux.com/wp-content/uploads/2026/04/elucidate_idle_male_faithful_citizen_npc_down.png" alt="NPC Portrait — Faithful Citizen">
+			<div class="npc-zone-tag">Theocratic Capital</div>
+		  </div>
+		  <div class="npc-body">
+			<div class="npc-role">Civilian · Doctrine Follower</div>
+			<div class="npc-name">Faithful Citizen</div>
+			<div class="npc-lore-short">"We trust the light. We obey. That is how the world stays whole."</div>
+			<div class="npc-faction-row">
+			  <span class="npc-faction-tag">Church</span>
+			  <span class="npc-faction-tag">Vindication Lumen</span>
+			  <span class="npc-faction-tag">Ending B Hostile</span>
+			</div>
+			<button class="npc-expand-btn" onclick="toggleNPC(this)">
+			  Full Lore <span class="expand-icon">▾</span>
+			</button>
+			<div class="npc-lore-full">
+			  <p>The Faithful Citizens are the foundation of the Theocratic system, raised from birth to believe that order comes only through obedience to Vindication Lumen. Their lives revolve around structured routines, controlled knowledge, and unwavering loyalty to the Church. They are not soldiers, yet they act as enforcers of belief through social pressure and collective surveillance.</p>
+			  <p><strong>Connection to Vindication Lumen:</strong> They represent its success. Every belief they hold is curated, filtered, and approved. Lumen, to them, is not questioned but lived. It defines their identity.</p>
+			  <p><strong>Connection to Caligo:</strong> They fear it as an external evil, unaware that suppression of truth allows Caligo to grow indirectly through ignorance.</p>
+			  <p><strong>Behavior Toward Player:</strong> Neutral at first, but in Ending B, they become hostile, viewing the player as a threat to order and divine structure.</p>
+			  <p><strong>Gameplay Relevance:</strong> Their reaction determines access to safe zones. In hostile states, they alert guards and restrict movement within the capital.</p>
+			</div>
+		  </div>
+		</article>
+
+		<article class="npc-card" data-zone="outskirts" data-search="bard song lore storyteller war history caligo hidden truth">
+		  <div class="npc-image-wrap">
+			<img src="http://elucidate.unaux.com/wp-content/uploads/2026/04/elucidate_idle_travelling_merchant_npc_down.png" alt="NPC Portrait — Traveling Bard">
+			<div class="npc-zone-tag">Outskirts</div>
+		  </div>
+		  <div class="npc-body">
+			<div class="npc-role">Storyteller · Lore Carrier</div>
+			<div class="npc-name">Traveling Bard</div>
+			<div class="npc-lore-short">"Songs remember what people choose to forget."</div>
+			<div class="npc-faction-row">
+			  <span class="npc-faction-tag">Neutral</span>
+			  <span class="npc-faction-tag">Lore Source</span>
+			</div>
+			<button class="npc-expand-btn" onclick="toggleNPC(this)">
+			  Full Lore <span class="expand-icon">▾</span>
+			</button>
+			<div class="npc-lore-full">
+			  <p>The Traveling Bard moves between regions, collecting stories that no official record keeps. Through music, he preserves fragments of truth erased by both Church doctrine and Cultist distortion. His songs often sound harmless but carry hidden meanings about past wars and forgotten experiments.</p>
+			  <p><strong>Connection to Caligo:</strong> Some of his songs contain patterns that subtly increase Mind State, suggesting exposure to corrupted knowledge.</p>
+			  <p><strong>Connection to Vindication Lumen:</strong> The Church tolerates him but monitors him, as his songs risk revealing suppressed history.</p>
+			  <p><strong>Behavior Toward Player:</strong> Friendly and cryptic, offering hints instead of direct answers.</p>
+			  <p><strong>Gameplay Relevance:</strong> Unlocks hidden lore, secret paths, and optional narrative triggers through song interactions.</p>
+			</div>
+		  </div>
+		</article>
+		
+        <article class="npc-card" data-zone="walled-city" data-search="male civilian walled city laborer worker ordinary citizen church draft conscript">
+          <div class="npc-image-wrap">
+            <img src="http://elucidate.unaux.com/wp-content/uploads/2026/04/Copy-of-elucidate_idle_male_civilian_npc_down.png" alt="NPC Portrait — Male Civilian">
+            <div class="npc-zone-tag">Walled City</div>
+          </div>
+          <div class="npc-body">
+            <div class="npc-role">Civilian · City Laborer</div>
+            <div class="npc-name">Male Civilian</div>
+            <div class="npc-lore-short">"I stopped counting the drafts after the third one took someone from my street. You count until counting becomes its own kind of damage."</div>
+            <div class="npc-faction-row">
+              <span class="npc-faction-tag">Walled City</span>
+              <span class="npc-faction-tag">Non-Affiliated</span>
+            </div>
+            <button class="npc-expand-btn" onclick="toggleNPC(this)">
+              Full Lore <span class="expand-icon">▾</span>
+            </button>
+            <div class="npc-lore-full">
+              <p>A laborer in the Walled City's supply district — one of the workers who moves crates, maintains the inner wall's drainage systems, and fills the roles the draft does not require but cannot function without. He has lived under Church authority long enough that its rules register as weather rather than governance: not agreed with, not resisted, simply endured as the condition of the world as it currently is.</p>
+              <p>He has had two neighbors drafted in the last year. One came back. He does not describe the difference between them in language that suggests the returning one fared better. He carries this knowledge the way the city carries its draft notices — quietly, in a place he does not open in front of soldiers.</p>
+              <p><strong>Connection to the World:</strong> He represents what the Walled City looks like from the inside for the people who do not carry weapons. The Church's control here is so normalized that its violence is largely invisible to those it has not yet touched directly. He is not broken by it yet. He is watching to see if it reaches him next.</p>
+            </div>
+          </div>
+        </article>
+
+
+        <article class="npc-card" data-zone="walled-city" data-search="female civilian walled city woman merchant stall market widow family church">
+          <div class="npc-image-wrap">
+            <img src="http://elucidate.unaux.com/wp-content/uploads/2026/04/Copy-of-elucidate_idle_female_civilian_npc_down.png" alt="NPC Portrait — Female Civilian">
+            <div class="npc-zone-tag">Walled City</div>
+          </div>
+          <div class="npc-body">
+            <div class="npc-role">Civilian · Market Stall Keeper</div>
+            <div class="npc-name">Female Civilian</div>
+            <div class="npc-lore-short">"The Church sets the prices. I set the portions. They have never once asked whether those two decisions are compatible."</div>
+            <div class="npc-faction-row">
+              <span class="npc-faction-tag">Walled City</span>
+              <span class="npc-faction-tag">Non-Affiliated</span>
+            </div>
+            <button class="npc-expand-btn" onclick="toggleNPC(this)">
+              Full Lore <span class="expand-icon">▾</span>
+            </button>
+            <div class="npc-lore-full">
+              <p>She runs a provisions stall near the Inner Military District's supply entrance — bread, dried goods, rope-wrapped parcels of preserved meat sold to soldiers and civilians in roughly equal measure. She does not distinguish between them by rank or faction. She distinguishes them by whether they argue about the price, which tells her more about their character than any insignia does.</p>
+              <p>Her husband was in the Third Regiment. He did not come back from the eastern campaign. The Church filed a casualty notice with the correct seal and the correct language and she received it on a Wednesday and opened the stall on Thursday because the alternative was not opening the stall. She has not spoken about it since, which is not the same as not thinking about it.</p>
+              <p><strong>Connection to the World:</strong> She embodies the civilian economy of the Walled City — the supply structure that exists beneath the military one, that neither the Church nor the draft can function without and neither formally acknowledges. Her small acts of proportion management against Church pricing guidelines are the only quiet rebellion available to her, and she exercises them with precise, unhurried consistency.</p>
+            </div>
+          </div>
+        </article>
+
+        <article class="npc-card" data-zone="walled-city" data-search="guard walled city soldier patrol gate church military gate watch patrol routine">
+          <div class="npc-image-wrap">
+            <img src="http://elucidate.unaux.com/wp-content/uploads/2026/04/Copy-of-elucidate_idle_guards_npc_down.png" alt="NPC Portrait — Walled City Guard">
+            <div class="npc-zone-tag">Walled City</div>
+          </div>
+          <div class="npc-body">
+            <div class="npc-role">Church Military · Gate Guard</div>
+            <div class="npc-name">Guard</div>
+            <div class="npc-lore-short">"Papers. Destination. Reason for travel. I don't write the questions. I just make sure you answer them."</div>
+            <div class="npc-faction-row">
+              <span class="npc-faction-tag">Walled City</span>
+              <span class="npc-faction-tag">Church of Lumen</span>
+              <span class="npc-faction-tag">Military Branch</span>
+            </div>
+            <button class="npc-expand-btn" onclick="toggleNPC(this)">
+              Full Lore <span class="expand-icon">▾</span>
+            </button>
+            <div class="npc-lore-full">
+              <p>A gate-post soldier assigned to the Walled City's outer checkpoint — one of several rotating through the same three-hour watches that divide the day into Church-approved segments. He enforces entry and exit documentation with the thoroughness of someone who has been told that leniency is a security failure. He has been told this enough times that he has stopped independently evaluating whether it is true.</p>
+              <p>He is not cruel. He is thorough, which within a system like the Church's produces outcomes that can be indistinguishable from cruelty without any individual act of malice. A family turned away at the gate because their travel papers use an outdated seal format is not the result of his decision — it is the result of a procedure he follows correctly. That distinction matters to him. Whether it matters to the family is a question he does not have access to.</p>
+              <p><strong>Connection to the World:</strong> The Guard represents the Church's most ordinary face — the layer of personnel who implement institutional decisions without making them. Conrad's observation that some soldiers stop asking questions early is most visible here. This guard stopped asking a long time ago. He is not certain whether that was the right decision. He has stopped asking about that too.</p>
+            </div>
+          </div>
+        </article>
+		
+        <article class="npc-card" data-zone="port-city" data-search="supply merchant port city goods trade harbor resupply provisions vendor market stall">
+          <div class="npc-image-wrap">
+            <img src="http://elucidate.unaux.com/wp-content/uploads/2026/04/Copy-of-elucidate_idle_supply_merchant_npc_down.png" alt="NPC Portrait — Supply Merchant">
+            <div class="npc-zone-tag">Port City</div>
+          </div>
+          <div class="npc-body">
+            <div class="npc-role">Merchant · Harbor Supply Trader</div>
+            <div class="npc-name">Supply Merchant</div>
+            <div class="npc-lore-short">"I sell to whoever arrives with coin. Church, Guild, or otherwise — money has no insignia. That is both its most useful and most troubling quality."</div>
+            <div class="npc-faction-row">
+              <span class="npc-faction-tag">Port City</span>
+              <span class="npc-faction-tag">Merchant Guild</span>
+              <span class="npc-faction-tag">Harbor District</span>
+            </div>
+            <button class="npc-expand-btn" onclick="toggleNPC(this)">
+              Full Lore <span class="expand-icon">▾</span>
+            </button>
+            <div class="npc-lore-full">
+              <p>A licensed Merchant Guild vendor operating out of a fixed stall near Port City's harbor supply entrance — the first resupply point for travelers arriving from the Walled City road or departing toward Cultist Island. He sells provisions, basic crafting materials, and nautical supplies, all priced against the Guild's standard rate sheet with the small personal adjustments that every experienced vendor maintains and no supervisor officially acknowledges.</p>
+              <p>He has been at this stall for nine years. In that time he has supplied Church soldiers, Guild merchants, Rocky Shore couriers, and at least two individuals who paid entirely in unmarked coin and declined to state a destination. He does not ask about destinations. He asks about quantities. Quantities tell you what someone needs. Destinations tell you what they plan to do with it, and that is information he has learned to prefer not to carry.</p>
+              <p><strong>Connection to the World:</strong> He occupies the economic ground floor of Port City — the layer of trade that keeps the harbor functional regardless of which factions are in tension above it. Konrad has used this stall as an intelligence relay point twice; the supply merchant passed the messages without knowing they were messages, because Konrad packaged them as standard order adjustments. He is, in this way, part of the evidence chain without any awareness of it. That is, the Merchant notes in his ledger, one of the more useful properties of a reliable vendor.</p>
+            </div>
+          </div>
+        </article>
+
+
+        <article class="npc-card" data-zone="port-city" data-search="merchant guild member port city trade representative official commerce information konrad investigation">
+          <div class="npc-image-wrap">
+            <img src="http://elucidate.unaux.com/wp-content/uploads/2026/04/Copy-of-elucidate_idle_merchant_guild_npc_down.png" alt="NPC Portrait — Merchant Guild Member">
+            <div class="npc-zone-tag">Port City</div>
+          </div>
+          <div class="npc-body">
+            <div class="npc-role">Merchant Guild · Trade Representative</div>
+            <div class="npc-name">Merchant Guild Member</div>
+            <div class="npc-lore-short">"The Guild protects commercial secrecy. That protection is the only reason certain information in this city has survived long enough to matter."</div>
+            <div class="npc-faction-row">
+              <span class="npc-faction-tag">Port City</span>
+              <span class="npc-faction-tag">Merchant Guild</span>
+              <span class="npc-faction-tag">Trade Infrastructure</span>
+            </div>
+            <button class="npc-expand-btn" onclick="toggleNPC(this)">
+              Full Lore <span class="expand-icon">▾</span>
+            </button>
+            <div class="npc-lore-full">
+              <p>A mid-rank Guild representative handling trade licensing and manifest review for Port City's central registry — the administrative layer between individual vendors like the Supply Merchant and the Guild Master's strategic operations. She processes contracts, verifies seals, and maintains the ledger system that the Church officially ignores and unofficially relies on to track its own supply movements through commercial channels.</p>
+              <p>She is aware that some of the manifests she processes have been subtly altered. She identified the pattern eight months ago. She has not reported it because her professional assessment is that the alteration is being done by someone who knows what they are doing and has a purpose for it that is not immediately harmful to the Guild's operation — and because the Church's presence in the registry office, which she is also aware of, makes formal reporting a decision with significant personal cost and no guaranteed outcome.</p>
+              <p><strong>Connection to Konrad:</strong> She is one of three Guild members who knows Konrad's investigation is more than a private business matter. She has been covering the manifest irregularities he creates, not out of allegiance to his cause, but out of a professional assessment that whatever he is building is likely to be resolved before the irregularities become a formal audit risk. She has calculated this correctly. Whether she would have covered them if she had known their full purpose is a question she has declined to examine.</p>
+              <p><strong>Connection to the World:</strong> She represents the Guild as a system rather than an ideology — an institution that protects commercial activity without interrogating its content, and that has become, through that neutrality, the only infrastructure in Port City capable of holding information the Church cannot reach. She did not design this. She benefits from it. She maintains it because it is her job, and because certain professional habits turn out, under specific circumstances, to have moral weight she never anticipated needing them to carry.</p>
+            </div>
+          </div>
+        </article>
+
+        <article class="npc-card" data-zone="walled-city" data-search="guard captain walled city military commander officer church authority patrol orders garrison">
+          <div class="npc-image-wrap">
+            <img src="http://elucidate.unaux.com/wp-content/uploads/2026/04/Copy-of-elucidate_idle_guard_captain_npc_down.png" alt="NPC Portrait — Guard Captain">
+            <div class="npc-zone-tag">Walled City</div>
+          </div>
+          <div class="npc-body">
+            <div class="npc-role">Church Military · Garrison Commander</div>
+            <div class="npc-name">Guard Captain</div>
+            <div class="npc-lore-short">"I maintain order in this city. What the Church does with that order is above my assignment."</div>
+            <div class="npc-faction-row">
+              <span class="npc-faction-tag">Walled City</span>
+              <span class="npc-faction-tag">Church of Lumen</span>
+              <span class="npc-faction-tag">Garrison Command</span>
+            </div>
+            <button class="npc-expand-btn" onclick="toggleNPC(this)">
+              Full Lore <span class="expand-icon">▾</span>
+            </button>
+            <div class="npc-lore-full">
+              <p>The Guard Captain has run the Walled City's garrison for six years — long enough to have developed a precise working theory of what questions to ask his superiors and which ones to exclude from formal record. He is not naive about the Church's operations. He is strategically incurious, which is the institutional skill that keeps a competent man functioning inside a corrupt system without forcing a confrontation he is not prepared to survive.</p>
+              <p>He knows about the notice board's crossed-out wording. He knows what "volunteer recruitment" is a euphemism for. He knows that the eastern carriages run heavier on the south route than the manifest weights suggest. He has filed none of this as a concern because filing it would constitute knowledge, and knowledge at his rank requires response, and the available responses are limited to ones he would rather not be ordered to take.</p>
+              <p><strong>Connection to the World:</strong> He is the Draft Officer's superior in practical terms and Father Calum's instrument in institutional ones. He represents the middle management of the Church's violence — the layer that knows enough to understand what it is administering but has too much personal investment in the structure to act against it. His moral accounting is not zero. It simply has not yet reached the point where the cost of inaction exceeds the cost of action. He is watching that calculation, privately, more carefully than he would admit.</p>
+              <p><strong>Connection to Ignis:</strong> The Guard Captain received a specific instruction from the Theocratic Capital regarding the Mercenary's deployment: let him proceed without interference, answer questions minimally, do not assign a second operative to shadow him. He did not question the instruction. He has thought about it since.</p>
+            </div>
+          </div>
+        </article>
+
+		<article class="npc-card" data-zone="cultist-island" data-search="channeler cult caligo mind state ritual caster corruption">
+		  <div class="npc-image-wrap">
+			<img src="http://elucidate.unaux.com/wp-content/uploads/2026/04/elucidate_walk_cultist_chaneller_npc_down_002.png" alt="NPC Portrait — Cult Channeler">
+			<div class="npc-zone-tag">Cultist Zone</div>
+		  </div>
+		  <div class="npc-body">
+			<div class="npc-role">Caster · Mind Manipulator</div>
+			<div class="npc-name">Cult Channeler</div>
+			<div class="npc-lore-short">"Do you hear it too? The sound beneath thought?"</div>
+			<div class="npc-faction-row">
+			  <span class="npc-faction-tag">Cult of Caligo</span>
+			  <span class="npc-faction-tag">Mind State Threat</span>
+			</div>
+			<button class="npc-expand-btn" onclick="toggleNPC(this)">
+			  Full Lore <span class="expand-icon">▾</span>
+			</button>
+			<div class="npc-lore-full">
+			  <p>Cult Channelers are individuals who have gone beyond belief into direct exposure. They no longer interpret Caligo, they transmit it. Their bodies act as conduits, distorting reality around them.</p>
+			  <p><strong>Connection to Caligo:</strong> Direct link. They amplify its presence, increasing Mind State of nearby entities.</p>
+			  <p><strong>Connection to Vindication Lumen:</strong> Considered irredeemable anomalies by the Church.</p>
+			  <p><strong>Behavior Toward Player:</strong> Aggressive, unpredictable, often distorting perception during encounters.</p>
+			  <p><strong>Gameplay Relevance:</strong> Raises Mind State rapidly, introduces hallucination mechanics, and alters combat UI.</p>
+			</div>
+		  </div>
+		</article>
+
+		<article class="npc-card" data-zone="lab" data-search="subject m4 experiment lumen failure caligo hybrid lab">
+		  <div class="npc-image-wrap">
+			<img src="http://elucidate.unaux.com/wp-content/uploads/2026/04/elucidate_idle_imprisoned_experiment_1_npc_down.png" alt="NPC Portrait — Subject M-4">
+			<div class="npc-zone-tag">Laboratory</div>
+		  </div>
+		  <div class="npc-body">
+			<div class="npc-role">Experiment · Failed Subject</div>
+			<div class="npc-name">Subject M-4</div>
+			<div class="npc-lore-short">"They said I would be pure. I only hear noise."</div>
+			<div class="npc-faction-row">
+			  <span class="npc-faction-tag">Experiment</span>
+			  <span class="npc-faction-tag">Hybrid State</span>
+			</div>
+			<button class="npc-expand-btn" onclick="toggleNPC(this)">
+			  Full Lore <span class="expand-icon">▾</span>
+			</button>
+			<div class="npc-lore-full">
+			  <p>Subject M-4 is one of the Church's controlled experiments under the Vindication Lumen program, designed to resist Caligo influence. The result was failure, creating a being caught between order and corruption.</p>
+			  <p><strong>Connection to Caligo:</strong> Partial exposure, resulting in unstable perception and fragmented consciousness.</p>
+			  <p><strong>Connection to Vindication Lumen:</strong> Proof of its limits. Not all can be purified.</p>
+			  <p><strong>Behavior Toward Player:</strong> Conflicted, may assist or attack depending on interaction.</p>
+			  <p><strong>Gameplay Relevance:</strong> Branching interaction that affects endings and reveals hidden lore about experiments.</p>
+			</div>
+		  </div>
+		</article>
+		
+		<article class="npc-card" data-zone="lab" data-search="subject r-3 experiment lumen caligo hybrid unstable mind state lore">
+		  <div class="npc-image-wrap">
+			<img src="http://elucidate.unaux.com/wp-content/uploads/2026/04/elucidate_idle_imprisoned_experiment_2_npc_down.png" alt="NPC Portrait — Subject R-3">
+			<div class="npc-zone-tag">Laboratory</div>
+		  </div>
+		  <div class="npc-body">
+			<div class="npc-role">Experimental Subject · Cognitive Instability Case</div>
+			<div class="npc-name">Subject R-3</div>
+			<div class="npc-lore-short">"It is not inside me. It is around everything. You just learned how to ignore it."</div>
+			<div class="npc-faction-row">
+			  <span class="npc-faction-tag">Vindication Lumen</span>
+			  <span class="npc-faction-tag">Experiment Unit</span>
+			  <span class="npc-faction-tag">Caligo Exposure</span>
+			</div>
+			<button class="npc-expand-btn" onclick="toggleNPC(this)">
+			  Full Lore <span class="expand-icon">▾</span>
+			</button>
+			<div class="npc-lore-full">
+			  <p>Subject R-3 is one of the most anomalous cases recorded within the Church’s experimental program. Unlike failed subjects who either rejected Lumen integration or were overtaken by Caligo influence, R-3 demonstrates a rare state of cognitive coexistence. The subject does not resist Caligo, nor does it submit to Lumen conditioning. Instead, it perceives both simultaneously without attempting to resolve the contradiction.</p>
+			  
+			  <p><strong>Background Story:</strong> Originally classified as a mid-tier compatibility subject, R-3 underwent standard Lumen infusion procedures. Initial results showed stable integration, but subsequent behavioral logs revealed irregular perception patterns. The subject began describing reality in layered terms, referring to unseen structures and “patterns behind light.” Unlike other subjects, R-3 did not exhibit panic, aggression, or loss of identity. Instead, the subject maintained calm awareness, which the Church classified as “controlled instability.” Due to the inability to categorize or control this state, R-3 was isolated indefinitely.</p>
+			  
+			  <p><strong>Connection to Caligo:</strong> R-3 does not treat Caligo as a foreign force. The subject perceives Caligo as a constant presence that has always existed, not as an invading entity. This perception aligns more closely with the understanding held by tribal elders rather than the Church or the Cult. R-3 suggests that Caligo is not something that corrupts, but something that reveals underlying structure, which directly contradicts Church doctrine.</p>
+			  
+			  <p><strong>Connection to Vindication Lumen:</strong> The subject represents a failure of Lumen’s intended purpose. Lumen is designed to impose clarity and order, yet in R-3, it has instead expanded perception beyond controlled boundaries. The Church views this as a critical flaw, as the subject cannot be guided, controlled, or predicted. R-3 is therefore considered more dangerous than unstable subjects, as it cannot be categorized within existing systems.</p>
+			  
+			  <p><strong>Connection to World Events:</strong> Internal records suggest that data gathered from R-3 influenced later experimental designs, including more aggressive suppression techniques. The subject is indirectly responsible for the harsher treatment of subsequent experiment groups, including those who later became part of the Cultist population.</p>
+			  
+			  <p><strong>Behavior Toward Player:</strong> R-3 remains non-hostile regardless of player actions. Dialogue interactions are fragmented but meaningful, often presenting statements that appear abstract at first but gain clarity when connected to broader lore. The subject may refer to the player’s Mind State, reacting differently depending on its level.</p>
+			  
+			  <p><strong>Gameplay Relevance:</strong> Interaction with R-3 can alter the player’s Mind State directly, either stabilizing or increasing it depending on dialogue choices. The subject serves as a key narrative trigger for understanding the true nature of Caligo and Lumen. In certain paths, R-3 unlocks hidden dialogue branches that influence late-game decisions and endings. The encounter is designed as a non-combat event that challenges interpretation rather than skill.</p>
+			</div>
+		  </div>
+		</article>
+	
+        <article class="npc-card" data-zone="outskirts" data-search="female villager outskirts village woman civilian community church failure experiments family loss">
+          <div class="npc-image-wrap">
+            <img src="http://elucidate.unaux.com/wp-content/uploads/2026/04/elucidate_idle_female_villager_npc_down.png" alt="NPC Portrait — Female Villager">
+            <div class="npc-zone-tag">Outskirts Village</div>
+          </div>
+          <div class="npc-body">
+            <div class="npc-role">Civilian · Outskirts Villager</div>
+            <div class="npc-name">Female Villager</div>
+            <div class="npc-lore-short">"A Shaman? How do you see the future?."</div>
+            <div class="npc-faction-row">
+              <span class="npc-faction-tag">Outskirts Village</span>
+              <span class="npc-faction-tag">Non-Affiliated</span>
+            </div>
+            <button class="npc-expand-btn" onclick="toggleNPC(this)">
+              Full Lore <span class="expand-icon">▾</span>
+            </button>
+            <div class="npc-lore-full">
+              <p>She lives on the eastern side of the Outskirts Village near the community well — a woman in her mid-forties who has watched the Church's institutional presence pass through this region for long enough to have a precise, unwritten inventory of what it takes and what it leaves behind. She does not speak about her nephew to strangers. She spoke about him to a soldier with one eye who stopped at the well and asked for water and waited for the answer without hurrying her. She is still deciding what to make of that conversation.</p>
+              <p>The village chief knows her history. He does not speak of it without her permission and he has not given her permission to stop carrying it alone, because the village has learned that some grief requires witness rather than resolution — that the correct response to what the Church did to her family is not comfort but acknowledgment, which is rarer and more valuable and harder to offer.</p>
+              <p><strong>Connection to the World:</strong> She is the human cost of the Vindication Lumen program made personal and specific. The experiment program in Church documents is a series of outcome classifications. In this village, it is a boy who came home and called his aunt by an institutional designation. Both of these are true simultaneously. The distance between them is what the game calls elucidation — and it costs something to close.</p>
+            </div>
+          </div>
+        </article>
+
+        <article class="npc-card" data-zone="outskirts" data-search="male villager outskirts village young man timber worker community church soldier contempt system hatred">
+          <div class="npc-image-wrap">
+            <img src="http://elucidate.unaux.com/wp-content/uploads/2026/04/elucidate_idle_male_villager_variant_npc_down.png" alt="NPC Portrait — Male Villager">
+            <div class="npc-zone-tag">Outskirts Village</div>
+          </div>
+          <div class="npc-body">
+            <div class="npc-role">Civilian · Young Laborer</div>
+            <div class="npc-name">Male Villager</div>
+            <div class="npc-lore-short">"I don't hate the soldiers. I save it for the people who did the deciding."</div>
+            <div class="npc-faction-row">
+              <span class="npc-faction-tag">Outskirts Village</span>
+              <span class="npc-faction-tag">Non-Affiliated</span>
+            </div>
+            <button class="npc-expand-btn" onclick="toggleNPC(this)">
+              Full Lore <span class="expand-icon">▾</span>
+            </button>
+            <div class="npc-lore-full">
+              <p>A young man in his early twenties who works timber near the village's northern boundary — one of the Outskirts' manual laborers whose daily proximity to the Greywood's edge has given him a grounded, unhurried relationship with the danger that other regions theorize about from safe distances. He grew up watching Church soldiers pass through. He has developed the specific philosophy of someone who has had time to think while working with his hands: precise, earned, resistant to comfortable oversimplification.</p>
+              <p>His distinction between hating soldiers and hating the people who made them that way is not a young man's idealism. It is an older, harder conclusion — the kind that arrives after you have watched enough individuals be shaped into instruments and have stopped being able to see the instrument as the source of the problem. He says it while stacking timber, without looking at whoever he is saying it to, which is either obliviousness or a specific kind of courage. The village chief thinks it is the second one.</p>
+              <p><strong>Connection to the World:</strong> He represents the generation that grew up inside the Church's reach without growing up inside the Church's story about itself. He does not believe the Lumen doctrine. He was never given a reason to that held up to his own experience. His clarity about institutional versus individual responsibility is one of the Outskirts Village's quiet moral assets — the kind the Church did not build and cannot easily dismantle, because it was made from observation rather than indoctrination.</p>
+            </div>
+          </div>
+        </article>
+
+		<article class="npc-card" data-zone="theocratic-capital" data-search="holy knights lumen elite guards executioners ending b">
+		  <div class="npc-image-wrap">
+			<img src="http://elucidate.unaux.com/wp-content/uploads/2026/04/Copy-of-elucidate_idle_holyknight_npc_down.png" alt="NPC Portrait — Holy Knights">
+			<div class="npc-zone-tag">Theocratic District</div>
+		  </div>
+		  <div class="npc-body">
+			<div class="npc-role">Elite Enforcers · Military Authority</div>
+			<div class="npc-name">Holy Knights</div>
+			<div class="npc-lore-short">"Faith is not belief. It is obedience enforced."</div>
+			<div class="npc-faction-row">
+			  <span class="npc-faction-tag">Vindication Lumen</span>
+			  <span class="npc-faction-tag">Church Military</span>
+			</div>
+			<button class="npc-expand-btn" onclick="toggleNPC(this)">Full Lore <span class="expand-icon">▾</span></button>
+			<div class="npc-lore-full">
+			  <p>Holy Knights are conditioned soldiers enhanced through controlled exposure to Lumen fragments. They enforce doctrine through force.</p>
+			  <p><strong>Connection to Lumen:</strong> Direct recipients of stabilized fragments.</p>
+			  <p><strong>Connection to Caligo:</strong> Suppressed through training and chemical control.</p>
+			  <p><strong>Behavior:</strong> Aggressive, disciplined, relentless.</p>
+			  <p><strong>Gameplay Role:</strong> High-tier combat units, boss-tier encounters in Ending B.</p>
+			</div>
+		  </div>
+		</article>
+
+		<article class="npc-card" data-zone="cultist-island" data-search="cultist soldiers melee fighters caligo survivors">
+		  <div class="npc-image-wrap">
+			<img src="http://elucidate.unaux.com/wp-content/uploads/2026/04/Copy-of-elucidate_idle_cultist_npc_down.png" alt="NPC Portrait — Cultist Soldiers">
+			<div class="npc-zone-tag">Cultist Territory</div>
+		  </div>
+		  <div class="npc-body">
+			<div class="npc-role">Frontline Fighters · Survivors</div>
+			<div class="npc-name">Cultist Soldiers</div>
+			<div class="npc-lore-short">"We fight because we were left with nothing else."</div>
+			<div class="npc-faction-row">
+			  <span class="npc-faction-tag">Cult of Caligo</span>
+			</div>
+			<button class="npc-expand-btn" onclick="toggleNPC(this)">Full Lore <span class="expand-icon">▾</span></button>
+			<div class="npc-lore-full">
+			  <p>Former experiment subjects, these soldiers rely on instinct and survival. Their bodies adapted to Caligo exposure.</p>
+			  <p><strong>Connection to Caligo:</strong> Direct mutation influence.</p>
+			  <p><strong>Connection to Lumen:</strong> Rejected by the system.</p>
+			  <p><strong>Behavior:</strong> Defensive, territorial.</p>
+			  <p><strong>Gameplay Role:</strong> Core melee enemies, scaling difficulty.</p>
+			</div>
+		  </div>
+		</article>
+		
+        <article class="npc-card" data-zone="home-village" data-search="melted villager home village caligo corruption transformation horror enemy eldritch failed experiment ruins">
+          <div class="npc-image-wrap">
+            <img src="http://elucidate.unaux.com/wp-content/uploads/2026/04/Copy-of-elucidate_idle_melted_female_villager_npc_up.png" alt="NPC Portrait — Melted Villager">
+            <div class="npc-zone-tag">Home Village</div>
+          </div>
+          <div class="npc-body">
+            <div class="npc-role">Enemy · Corrupted Civilian</div>
+            <div class="npc-name">Melted Villager</div>
+            <div class="npc-lore-short">"They do not move like people anymore. They move like people who have forgotten, partway through the motion, what people are for."</div>
+            <div class="npc-faction-row">
+              <span class="npc-faction-tag">Home Village</span>
+              <span class="npc-faction-tag">Caligo-Corrupted</span>
+              <span class="npc-faction-tag">Enemy</span>
+            </div>
+            <button class="npc-expand-btn" onclick="toggleNPC(this)">
+              Full Lore <span class="expand-icon">▾</span>
+            </button>
+            <div class="npc-lore-full">
+              <p>The Melted Villagers are what remains of the Home Village's population after Caligo's influence passed through unchecked — not killed, not transformed into something new, but arrested partway through both. They retain the shape of people: two arms, upright posture, faces oriented forward. The shape is where the resemblance ends. Their proportions have shifted imperceptibly but wrongly, joints bending in directions that should be impossible, skin carrying the texture of something that was once solid and is no longer certain it wants to be. They are the village's history made literal — a community that was used up and left behind, still present, still moving, no longer able to articulate why.</p>
+              <p>What makes them psychologically distinct from standard Eldritch Horrors is their origin. They were not created by Caligo intentionally. They are the byproduct of proximity — civilians caught within sustained Caligo exposure without the mental conditioning the Church spent years developing in its subjects. The Church built Ignis specifically to survive what the Melted Villagers could not. Standing in the ruins of the Home Village, encountering them, this context is not stated. It does not need to be. The player arrives at the implication themselves, and the implication is worse for not being explained.</p>
+              <p><strong>Connection to Caligo:</strong> The Melted Villagers represent Caligo's effect on the unprepared mind and body — not evil, not intentional, simply the consequence of extended contact with something that does not register human continuity as meaningful. The corruption is not a punishment. It is indifference made physical.</p>
+              <p><strong>Connection to the Church's Program:</strong> The Home Village's proximity to the original orphanage was not accidental. Church records in the Hidden Basement reference the village as a "passive observation zone" — its population's deterioration was documented over years as control-group data. The Melted Villagers are, in this light, the experiment's uncredited subjects: the ones who were neither saved nor expelled, simply left in place to demonstrate what the enhancement program was designed to prevent.</p>
+              <p><strong>Gameplay Behavior:</strong> Slow, persistent pursuit. They do not retreat. They do not flinch at knockback the way standard enemies do — the Blunderbuss staggers them but does not stop them. Their threat is attrition: they keep coming, and every encounter in the Home Village accelerates MS at the doubled rate. The correct response is to avoid where possible. Fighting all of them is a trap. MS +8 per encounter. Drop: raw materials, occasional Ink Vial.</p>
+              <div class="npc-quote">"The headstones have no names on them. Someone buried these people. And then something that was almost these people stood up again."<cite>— Mercenary (Ignis), internal monologue, Home Village entry</cite></div>
+            </div>
+          </div>
+        </article>
+
+        <article class="npc-card" data-zone="port-city" data-search="travelling merchant port city guild trade knowledge neutral suspicious information items konrad outskirts">
+          <div class="npc-image-wrap">
+            <img src="http://elucidate.unaux.com/wp-content/uploads/2026/04/elucidate_idle_male_market_merchant_npc_down.png" alt="NPC Portrait — Travelling Merchant">
+            <div class="npc-zone-tag">Port City</div>
+          </div>
+          <div class="npc-body">
+            <div class="npc-role">Merchant · Information Broker</div>
+            <div class="npc-name">Travelling Merchant</div>
+            <div class="npc-lore-short">"I sell what people need and I know what people need before they ask. That's not a gift. That's just paying attention to who comes through a port and what they're not saying."</div>
+            <div class="npc-faction-row">
+              <span class="npc-faction-tag">Port City</span>
+              <span class="npc-faction-tag">Merchant Guild</span>
+              <span class="npc-faction-tag">Neutral</span>
+            </div>
+            <button class="npc-expand-btn" onclick="toggleNPC(this)">
+              Full Lore <span class="expand-icon">▾</span>
+            </button>
+            <div class="npc-lore-full">
+              <p>The Travelling Merchant has no permanent stall, no fixed hours, and no clear record with the Merchant Guild beyond a registration number that has not been updated in eleven years. She appears at the Port City docks with reliable irregularity — present when trade ships arrive, absent without notice when Church officials conduct inspections, back again within two days of their departure. The Harbor Captain knows her schedule better than she does. He has stopped asking how she always knows when to leave. She has stopped pretending she doesn't.</p>
+              <p>She sells consumables, crafting materials, and occasional items of ambiguous provenance at prices that are fair enough not to invite scrutiny and varied enough to suggest she sources from multiple supply chains, at least one of which the Church would find interesting. Her neutrality is genuine in the sense that she works for no single faction — and strategic in the sense that she has survived Port City's shifting loyalties for over a decade by ensuring that everyone who matters finds her useful and no one finds her threatening. She has calibrated this to a precision that the Tavern Keeper recognizes and respects.</p>
+              <p><strong>Connection to the Merchant Guild:</strong> She maintains Guild affiliation loosely — enough to access the harbor's commercial district, not enough to be subject to Guild Master oversight on individual transactions. Konrad has crossed paths with her during his investigation. He has noticed that her shipment manifests never quite match her visible inventory. He has chosen not to press it. She has noticed that he noticed. They have maintained a cordial, unspoken agreement to leave each other's irregularities alone.</p>
+              <p><strong>What She Knows:</strong> The Travelling Merchant has been moving through Port City's margins long enough to have accumulated information she does not sell and does not volunteer. She knows which Church shipments were flagged and quietly unflagged. She knows the orphanage supply chain had a commercial routing node in the Port City harbor district. She has never told anyone this — not because she is loyal to the Church, but because the information is worth more unspoken, and because the person who needs to hear it has not yet asked her the right question. If any character ever does, she will answer precisely, without elaboration, and move on before they can follow up.</p>
+              <p><strong>Gameplay Role:</strong> Primary consumable vendor in Port City. Stocks Blue Gems reliably — the only guaranteed restock point before the Cultist Island sequence. Also carries Silver Wire, Iron Ingots, and one rotating rare item per visit. Her dialogue trees shift depending on the player's active path: on Path A she is warm and commercially cheerful; on Path B she is slightly more direct, as if she has assessed the player's situation and adjusted accordingly; on Path C, if MS exceeds 65, she will quietly decline to sell the rarer items, citing stock. She will not explain why.</p>
+              <div class="npc-quote">"Everyone who comes through this harbor is carrying something they didn't declare. You just have to decide whether what they're carrying is dangerous or just heavy. Most of the time it's both."<cite>— Travelling Merchant, Port City Harbor District</cite></div>
+            </div>
+          </div>
+        </article>
+
+		<article class="npc-card" data-zone="outskirts" data-search="village chief guide trust system outskirts leader">
+		  <div class="npc-image-wrap">
+			<img src="http://elucidate.unaux.com/wp-content/uploads/2026/04/elucidate_idle_male_villager_npc_down.png" alt="NPC Portrait — Village Chief">
+			<div class="npc-zone-tag">Outskirts</div>
+		  </div>
+		  <div class="npc-body">
+			<div class="npc-role">Guide · Decision Influencer</div>
+			<div class="npc-name">Village Chief</div>
+			<div class="npc-lore-short">"Trust is earned slowly here. Do not waste it."</div>
+			<div class="npc-faction-row">
+			  <span class="npc-faction-tag">Outskirts</span>
+			</div>
+			<button class="npc-expand-btn" onclick="toggleNPC(this)">Full Lore <span class="expand-icon">▾</span></button>
+			<div class="npc-lore-full">
+			  <p>The Chief mediates between fear of the Church and survival realities.</p>
+			  <p><strong>Connection to Lumen:</strong> Distrustful.</p>
+			  <p><strong>Connection to Caligo:</strong> Aware but cautious.</p>
+			  <p><strong>Behavior:</strong> Conditional trust.</p>
+			  <p><strong>Gameplay Role:</strong> Unlocks paths.</p>
+			</div>
+		  </div>
+		</article>
+
+		<article class="npc-card" data-zone="zones" data-search="caligo manifestation boss entity apex horror">
+		  <div class="npc-image-wrap">
+			<img src="http://elucidate.unaux.com/wp-content/uploads/2026/04/elucidate_idle_caligo_manifestationenemy.png" alt="NPC Portrait — Caligo Manifestation">
+			<div class="npc-zone-tag">Zones of Terror</div>
+		  </div>
+		  <div class="npc-body">
+			<div class="npc-role">Entity · Apex Threat</div>
+			<div class="npc-name">Caligo Manifestation</div>
+			<div class="npc-lore-short">"It does not see you. It sees through you."</div>
+			<div class="npc-faction-row">
+			  <span class="npc-faction-tag">Caligo</span>
+			</div>
+			<button class="npc-expand-btn" onclick="toggleNPC(this)">Full Lore <span class="expand-icon">▾</span></button>
+			<div class="npc-lore-full">
+			  <p>A rare manifestation of Caligo's fragmented consciousness.</p>
+			  <p><strong>Connection to Caligo:</strong> Direct embodiment.</p>
+			  <p><strong>Connection to Lumen:</strong> Opposes existence.</p>
+			  <p><strong>Behavior:</strong> Unpredictable.</p>
+			  <p><strong>Gameplay Role:</strong> Rare boss encounter.</p>
+			</div>
+		  </div>
+		</article>
+		
+		<article class="npc-card" data-zone="theocratic-capital" data-search="assassins church covert operatives lumen elimination ending b stealth">
+		  <div class="npc-image-wrap">
+			<img src="http://elucidate.unaux.com/wp-content/uploads/2026/04/elucidate_walk_church_assassin_npc_down_001.png" alt="NPC Portrait — Assassins">
+			<div class="npc-zone-tag">Theocratic District</div>
+		  </div>
+		  <div class="npc-body">
+			<div class="npc-role">Covert Eliminators · Silent Enforcement</div>
+			<div class="npc-name">Church Assassins</div>
+			<div class="npc-lore-short">"You were never meant to see us. Only the result."</div>
+			<div class="npc-faction-row">
+			  <span class="npc-faction-tag">Vindication Lumen</span>
+			  <span class="npc-faction-tag">Black Operations</span>
+			</div>
+			<button class="npc-expand-btn" onclick="toggleNPC(this)">Full Lore <span class="expand-icon">▾</span></button>
+			<div class="npc-lore-full">
+			  <p>The Assassins are the Church’s final layer of control, deployed when doctrine fails and visibility becomes a liability. They operate outside official records.</p>
+			  <p><strong>Connection to Lumen:</strong> Absolute loyalty enforced through conditioning.</p>
+			  <p><strong>Connection to Caligo:</strong> Trained to suppress exposure, though prolonged missions cause instability.</p>
+			  <p><strong>Behavior:</strong> Invisible until engagement, lethal precision.</p>
+			  <p><strong>Gameplay Role:</strong> Stealth-based ambush enemies, high-risk encounters in Ending B.</p>
+			</div>
+		  </div>
+		</article>
+
+		<article class="npc-card" data-zone="outskirts" data-search="market merchants trade supplies neutral economy">
+		  <div class="npc-image-wrap">
+			<img src="http://elucidate.unaux.com/wp-content/uploads/2026/04/elucidate_idle_female_market_merchant_npc_down.png" alt="NPC Portrait — Market Merchants">
+			<div class="npc-zone-tag">Outskirts</div>
+		  </div>
+		  <div class="npc-body">
+			<div class="npc-role">Resource Providers · Economic Nodes</div>
+			<div class="npc-name">Market Merchants</div>
+			<div class="npc-lore-short">"We sell what people need, not what they believe."</div>
+			<div class="npc-faction-row">
+			  <span class="npc-faction-tag">Neutral</span>
+			  <span class="npc-faction-tag">Outskirts Economy</span>
+			</div>
+			<button class="npc-expand-btn" onclick="toggleNPC(this)">Full Lore <span class="expand-icon">▾</span></button>
+			<div class="npc-lore-full">
+			  <p>Merchants operate independently of both Church and Cult. Their survival depends on neutrality.</p>
+			  <p><strong>Connection to Lumen:</strong> Transactional compliance.</p>
+			  <p><strong>Connection to Caligo:</strong> Avoidance.</p>
+			  <p><strong>Behavior:</strong> Neutral unless threatened.</p>
+			  <p><strong>Gameplay Role:</strong> Item shops, resource balancing.</p>
+			</div>
+		  </div>
+		</article>
+
+		<article class="npc-card" data-zone="tribe" data-search="tribe warrior rescue combat assist ally">
+		  <div class="npc-image-wrap">
+			<img src="http://elucidate.unaux.com/wp-content/uploads/2026/04/Copy-of-elucidate_idle_tribe_warrior_npc_down.png" alt="NPC Portrait — Tribe Warrior A">
+			<div class="npc-zone-tag">Tribal Lands</div>
+		  </div>
+		  <div class="npc-body">
+			<div class="npc-role">Combat Ally · Rescue Support</div>
+			<div class="npc-name">Tribe Warrior A</div>
+			<div class="npc-lore-short">"You fight. I watch your back."</div>
+			<div class="npc-faction-row">
+			  <span class="npc-faction-tag">Tribal Order</span>
+			</div>
+			<button class="npc-expand-btn" onclick="toggleNPC(this)">Full Lore <span class="expand-icon">▾</span></button>
+			<div class="npc-lore-full">
+			  <p>A warrior trained in survival and coordination, assisting in key rescue missions.</p>
+			  <p><strong>Connection to Caligo:</strong> Resistant through training.</p>
+			  <p><strong>Connection to Lumen:</strong> Distrustful.</p>
+			  <p><strong>Behavior:</strong> Loyal ally.</p>
+			  <p><strong>Gameplay Role:</strong> Temporary companion AI.</p>
+			</div>
+		  </div>
+		</article>
+
+		<article class="npc-card" data-zone="tribe" data-search="tribe warrior defense support secondary ally">
+		  <div class="npc-image-wrap">
+			<img src="http://elucidate.unaux.com/wp-content/uploads/2026/04/elucidate_idle_female_tribal_warrior_npc_down.png" alt="NPC Portrait — Tribe Warrior B">
+			<div class="npc-zone-tag">Tribal Lands</div>
+		  </div>
+		  <div class="npc-body">
+			<div class="npc-role">Defender · Tactical Support</div>
+			<div class="npc-name">Tribe Warrior B</div>
+			<div class="npc-lore-short">"Survival is knowing when not to fight."</div>
+			<div class="npc-faction-row">
+			  <span class="npc-faction-tag">Tribal Order</span>
+			</div>
+			<button class="npc-expand-btn" onclick="toggleNPC(this)">Full Lore <span class="expand-icon">▾</span></button>
+			<div class="npc-lore-full">
+			  <p>Focuses on defensive strategy and survival tactics.</p>
+			  <p><strong>Connection to Caligo:</strong> Avoidance and awareness.</p>
+			  <p><strong>Connection to Lumen:</strong> Rejects influence.</p>
+			  <p><strong>Behavior:</strong> Strategic.</p>
+			  <p><strong>Gameplay Role:</strong> Defensive support AI.</p>
+			</div>
+		  </div>
+		</article>
+
+		<article class="npc-card" data-zone="port-city" data-search="church spy hidden encounter infiltration port intelligence">
+		  <div class="npc-image-wrap">
+			<img src="http://elucidate.unaux.com/wp-content/uploads/2026/04/elucidate_idle_church_spy_npc_down.png" alt="NPC Portrait — Church Spy">
+			<div class="npc-zone-tag">Port</div>
+		  </div>
+		  <div class="npc-body">
+			<div class="npc-role">Informer · Hidden Observer</div>
+			<div class="npc-name">Church Spy</div>
+			<div class="npc-lore-short">"You think no one is watching. That is your first mistake."</div>
+			<div class="npc-faction-row">
+			  <span class="npc-faction-tag">Vindication Lumen</span>
+			</div>
+			<button class="npc-expand-btn" onclick="toggleNPC(this)">Full Lore <span class="expand-icon">▾</span></button>
+			<div class="npc-lore-full">
+			  <p>Embedded among civilians, gathering intelligence.</p>
+			  <p><strong>Connection to Lumen:</strong> Direct operative.</p>
+			  <p><strong>Connection to Caligo:</strong> Fear-based reporting.</p>
+			  <p><strong>Behavior:</strong> Hidden, deceptive.</p>
+			  <p><strong>Gameplay Role:</strong> Hidden trigger events.</p>
+			</div>
+		  </div>
+		</article>
+
+		<article class="npc-card" data-zone="cultist-island" data-search="cult archers ranged combat caligo mutation">
+		  <div class="npc-image-wrap">
+			<img src="http://elucidate.unaux.com/wp-content/uploads/2026/04/elucidate_idle_cultist_archer_npc_down.png" alt="NPC Portrait — Cult Archers">
+			<div class="npc-zone-tag">Cultist Territory</div>
+		  </div>
+		  <div class="npc-body">
+			<div class="npc-role">Ranged Combatants · Precision Units</div>
+			<div class="npc-name">Cult Archers</div>
+			<div class="npc-lore-short">"Distance does not protect you."</div>
+			<div class="npc-faction-row">
+			  <span class="npc-faction-tag">Cult of Caligo</span>
+			</div>
+			<button class="npc-expand-btn" onclick="toggleNPC(this)">Full Lore <span class="expand-icon">▾</span></button>
+			<div class="npc-lore-full">
+			  <p>Adapted for ranged combat with heightened perception.</p>
+			  <p><strong>Connection to Caligo:</strong> Enhanced senses.</p>
+			  <p><strong>Connection to Lumen:</strong> Rejected subjects.</p>
+			  <p><strong>Behavior:</strong> Aggressive at range.</p>
+			  <p><strong>Gameplay Role:</strong> Ranged enemies.</p>
+			</div>
+		  </div>
+		</article>
+		
+		<article class="npc-card" data-zone="cultist-island" data-search="cult leader beholder of fragments of caligo">
+		  <div class="npc-image-wrap">
+			<img src="http://elucidate.unaux.com/wp-content/uploads/2026/04/elucidate_idle_cult_leader_npc_down.png" alt="NPC Portrait — Cult Leader">
+			<div class="npc-zone-tag">Cultist Territory - Fortress</div>
+		  </div>
+		  <div class="npc-body">
+			<div class="npc-role">Ranged Combatants · Precision Units</div>
+			<div class="npc-name">Cult Leader</div>
+			<div class="npc-lore-short">"You were nine years old when the Church expelled you from the program. You were not told why. ."</div>
+			<div class="npc-faction-row">
+			  <span class="npc-faction-tag">Cult of Caligo</span>
+			</div>
+			<button class="npc-expand-btn" onclick="toggleNPC(this)">Full Lore <span class="expand-icon">▾</span></button>
+			<div class="npc-lore-full">
+			  <p>The Cult Leader stands as the central figure of the Cultist Island, not as a traditional ruler, but as a surviving product of the same system that created every other exile. Unlike the others, however, the Leader retained clarity during the early exposure to experimental procedures tied to Vindication Lumen. While most subjects broke, fragmented, or became unstable, the Cult Leader adapted. This adaptation did not grant power in the conventional sense, but awareness. He became capable of perceiving the structure behind the experiments, the intention of the Church, and the silent presence of Caligo that existed before both.</p>
+
+			  <p>Originally classified as a high-potential subject within the Vindication Lumen program, the Cult Leader was subjected to repeated cognitive trials designed to measure resistance against non-linear perception. Records describe him as "non-compliant but stable," a rare combination that made him both valuable and dangerous. When the Church determined that his interpretations deviated from acceptable doctrine, he was marked for disposal. Instead of termination, he was exiled along with other failed subjects. This decision would later become one of the Church’s most critical errors, as it allowed the formation of a unified group of rejected individuals under a single coherent perspective.</p>
+
+			  <p><strong>Connection to Caligo:</strong> The Cult Leader does not worship Caligo in the same way lesser cultists do. He understands Caligo as a constant, not a deity. To him, Caligo is the condition of existence itself, a force that reveals truth by removing illusions rather than granting meaning. His prolonged exposure allowed him to survive without losing identity, but at the cost of perceiving reality in a way that isolates him from normal human understanding. He teaches others not to seek Caligo, but to endure it. This philosophy shapes the Cult into a group focused on survival rather than blind devotion.</p>
+
+			  <p><strong>Connection to Vindication Lumen:</strong> The Cult Leader represents the system’s greatest failure. Vindication Lumen was designed to create controlled enlightenment, individuals who could process higher knowledge without destabilization. Instead, it produced individuals who could not be controlled. The Leader is proof that the system does not produce obedience, only awareness. His existence challenges the Church’s belief that knowledge can be contained, regulated, or purified. Every action he takes is, in effect, a contradiction of the Church’s purpose.</p>
+
+			  <p><strong>Behavior Toward the Player:</strong> The Cult Leader does not immediately engage in hostility. His interaction with the player depends on accumulated choices, especially those affecting Mind State and previous encounters with cult members. If the player approaches as a soldier of the Church, the Leader responds with controlled resistance and strategic combat. If the player shows hesitation, listens to cult narratives, or accumulates higher Mind State, the Leader shifts into dialogue-driven interaction. He evaluates rather than reacts. To him, the player is not an enemy but a variable, a possible continuation of the same system that created him.</p>
+
+			  <p><strong>Gameplay Relevance:</strong> The Cult Leader functions as a major decision point and narrative pivot. He is encountered during late-stage progression within the Cultist path and acts as either a boss encounter or a dialogue-driven convergence point depending on player alignment. His presence directly influences endings tied to Caligo acceptance or rejection. Combat against him involves layered mechanics tied to Mind State, where higher values alter his attack patterns and dialogue interruptions. If engaged peacefully, he unlocks alternative narrative branches and reveals hidden truths about the origin of both the Church and the experiments.</p>
+
+			  <p><strong>Role in World Events:</strong> The Cult Leader is the reason the Cult persists as an organized faction rather than scattered survivors. He transformed isolated rejection into collective identity. His influence extends beyond the island through indirect effects, including increased Church surveillance, expansion of experimental programs, and the emergence of higher-level Caligo manifestations. His continued existence destabilizes the balance between the Church and the unknown, making him one of the most important figures in the entire Elucidate world.</p>
+			</div>
+		  </div>
+		</article>
+		
+        <article class="npc-card" data-zone="theocratic-capital" data-search="Envoy Seven Aldric church operative secret mission higher authority envoy emissary">
+          <div class="npc-image-wrap">
+            <img src="https://png.pngtree.com/png-vector/20251121/ourmid/pngtree-gray-human-silhouette-on-white-background-flat-colors-empty-avatar-icon-png-image_18034377.webp" alt="NPC Portrait — Envoy Seven, Aldric">
+            <div class="npc-zone-tag">Theocratic Capital</div>
+          </div>
+          <div class="npc-body">
+            <div class="npc-role">Church Envoy · Classified Operative</div>
+            <div class="npc-name">Envoy Seven — Aldric</div>
+            <div class="npc-lore-short">"There are seven of us. I am the last one still assigned. You should ask yourself why that is."</div>
+            <div class="npc-faction-row">
+              <span class="npc-faction-tag">Church of Lumen</span>
+              <span class="npc-faction-tag">Classified Rank</span>
+              <span class="npc-faction-tag">Envoy Program</span>
+            </div>
+            <button class="npc-expand-btn" onclick="toggleNPC(this)">
+              Full Lore <span class="expand-icon">▾</span>
+            </button>
+            <div class="npc-lore-full">
+              <p>The Church's Envoy Program is not documented in any public-facing Church literature. It exists in two internal records: a resource allocation ledger that codes its operatives as maintenance costs, and a mission archive sealed under Father Calum's personal authorization. Aldric holds the designation Envoy Seven — which means six other Envoys were assigned before him, and he is the only one still operational. He does not explain what happened to the others. He does not need to. The designation itself is the explanation.</p>
+              <p>Aldric moves through the Theocratic Capital in the role of a senior administrative attaché — a man who attends meetings, carries documents, and is never quite the most important person in any room. This is by design. His actual function is the delivery of Father Calum's off-record instructions to agents and operatives who cannot be seen receiving those instructions through official channels. He is the Church's deniability infrastructure made into a person.</p>
+              <p><strong>Connection to Higher Authority:</strong> Direct and singular — he reports to Father Calum alone, bypassing every other layer of Church hierarchy. Other Church officials are aware of his existence but not his function. The Draft Officer, for instance, has seen Aldric in the corridors of the Theocratic Capital for years and has registered him as "one of the administrative people" without ever learning his role.</p>
+              <p><strong>Connection to the World:</strong> Aldric's mission, as fragments of dialogue reveal, involves locating and monitoring the three Fragments of Caligo before Father Calum's consolidation plan moves into its final phase. He has been tracking the Fragment currently in the Merchant Guild's possession for eleven months. He is very close to it. So is Konrad. They have not yet recognized each other.</p>
+              <p><strong>Gameplay Role:</strong> Encountered in the Theocratic Capital as a background NPC with optional triggered dialogue. Full lore only accessible if the player investigates the Cathedral Archive and cross-references the personnel ledger. One of the few NPCs who, upon recognizing the player's investigation depth, will voluntarily provide a warning rather than an obstacle — because his mission and the player's convergence at a certain point becomes, for Aldric, a variable he prefers to manage rather than eliminate.</p>
+            </div>
+          </div>
+        </article>
+
+		<article class="npc-card" data-zone="cultist-island" data-search="eldritch manifestations high mind state entities horror">
+		  <div class="npc-image-wrap">
+			<img src="http://elucidate.unaux.com/wp-content/uploads/2026/04/Copy-of-elucidate_idle_amalgamated_villagers_npc_right.png" alt="NPC Portrait — Eldritch Manifestations">
+			<div class="npc-zone-tag">Zones of Terror</div>
+		  </div>
+		  <div class="npc-body">
+			<div class="npc-role">Mind-State Entities · Psychological Threat</div>
+			<div class="npc-name">Eldritch Manifestations</div>
+			<div class="npc-lore-short">"They appear when you begin to understand too much."</div>
+			<div class="npc-faction-row">
+			  <span class="npc-faction-tag">Caligo</span>
+			</div>
+			<button class="npc-expand-btn" onclick="toggleNPC(this)">Full Lore <span class="expand-icon">▾</span></button>
+			<div class="npc-lore-full">
+			  <p>Manifestations formed from high Mind State instability.</p>
+			  <p><strong>Connection to Caligo:</strong> Direct projection.</p>
+			  <p><strong>Connection to Lumen:</strong> Cannot be controlled.</p>
+			  <p><strong>Behavior:</strong> Unpredictable.</p>
+			  <p><strong>Gameplay Role:</strong> High-risk encounters.</p>
+			</div>
+		  </div>
+		</article>
+
+		<article class="npc-card" data-zone="lab" data-search="medical staff experiments lumen lab subjects control">
+		  <div class="npc-image-wrap">
+			<img src="http://elucidate.unaux.com/wp-content/uploads/2026/04/elucidate_idle_church_medical_staff_npc_down.png" alt="NPC Portrait — Church Medical Staff">
+			<div class="npc-zone-tag">Laboratory</div>
+		  </div>
+		  <div class="npc-body">
+			<div class="npc-role">Researchers · Experiment Overseers</div>
+			<div class="npc-name">Church Medical Staff</div>
+			<div class="npc-lore-short">"We are fixing what the world broke."</div>
+			<div class="npc-faction-row">
+			  <span class="npc-faction-tag">Vindication Lumen</span>
+			</div>
+			<button class="npc-expand-btn" onclick="toggleNPC(this)">Full Lore <span class="expand-icon">▾</span></button>
+			<div class="npc-lore-full">
+			  <p>Responsible for subject experimentation and Lumen integration.</p>
+			  <p><strong>Connection to Lumen:</strong> Direct implementation.</p>
+			  <p><strong>Connection to Caligo:</strong> Studied as threat.</p>
+			  <p><strong>Behavior:</strong> Detached.</p>
+			  <p><strong>Gameplay Role:</strong> Lore and lab encounters.</p>
+			</div>
+		  </div>
+		</article>
+		
+        <article class="npc-card" data-zone="outskirts" data-search="elves race ancient forest lumen caligo disconnected mysterious silent">
+          <div class="npc-image-wrap">
+            <img src="https://png.pngtree.com/png-vector/20251121/ourmid/pngtree-gray-human-silhouette-on-white-background-flat-colors-empty-avatar-icon-png-image_18034377.webp" alt="NPC Portrait — Elven Kind">
+            <div class="npc-zone-tag">Outskirts · Forest Borders</div>
+          </div>
+          <div class="npc-body">
+            <div class="npc-role">Race · Ancient People</div>
+            <div class="npc-name">Elves</div>
+            <div class="npc-lore-short">"They were here before the Church named the light. They will be here after it is renamed again."</div>
+            <div class="npc-faction-row">
+              <span class="npc-faction-tag">Independent</span>
+              <span class="npc-faction-tag">Pre-Lumen</span>
+              <span class="npc-faction-tag">Forest Borders</span>
+            </div>
+            <button class="npc-expand-btn" onclick="toggleNPC(this)">
+              Full Lore <span class="expand-icon">▾</span>
+            </button>
+            <div class="npc-lore-full">
+              <p>The Elves predate the Church's founding by an era that Church historians have quietly ceased to enumerate. They do not worship Lumen. They do not venerate Caligo. They remember both forces from before either had a name, and that memory makes them difficult to convert and impossible to fully control — two qualities the Church finds indistinguishable from hostility. They have been categorized as "non-aligned indigenous peoples" in official Church records, a classification that manages to say very little while implying a great deal.</p>
+              <p>Scattered now across forest margins and territorial boundaries the Church does not officially claim, they persist in small communities that have learned to remain precisely invisible. They know what Caligo is. They have their own word for it, older than the Church's word, and they do not use either word in front of strangers. Whether this constitutes wisdom or simply caution depends entirely on who is asking.</p>
+              <p><strong>Connection to Caligo:</strong> Ambiguous by design. Their long presence near Caligo-adjacent spaces has produced neither corruption nor devotion — only a practiced coexistence that both the Church and the Cult interpret as evidence of their respective theories about the dark.</p>
+              <p><strong>Connection to Lumen:</strong> Absent. They were not present at the Vindication Lumen. They did not build their identity around it. The Church views this as a theological deficiency. The Elves view the Church's view as a relatively recent problem.</p>
+              <p><strong>Gameplay Role:</strong> Peripheral NPC encounters near forest environments. Provide contextual lore about pre-Church history through dialogue fragments. May offer rare trade items to characters who approach without Church insignia visible.</p>
+            </div>
+          </div>
+        </article>
+		
+        <article class="npc-card" data-zone="outskirts" data-search="dwarfs race craft forge underground ancient materials smith guild stone">
+          <div class="npc-image-wrap">
+            <img src="https://png.pngtree.com/png-vector/20251121/ourmid/pngtree-gray-human-silhouette-on-white-background-flat-colors-empty-avatar-icon-png-image_18034377.webp" alt="NPC Portrait — Dwarven Kind">
+            <div class="npc-zone-tag">Underground · Forge Districts</div>
+          </div>
+          <div class="npc-body">
+            <div class="npc-role">Race · Craftspeople</div>
+            <div class="npc-name">Dwarfs</div>
+            <div class="npc-lore-short">"They built things that lasted. The Church borrowed the structures and called them holy. The Dwarfs called them foundations."</div>
+            <div class="npc-faction-row">
+              <span class="npc-faction-tag">Independent</span>
+              <span class="npc-faction-tag">Merchant-Adjacent</span>
+              <span class="npc-faction-tag">Ancient Craft</span>
+            </div>
+            <button class="npc-expand-btn" onclick="toggleNPC(this)">
+              Full Lore <span class="expand-icon">▾</span>
+            </button>
+            <div class="npc-lore-full">
+              <p>Dwarf communities occupy the underground systems beneath several major regions — tunnel networks that predate the Church's surface infrastructure and that the Church has never fully mapped, partially because the maps are written in a Dwarf script that resists Church archival methods, and partially because no Church survey team sent into the deeper tunnels has returned with a complete survey. The Church has categorized this as a geological problem. Experienced soldiers categorize it differently.</p>
+              <p>Their craft tradition is the most technically advanced in the world's recorded history. Weapons produced in Dwarf forges use materials sourced from geological strata that no surface mine can reach — ores with properties that Church metallurgists have not been able to reproduce. Blacksmith Conrad's most reliable tools were made by a Dwarf supplier three generations back. He has been unable to replace them.</p>
+              <p><strong>Connection to Ancient Materials:</strong> Some Dwarf-forged objects carry faint Caligo-resonant properties — not corrupted, but attuned, the way stone carries the memory of pressure. Church scholars dispute whether this constitutes contamination or simply the consequence of deep-earth proximity. Dwarf craftspeople decline to engage with this theological debate.</p>
+              <p><strong>Connection to Lumen:</strong> Transactional. They trade with Church-affiliated merchants when pricing is favorable and avoid Church-affiliated merchants when it is not. They are the only race the Church has not been able to absorb through either conversion or economic dependency, because they control the only resource channels the Church cannot replicate.</p>
+              <p><strong>Gameplay Role:</strong> Specialized traders and craftspeople in Walled City's lower market and certain underground segments. Offer unique weapon upgrades and material trades unavailable elsewhere. Will not barter with characters carrying Church insignia at the highest tier.</p>
+            </div>
+          </div>
+        </article>
+		
+        <article class="npc-card" data-zone="port-city" data-search="pirates rocky shore coastal faction sea independent church authority harbor smugglers">
+          <div class="npc-image-wrap">
+            <img src="https://cdn-icons-png.flaticon.com/512/48/48848.png" alt="NPC Portrait — Pirates of the Rocky Shore">
+            <div class="npc-zone-tag">Rocky Shore · Port Borders</div>
+          </div>
+          <div class="npc-body">
+            <div class="npc-role">Coastal Faction · Independent Operators</div>
+            <div class="npc-name">Pirates of the Rocky Shore</div>
+            <div class="npc-lore-short">"The Church's jurisdiction ends at the waterline. We begin there."</div>
+            <div class="npc-faction-row">
+              <span class="npc-faction-tag">Independent</span>
+              <span class="npc-faction-tag">Anti-Church</span>
+              <span class="npc-faction-tag">Rocky Shore</span>
+            </div>
+            <button class="npc-expand-btn" onclick="toggleNPC(this)">
+              Full Lore <span class="expand-icon">▾</span>
+            </button>
+            <div class="npc-lore-full">
+              <p>The Pirates of the Rocky Shore are the only coastal faction operating outside both Church contract and Merchant Guild registration. They exist in the legal negative space between Port City's commercial infrastructure and the open sea — a negative space the Church has repeatedly attempted to close and repeatedly failed to close, because eliminating the Pirates would require a naval force the Church does not have and a commitment of land soldiers it cannot spare. So the Rocky Shore persists: acknowledged, documented, officially condemned, and practically tolerated.</p>
+              <p>Their community is built from people the system discarded: deserters from Church military conscription, Merchant Guild laborers who stopped being paid, former harbor workers whose contracts were terminated when automation made them redundant, and a small number of experiment survivors who found the open water more hospitable than any place with walls. They are not unified by ideology but by the shared experience of having been told they did not belong somewhere and deciding that was fine.</p>
+              <p><strong>Connection to Church Authority:</strong> Structurally hostile. They have no stake in the Church's survival and a modest financial interest in its disruption — Church supply ships running late or not at all are good for Rocky Shore prices. They will trade with anyone the Church disapproves of, often at favorable rates.</p>
+              <p><strong>Connection to the World:</strong> The Harbor Captain who ferries characters to Cultist Island operates on the edge of Rocky Shore territory. His "full fare up front" policy reflects the Shore's foundational principle: debts owed to people the Church considers criminals have no institutional backing. Everything is settled before departure.</p>
+              <p><strong>Gameplay Role:</strong> Optional faction encountered near Port City harbor. Provide passage to secondary locations. May offer rare coastal items and information about Cultist Island not available through official channels. Their relationship with the player character shifts based on whether Church insignia is displayed.</p>
+            </div>
+          </div>
+        </article>
+		
+        <article class="npc-card" data-zone="unknown" data-search="envoy one mystery unknown faction unrecorded envoy borderlands">
+          <div class="npc-image-wrap">
+            <img src="https://png.pngtree.com/png-vector/20251121/ourmid/pngtree-gray-human-silhouette-on-white-background-flat-colors-empty-avatar-icon-png-image_18034377.webp" alt="NPC Portrait — Envoy One">
+            <div class="npc-zone-tag">???</div>
+          </div>
+          <div class="npc-body">
+            <div class="npc-role">??? · Unrecorded Classification</div>
+            <div class="npc-name">Envoy One</div>
+            <div class="npc-lore-short">"The message was delivered. Who sent it has not been confirmed."</div>
+            <div class="npc-faction-row">
+              <span class="npc-faction-tag">Unknown</span>
+              <span class="npc-faction-tag">Unverified Allegiance</span>
+            </div>
+            <button class="npc-expand-btn" onclick="toggleNPC(this)">
+              Full Lore <span class="expand-icon">▾</span>
+            </button>
+            <div class="npc-lore-full">
+              <p><strong>Origin:</strong> Unrecorded. No documentation exists in Church archives or Cult records.</p>
+              <p><strong>Allegiance:</strong> Unknown. Observed interacting with multiple factions without apparent loyalty to any.</p>
+              <p><strong>Appearance:</strong> Inconsistent. Witness accounts do not agree on basic physical details.</p>
+              <p><strong>Purpose:</strong> ??? — carries communications whose content has never been intercepted successfully.</p>
+              <p><strong>Last Known Location:</strong> Unconfirmed.</p>
+            </div>
+          </div>
+        </article>
+
+        <article class="npc-card" data-zone="unknown" data-search="envoy two mystery unknown faction unrecorded envoy borderlands">
+          <div class="npc-image-wrap">
+            <img src="https://png.pngtree.com/png-vector/20251121/ourmid/pngtree-gray-human-silhouette-on-white-background-flat-colors-empty-avatar-icon-png-image_18034377.webp" alt="NPC Portrait — Envoy Two">
+            <div class="npc-zone-tag">???</div>
+          </div>
+          <div class="npc-body">
+            <div class="npc-role">??? · Unrecorded Classification</div>
+            <div class="npc-name">Envoy Two</div>
+            <div class="npc-lore-short">"It arrived before the message. It left before the response."</div>
+            <div class="npc-faction-row">
+              <span class="npc-faction-tag">Unknown</span>
+              <span class="npc-faction-tag">Unverified Allegiance</span>
+            </div>
+            <button class="npc-expand-btn" onclick="toggleNPC(this)">
+              Full Lore <span class="expand-icon">▾</span>
+            </button>
+            <div class="npc-lore-full">
+              <p><strong>Origin:</strong> Unrecorded. Cross-referencing multiple intelligence reports yields contradictory information.</p>
+              <p><strong>Allegiance:</strong> Unknown. Suspected connection to entities operating outside documented factions.</p>
+              <p><strong>Appearance:</strong> ??? — no consistent physical description available across sources.</p>
+              <p><strong>Purpose:</strong> Believed to carry information between parties who cannot meet directly.</p>
+              <p><strong>Last Known Location:</strong> Unconfirmed. Possibly The Borderlands.</p>
+            </div>
+          </div>
+        </article>
+
+        <article class="npc-card" data-zone="unknown" data-search="envoy three mystery unknown faction unrecorded envoy borderlands">
+          <div class="npc-image-wrap">
+            <img src="https://png.pngtree.com/png-vector/20251121/ourmid/pngtree-gray-human-silhouette-on-white-background-flat-colors-empty-avatar-icon-png-image_18034377.webp" alt="NPC Portrait — Envoy Three">
+            <div class="npc-zone-tag">???</div>
+          </div>
+          <div class="npc-body">
+            <div class="npc-role">??? · Unrecorded Classification</div>
+            <div class="npc-name">Envoy Three</div>
+            <div class="npc-lore-short">"No one remembers seeing it pass. Only the result of its passing."</div>
+            <div class="npc-faction-row">
+              <span class="npc-faction-tag">Unknown</span>
+              <span class="npc-faction-tag">Unverified Allegiance</span>
+            </div>
+            <button class="npc-expand-btn" onclick="toggleNPC(this)">
+              Full Lore <span class="expand-icon">▾</span>
+            </button>
+            <div class="npc-lore-full">
+              <p><strong>Origin:</strong> Unrecorded.</p>
+              <p><strong>Allegiance:</strong> Unknown. Third envoy in a sequence whose pattern is not yet understood.</p>
+              <p><strong>Appearance:</strong> ??? — witnesses report uncertainty even immediately after the encounter.</p>
+              <p><strong>Purpose:</strong> Unconfirmed. The communications it carries, if any, have never been recovered.</p>
+              <p><strong>Last Known Location:</strong> ???</p>
+            </div>
+          </div>
+        </article>
+
+        <article class="npc-card" data-zone="unknown" data-search="envoy four mystery unknown faction unrecorded envoy borderlands">
+          <div class="npc-image-wrap">
+            <img src="https://png.pngtree.com/png-vector/20251121/ourmid/pngtree-gray-human-silhouette-on-white-background-flat-colors-empty-avatar-icon-png-image_18034377.webp" alt="NPC Portrait — Envoy Four">
+            <div class="npc-zone-tag">???</div>
+          </div>
+          <div class="npc-body">
+            <div class="npc-role">??? · Unrecorded Classification</div>
+            <div class="npc-name">Envoy Four</div>
+            <div class="npc-lore-short">"The fourth seal was not opened. It was already open."</div>
+            <div class="npc-faction-row">
+              <span class="npc-faction-tag">Unknown</span>
+              <span class="npc-faction-tag">Unverified Allegiance</span>
+            </div>
+            <button class="npc-expand-btn" onclick="toggleNPC(this)">
+              Full Lore <span class="expand-icon">▾</span>
+            </button>
+            <div class="npc-lore-full">
+              <p><strong>Origin:</strong> Unrecorded. No nation, faction, or institution has claimed association.</p>
+              <p><strong>Allegiance:</strong> Unknown. Suspected to operate under instructions issued by a party whose identity has not been established.</p>
+              <p><strong>Appearance:</strong> ??? — described differently by every observer. This inconsistency is either a perceptual anomaly or deliberate.</p>
+              <p><strong>Purpose:</strong> ??? — the fourth in a numbered sequence implies coordination. The coordinating body is unknown.</p>
+              <p><strong>Last Known Location:</strong> Unconfirmed.</p>
+            </div>
+          </div>
+        </article>
+
+        <article class="npc-card" data-zone="unknown" data-search="envoy five mystery unknown faction unrecorded envoy borderlands">
+          <div class="npc-image-wrap">
+            <img src="https://png.pngtree.com/png-vector/20251121/ourmid/pngtree-gray-human-silhouette-on-white-background-flat-colors-empty-avatar-icon-png-image_18034377.webp" alt="NPC Portrait — Envoy Five">
+            <div class="npc-zone-tag">???</div>
+          </div>
+          <div class="npc-body">
+            <div class="npc-role">??? · Unrecorded Classification</div>
+            <div class="npc-name">Envoy Five</div>
+            <div class="npc-lore-short">"What it carries, it does not open. What it delivers, it does not explain."</div>
+            <div class="npc-faction-row">
+              <span class="npc-faction-tag">Unknown</span>
+              <span class="npc-faction-tag">Unverified Allegiance</span>
+            </div>
+            <button class="npc-expand-btn" onclick="toggleNPC(this)">
+              Full Lore <span class="expand-icon">▾</span>
+            </button>
+            <div class="npc-lore-full">
+              <p><strong>Origin:</strong> Unrecorded.</p>
+              <p><strong>Allegiance:</strong> Unknown. Moves freely across faction boundaries without challenge — either through authority, invisibility, or some quality that discourages scrutiny.</p>
+              <p><strong>Appearance:</strong> ??? — cross-reference of available reports produces no consistent physical baseline.</p>
+              <p><strong>Purpose:</strong> Communication. The contents of those communications are unknown.</p>
+              <p><strong>Last Known Location:</strong> ???</p>
+            </div>
+          </div>
+        </article>
+
+        <article class="npc-card" data-zone="unknown" data-search="envoy six mystery unknown faction unrecorded envoy borderlands final">
+          <div class="npc-image-wrap">
+            <img src="https://png.pngtree.com/png-vector/20251121/ourmid/pngtree-gray-human-silhouette-on-white-background-flat-colors-empty-avatar-icon-png-image_18034377.webp" alt="NPC Portrait — Envoy Six">
+            <div class="npc-zone-tag">???</div>
+          </div>
+          <div class="npc-body">
+            <div class="npc-role">??? · Unrecorded Classification</div>
+            <div class="npc-name">Envoy Six</div>
+            <div class="npc-lore-short">"The last one. Or the last one documented. These are not the same thing."</div>
+            <div class="npc-faction-row">
+              <span class="npc-faction-tag">Unknown</span>
+              <span class="npc-faction-tag">Final Envoy — Unverified</span>
+            </div>
+            <button class="npc-expand-btn" onclick="toggleNPC(this)">
+              Full Lore <span class="expand-icon">▾</span>
+            </button>
+            <div class="npc-lore-full">
+              <p><strong>Origin:</strong> Unrecorded. Sixth in a sequence — whether the sequence ends here is unknown.</p>
+              <p><strong>Allegiance:</strong> Unknown. The pattern of all six envoys suggests a single coordinating intelligence, but this has not been confirmed.</p>
+              <p><strong>Appearance:</strong> ??? — same inconsistency observed across all six. Whether this is a shared trait or a single entity misidentified as multiple is a question that remains open.</p>
+              <p><strong>Purpose:</strong> ??? — the last message attributed to Envoy Six was received, acknowledged, and acted upon. The recipient of that message has not disclosed its contents.</p>
+              <p><strong>Last Known Location:</strong> Unconfirmed. No further envoy has been reported after this one.</p>
+            </div>
+          </div>
+        </article>
+
+        <article class="npc-card" data-zone="unknown" data-search="formless one enlightenment mystery entity caligo unknown presence ancient">
+          <div class="npc-image-wrap">
+            <img src="https://static.vecteezy.com/system/resources/thumbnails/053/964/333/small/a-vibrant-silhouette-of-a-head-with-a-bright-sun-at-the-center-radiating-rays-symbolizing-enlightenment-and-creativity-png.png" alt="NPC Portrait — Formless One of Enlightenment">
+            <div class="npc-zone-tag">Beyond Classification</div>
+          </div>
+          <div class="npc-body">
+            <div class="npc-role">Ancient Presence · Formless Entity</div>
+            <div class="npc-name">Formless One of Enlightenment</div>
+            <div class="npc-lore-short">"It has no shape because shape is a limitation it chose not to accept."</div>
+            <div class="npc-faction-row">
+              <span class="npc-faction-tag">Unclassified</span>
+              <span class="npc-faction-tag">Pre-Lumen</span>
+              <span class="npc-faction-tag">Pre-Caligo</span>
+            </div>
+            <button class="npc-expand-btn" onclick="toggleNPC(this)">
+              Full Lore <span class="expand-icon">▾</span>
+            </button>
+            <div class="npc-lore-full">
+              <p><strong>Nature:</strong> Unclassified. Predates all existing religious and faction frameworks in the world of Elucidate. Neither Caligo nor Lumen; neither enemy nor ally in any documented sense.</p>
+              <p><strong>Origin:</strong> Unknown. References to an entity matching this description exist in pre-Church texts that have largely been destroyed or suppressed. What survives is fragmentary and resistant to consistent interpretation.</p>
+              <p><strong>Appearance:</strong> Formless. Witnesses who claim to have perceived it describe the experience as one of comprehension rather than vision — a sense of something understood rather than something seen. Physical descriptions are absent from all accounts.</p>
+              <p><strong>Relationship to Caligo:</strong> ??? — some recovered texts suggest the Formless One and Caligo are distinct phenomena that have been historically conflated. Others suggest a relationship that the available language cannot accurately describe. No conclusion has been reached.</p>
+              <p><strong>Relationship to Lumen:</strong> The Church of Lumen does not acknowledge its existence. Whether this is institutional suppression or genuine institutional ignorance is unknown.</p>
+              <p><strong>Effect on Mind State:</strong> Encounters with the Formless One of Enlightenment do not increase Mind State in the expected manner. Some recorded cases indicate a temporary reduction. The mechanism is not understood.</p>
+              <p><strong>Purpose:</strong> ??? — if it has one, it has not disclosed it through any means that current interpretive frameworks can process.</p>
+              <div class="npc-quote">"To be without form is not to be without presence. The absence of shape is not emptiness. It is potential that has refused to commit."<cite>— Fragment, pre-Church text, source unverified</cite></div>
+            </div>
+          </div>
+        </article>
+		
+        <article class="npc-card" data-zone="zones-of-terrors" data-search="formless god decay rot deterioration unknown entity borderlands unrecorded presence">
+          <div class="npc-image-wrap">
+            <img src="https://png.pngtree.com/png-vector/20250423/ourmid/pngtree-lonely-winter-tree-silhouette-png-image_16043645.png" alt="NPC Portrait — Formless God of Decay">
+            <div class="npc-zone-tag">??? · Origin Unknown</div>
+          </div>
+          <div class="npc-body">
+            <div class="npc-role">Entity · ??? · Unclassified</div>
+            <div class="npc-name">Formless One of Decay</div>
+            <div class="npc-lore-short">Records referencing this presence are incomplete. What remains describes a gradual wrongness — not an arrival, but a revelation that something had already been there.</div>
+            <div class="npc-faction-row">
+              <span class="npc-faction-tag">???</span>
+              <span class="npc-faction-tag">Unrecorded Origin</span>
+              <span class="npc-faction-tag">Unaffiliated</span>
+            </div>
+            <button class="npc-expand-btn" onclick="toggleNPC(this)">
+              Full Lore <span class="expand-icon">▾</span>
+            </button>
+            <div class="npc-lore-full">
+              <p><strong>Classification:</strong> Unrecorded. Church archivists have noted its presence in fragmented field reports under three different designations, none of which agree on what they describe. The reports share only one consistent detail: organic material in the surrounding area had deteriorated beyond what the elapsed time could account for.</p>
+              <p><strong>Nature:</strong> Unknown. Whether this entity is a manifestation of Caligo, a distinct cosmic presence, or something else entirely has not been determined. Investigators dispatched to document it have returned with missing time, corrupted notes, and — in one case — no notes at all. The investigator in that case could not explain what had happened to them.</p>
+              <p><strong>Presence:</strong> Said to be tied to rot and the slow deterioration of material things. Not violent in any recorded account. Simply present. The decay continues whether or not it is observed. Whether it causes the decay or merely accompanies it is a distinction no surviving witness has been able to clarify.</p>
+              <p><strong>Current Status:</strong> Unverified. Whereabouts unknown. It is unclear if it can be said to be anywhere in the conventional sense.</p>
+              <div class="npc-quote">[ Researcher notation, date unrecorded: &ldquo;The wood of the door had deteriorated past the point of usefulness. The stone beneath the door had not. The stone was older. I do not know what this means.&rdquo; ]<cite>— Partial field note, origin unrecorded</cite></div>
+            </div>
+          </div>
+        </article>
+		
+        <article class="npc-card" data-zone="zones-of-terrors" data-search="formless god plague outbreak mass death borderlands village unverified unrecorded entity unknown">
+          <div class="npc-image-wrap">
+            <img src="https://images.squarespace-cdn.com/content/v1/58dfd1f7ff7c50123172961d/80544ebd-2f83-4fc2-ae12-9f662141f1c6/rare+disease+banner.png" alt="NPC Portrait — Formless God of Plague">
+            <div class="npc-zone-tag">Borderlands · Unverified</div>
+          </div>
+          <div class="npc-body">
+            <div class="npc-role">Entity · ??? · Suspected Cause</div>
+            <div class="npc-name">Formless One of Plague</div>
+            <div class="npc-lore-short">Accounts from the Borderlands describe an outbreak of unknown origin. A village. Mass death over the span of eleven days. No confirmed cause. No confirmed presence. The records stop mid-sentence.</div>
+            <div class="npc-faction-row">
+              <span class="npc-faction-tag">???</span>
+              <span class="npc-faction-tag">Borderlands</span>
+              <span class="npc-faction-tag">Unverified</span>
+            </div>
+            <button class="npc-expand-btn" onclick="toggleNPC(this)">
+              Full Lore <span class="expand-icon">▾</span>
+            </button>
+            <div class="npc-lore-full">
+              <p><strong>Incident:</strong> Partially recorded. A Church field report, dated approximately three decades before the current campaign, references a plague outbreak in a village near the Borderlands. The outbreak's origin was not identified by the responding unit. The responding unit's follow-up report was never filed.</p>
+              <p><strong>Casualties:</strong> Unverified. Survivor accounts, recovered secondhand from traders passing through the region afterward, describe total or near-total death within the settlement over an eleven-day period. The traders did not enter the village. They described the smell from the road and did not stop.</p>
+              <p><strong>Attribution:</strong> Conflicting. Some Church internal documents attribute the event to Caligo contamination reaching a critical threshold. Others contain a margin notation — unsigned — that reads only: <em>not Caligo. Something else.</em> The document containing that notation was later marked for archival destruction. It survived by accident.</p>
+              <p><strong>Entity Status:</strong> Unconfirmed existence. The designation "Formless God of Plague" does not appear in any official Church record. It appears in one recovered Cult document in a list of entities the Cult itself claims not to understand. No further detail is provided. The list entry ends with a dash and nothing after it.</p>
+              <div class="npc-quote">[ Margin notation, origin unsigned: &ldquo;The sickness did not spread the way sickness spreads. It arrived complete.&rdquo; ]<cite>— Church internal document, marked for destruction · Recovered status: incomplete</cite></div>
+            </div>
+          </div>
+        </article>
+		
+        <article class="npc-card" data-zone="zones-of-terrors" data-search="anthropophagist cannibalism massacre festival icy mountain envoy one three missing unknown formless god manifestation human">
+          <div class="npc-image-wrap">
+            <img src="https://images-wixmp-ed30a86b8c4ca887773594c2.wixmp.com/f/32eb0cb8-99bd-4638-b0ea-c46a1eb6a650/dih8up6-ee778e52-c436-4cb0-815e-064b262c4f68.png/v1/fit/w_414,h_414/katie_killerson_s_mouth_7__bloody___png__by_gavin53zan_dih8up6-414w.png?token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1cm46YXBwOjdlMGQxODg5ODIyNjQzNzNhNWYwZDQxNWVhMGQyNmUwIiwiaXNzIjoidXJuOmFwcDo3ZTBkMTg4OTgyMjY0MzczYTVmMGQ0MTVlYTBkMjZlMCIsIm9iaiI6W1t7ImhlaWdodCI6Ijw9MTI4MCIsInBhdGgiOiIvZi8zMmViMGNiOC05OWJkLTQ2MzgtYjBlYS1jNDZhMWViNmE2NTAvZGloOHVwNi1lZTc3OGU1Mi1jNDM2LTRjYjAtODE1ZS0wNjRiMjYyYzRmNjgucG5nIiwid2lkdGgiOiI8PTEyODAifV1dLCJhdWQiOlsidXJuOnNlcnZpY2U6aW1hZ2Uub3BlcmF0aW9ucyJdfQ.5x1Jms5IyjxqAnJgVifY_YiWY9Wz-UN5Bp1Ycx-m5R8" alt="NPC Portrait — The Anthropophagist">
+            <div class="npc-zone-tag">??? · Icy Mountain Region</div>
+          </div>
+          <div class="npc-body">
+            <div class="npc-role">Human Manifestation · ??? · Case File: Incomplete</div>
+            <div class="npc-name">The Anthropophagist</div>
+            <div class="npc-lore-short">Documented. Partially. What is known: a figure of human appearance. A village near an icy mountain. A festival that ended before the final hour. Two Envoys dispatched to investigate. Neither returned. The case file was not closed — it was abandoned.</div>
+            <div class="npc-faction-row">
+              <span class="npc-faction-tag">Unknown Origin</span>
+              <span class="npc-faction-tag">Unaffiliated</span>
+              <span class="npc-faction-tag">Envoy Case — Open</span>
+            </div>
+            <button class="npc-expand-btn" onclick="toggleNPC(this)">
+              Full Lore <span class="expand-icon">▾</span>
+            </button>
+            <div class="npc-lore-full">
+              <p><strong>Classification:</strong> Believed to be a physical human manifestation of an unknown Formless God — a designation the Church has not officially acknowledged and the Cult has not formally categorized. The Anthropophagist presents as human in every external respect. This is considered significant. No further detail on what "manifested as" means in practical terms has been recorded by any surviving investigator.</p>
+              <p><strong>The Incident:</strong> A solemn festival held annually by a village near the icy mountain. The festival's purpose is unrecorded — the village's records did not survive. Accounts recovered from nearby settlements describe it as a mourning ritual. Whether the Anthropophagist attended as a participant, arrived uninvited, or had always been present in the village prior to that night is not known. The outcome is: a cannibalistic massacre during the festival's final gathering. Number of victims: unrecorded. Survivors: unconfirmed.</p>
+              <p><strong>Investigation — Envoy One:</strong> Dispatched within the week following the first reports. Envoy One reached the village perimeter. Contact was lost. Recovery team dispatched two weeks later found Envoy One's equipment at the treeline. Envoy One was not found.</p>
+              <p><strong>Investigation — Envoy Three:</strong> Dispatched as follow-up, six weeks after Envoy One's disappearance. Envoy Three's last filed communication indicated they had made contact with a single individual matching the description of the Anthropophagist in the village outskirts. That communication was filed at the regional Church outpost. No subsequent communications were received. Envoy Three was not found. Their equipment was not found. The regional outpost closed the communication log with the notation: <em>case suspended pending further resources.</em> No further resources were allocated.</p>
+              <p><strong>Current Status:</strong> Unknown. Whether the Anthropophagist remains in the mountain region, has moved, or continues to exist in the conventional sense has not been determined. The Church has not publicly acknowledged the incident. The village near the icy mountain does not appear on current Church-issued maps.</p>
+              <div class="npc-quote">[ Final logged entry, Envoy Three — partial transmission: &ldquo;It looked at me as if it recognized — &rdquo; ]<cite>— Communication log, Regional Church Outpost · Entry marked incomplete · Case suspended</cite></div>
+            </div>
+          </div>
+        </article>
+		
+		<article class="npc-card" data-zone="zones-of-terror" data-search="caligo manifestation boss entity apex horror">
+		  <div class="npc-image-wrap">
+			<img src="http://elucidate.unaux.com/wp-content/uploads/2026/04/Copy-of-elucidate_idle_corrupted1_cultist_npc_down.png" alt="NPC Portrait — Caligo Manifestation">
+			<div class="npc-zone-tag">Zones of Terror</div>
+		  </div>
+		  <div class="npc-body">
+			<div class="npc-role">Entity · Apex Threat</div>
+			<div class="npc-name">Caligo Manifestation Standard (0–50 MS)</div>
+			<div class="npc-lore-short">"It does not see you. It sees through you."</div>
+			<div class="npc-faction-row">
+			  <span class="npc-faction-tag">Caligo</span>
+			</div>
+			<button class="npc-expand-btn" onclick="toggleNPC(this)">Full Lore <span class="expand-icon">▾</span></button>
+			<div class="npc-lore-full">
+			  <p>A rare manifestation of Caligo's fragmented consciousness.</p>
+			  <p><strong>Connection to Caligo:</strong> Direct embodiment.</p>
+			  <p><strong>Connection to Lumen:</strong> Opposes existence.</p>
+			  <p><strong>Behavior:</strong> Unpredictable.</p>
+			  <p><strong>Gameplay Role:</strong> Rare boss encounter.</p>
+			</div>
+			</div>
+			</article>
+			
+		<article class="npc-card" data-zone="zones-of-terrors" data-search="caligo manifestation boss entity apex horror">
+		  <div class="npc-image-wrap">
+			<img src="http://elucidate.unaux.com/wp-content/uploads/2026/04/Copy-of-elucidate_idle_corrupted2_cultist_npc_down.png" alt="NPC Portrait — Caligo Manifestation">
+			<div class="npc-zone-tag">Zones of Terror</div>
+		  </div>
+		  <div class="npc-body">
+			<div class="npc-role">Entity · Apex Threat</div>
+			<div class="npc-name">Caligo Manifestation Standard (0–50 MS)</div>
+			<div class="npc-lore-short">"It does not see you. It sees through you."</div>
+			<div class="npc-faction-row">
+			  <span class="npc-faction-tag">Caligo</span>
+			</div>
+			<button class="npc-expand-btn" onclick="toggleNPC(this)">Full Lore <span class="expand-icon">▾</span></button>
+			<div class="npc-lore-full">
+			  <p>A rare manifestation of Caligo's fragmented consciousness.</p>
+			  <p><strong>Connection to Caligo:</strong> Direct embodiment.</p>
+			  <p><strong>Connection to Lumen:</strong> Opposes existence.</p>
+			  <p><strong>Behavior:</strong> Unpredictable.</p>
+			  <p><strong>Gameplay Role:</strong> Rare boss encounter.</p>
+			</div>
+			</div>
+			</article>
+			
+		<article class="npc-card" data-zone="zones-of-terrors" data-search="caligo manifestation boss entity apex horror">
+		  <div class="npc-image-wrap">
+			<img src="http://elucidate.unaux.com/wp-content/uploads/2026/04/Copy-of-elucidate_idle_corrupted3_cultist_npc_down.png" alt="NPC Portrait — Caligo Manifestation">
+			<div class="npc-zone-tag">Zones of Terror</div>
+		  </div>
+		  <div class="npc-body">
+			<div class="npc-role">Entity · Apex Threat</div>
+			<div class="npc-name">Caligo Manifestation Advanced (50–75 MS)</div>
+			<div class="npc-lore-short">"It does not see you. It sees through you."</div>
+			<div class="npc-faction-row">
+			  <span class="npc-faction-tag">Caligo</span>
+			</div>
+			<button class="npc-expand-btn" onclick="toggleNPC(this)">Full Lore <span class="expand-icon">▾</span></button>
+			<div class="npc-lore-full">
+			  <p>A rare manifestation of Caligo's fragmented consciousness.</p>
+			  <p><strong>Connection to Caligo:</strong> Direct embodiment.</p>
+			  <p><strong>Connection to Lumen:</strong> Opposes existence.</p>
+			  <p><strong>Behavior:</strong> Unpredictable.</p>
+			  <p><strong>Gameplay Role:</strong> Rare boss encounter.</p>
+			</div>
+			</div>
+			</article>
+			
+		<article class="npc-card" data-zone="zones-of-terrors" data-search="caligo manifestation boss entity apex horror">
+		  <div class="npc-image-wrap">
+			<img src="http://elucidate.unaux.com/wp-content/uploads/2026/04/Copy-of-elucidate_idle_melted_male_villager_npc_down.png" alt="NPC Portrait — Caligo Manifestation">
+			<div class="npc-zone-tag">Zones of Terror</div>
+		  </div>
+		  <div class="npc-body">
+			<div class="npc-role">Entity · Apex Threat</div>
+			<div class="npc-name">Caligo Manifestation Advanced (50–75 MS)</div>
+			<div class="npc-lore-short">"It does not see you. It sees through you."</div>
+			<div class="npc-faction-row">
+			  <span class="npc-faction-tag">Caligo</span>
+			</div>
+			<button class="npc-expand-btn" onclick="toggleNPC(this)">Full Lore <span class="expand-icon">▾</span></button>
+			<div class="npc-lore-full">
+			  <p>A rare manifestation of Caligo's fragmented consciousness.</p>
+			  <p><strong>Connection to Caligo:</strong> Direct embodiment.</p>
+			  <p><strong>Connection to Lumen:</strong> Opposes existence.</p>
+			  <p><strong>Behavior:</strong> Unpredictable.</p>
+			  <p><strong>Gameplay Role:</strong> Rare boss encounter.</p>
+			</div>
+			</div>
+		</article>
+			
+		<article class="npc-card" data-zone="zones-of-terrors" data-search="caligo manifestation boss entity apex horror">
+		  <div class="npc-image-wrap">
+			<img src="http://elucidate.unaux.com/wp-content/uploads/2026/04/Copy-of-elucidate_idle_melted_female_villager_npc_down.png" alt="NPC Portrait — Caligo Manifestation">
+			<div class="npc-zone-tag">Zones of Terror</div>
+		  </div>
+		  <div class="npc-body">
+			<div class="npc-role">Entity · Apex Threat</div>
+			<div class="npc-name">Caligo Manifestation Advanced (50–75 MS) </div>
+			<div class="npc-lore-short">"It does not see you. It sees through you."</div>
+			<div class="npc-faction-row">
+			  <span class="npc-faction-tag">Caligo</span>
+			</div>
+			<button class="npc-expand-btn" onclick="toggleNPC(this)">Full Lore <span class="expand-icon">▾</span></button>
+			<div class="npc-lore-full">
+			  <p>A rare manifestation of Caligo's fragmented consciousness.</p>
+			  <p><strong>Connection to Caligo:</strong> Direct embodiment.</p>
+			  <p><strong>Connection to Lumen:</strong> Opposes existence.</p>
+			  <p><strong>Behavior:</strong> Unpredictable.</p>
+			  <p><strong>Gameplay Role:</strong> Rare boss encounter.</p>
+			</div>
+			</div>
+			</article>
+			
+		<article class="npc-card" data-zone="zones-of-terrors" data-search="caligo manifestation boss entity apex horror">
+		  <div class="npc-image-wrap">
+			<img src="http://elucidate.unaux.com/wp-content/uploads/2026/04/Copy-of-elucidate_idle_amalgamated_villagers_npc_left.png" alt="NPC Portrait — Caligo Manifestation">
+			<div class="npc-zone-tag">Zones of Terror</div>
+		  </div>
+		  <div class="npc-body">
+			<div class="npc-role">Entity · Apex Threat</div>
+			<div class="npc-name">Caligo Manifestation Apex (75–100 MS) </div>
+			<div class="npc-lore-short">"It does not see you. It sees through you."</div>
+			<div class="npc-faction-row">
+			  <span class="npc-faction-tag">Caligo</span>
+			</div>
+			<button class="npc-expand-btn" onclick="toggleNPC(this)">Full Lore <span class="expand-icon">▾</span></button>
+			<div class="npc-lore-full">
+			  <p>A rare manifestation of Caligo's fragmented consciousness.</p>
+			  <p><strong>Connection to Caligo:</strong> Direct embodiment.</p>
+			  <p><strong>Connection to Lumen:</strong> Opposes existence.</p>
+			  <p><strong>Behavior:</strong> Unpredictable.</p>
+			  <p><strong>Gameplay Role:</strong> Rare boss encounter.</p>
+			</div>
+			</div>
+			</article>
+			
+		<article class="npc-card" data-zone="zones-of-terrors" data-search="caligo manifestation boss entity apex horror">
+		  <div class="npc-image-wrap">
+			<img src="http://elucidate.unaux.com/wp-content/uploads/2026/04/Copy-of-elucidate_idle_amalgamated_knights_npc_right.png" alt="NPC Portrait — Caligo Manifestation">
+			<div class="npc-zone-tag">Zones of Terror</div>
+		  </div>
+		  <div class="npc-body">
+			<div class="npc-role">Entity · Apex Threat</div>
+			<div class="npc-name">Caligo Manifestation Apex (75–100 MS)</div>
+			<div class="npc-lore-short">"It does not see you. It sees through you."</div>
+			<div class="npc-faction-row">
+			  <span class="npc-faction-tag">Caligo</span>
+			</div>
+			<button class="npc-expand-btn" onclick="toggleNPC(this)">Full Lore <span class="expand-icon">▾</span></button>
+			<div class="npc-lore-full">
+			  <p>A rare manifestation of Caligo's fragmented consciousness.</p>
+			  <p><strong>Connection to Caligo:</strong> Direct embodiment.</p>
+			  <p><strong>Connection to Lumen:</strong> Opposes existence.</p>
+			  <p><strong>Behavior:</strong> Unpredictable.</p>
+			  <p><strong>Gameplay Role:</strong> Rare boss encounter.</p>
+			</div>
+			</div>
+			</article>
+			
+		 <article class="npc-card" data-zone="zones-of-terrors" data-search="caligo manifestation boss entity apex horror">
+		  <div class="npc-image-wrap">
+			<img src="http://elucidate.unaux.com/wp-content/uploads/2026/04/Copy-of-elucidate_idle_amalgamated_civillians_npc_right.png" alt="NPC Portrait — Caligo Manifestation">
+			<div class="npc-zone-tag">Zones of Terror</div>
+		  </div>
+		  <div class="npc-body">
+			<div class="npc-role">Entity · Apex Threat</div>
+			<div class="npc-name">Caligo Manifestation</div>
+			<div class="npc-lore-short">"It does not see you. It sees through you."</div>
+			<div class="npc-faction-row">
+			  <span class="npc-faction-tag">Caligo</span>
+			</div>
+			<button class="npc-expand-btn" onclick="toggleNPC(this)">Full Lore <span class="expand-icon">▾</span></button>
+			<div class="npc-lore-full">
+			  <p>A rare manifestation of Caligo's fragmented consciousness.</p>
+			  <p><strong>Connection to Caligo:</strong> Direct embodiment.</p>
+			  <p><strong>Connection to Lumen:</strong> Opposes existence.</p>
+			  <p><strong>Behavior:</strong> Unpredictable.</p>
+			  <p><strong>Gameplay Role:</strong> Rare boss encounter.</p>
+			</div>
+			</div>
+			</article>
+
+		</div>
+
+	 <div class="no-results" id="no-results">No NPCs match your search or filter.</div>
+
+
+    </section>
+
+    <footer class="site-footer">
+      <div class="footer-inner">
+        <div class="footer-logo-block">
+          <div class="footer-logo-title">Elucidate RPG</div>
+          <div class="footer-logo-sub">Pamantasan ng Lungsod ng Maynila · BS Information Technology</div>
+        </div>
+        <div class="footer-links">
+          <a href="characters.html">Characters</a>
+          <a href="lore.html">Lore</a>
+          <a href="items.html">Items</a>
+          <a href="environments.html">Environments</a>
+          <a href="developers.html">Developers</a>
+        </div>
+        <div class="footer-copy">
+          <span>©2026. Elucidate RPG DLC. All Rights Reserved.<br>
+          Made by Group WOZ (BSIT 1-3). · Powered by FGC UNAUX</span>
+        </div>
+      </div>
+      <div class="footer-ornament">
+        ✦ &nbsp; Between what you were told and what is true — that distance is everything &nbsp; ✦
+      </div>
+    </footer>
+	
+
+  </main>
+</div>
+
+<script>
+
+function toggleNPC(btn) {
+  const body = btn.closest('.npc-body');
+  const lorePanel = body.querySelector('.npc-lore-full');
+  const isOpen = lorePanel.classList.contains('open');
+  lorePanel.classList.toggle('open', !isOpen);
+  btn.classList.toggle('open', !isOpen);
+  btn.childNodes[0].nodeValue = isOpen ? 'Full Lore ' : 'Hide Lore ';
+}
+
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      entry.target.classList.add('revealed');
+      observer.unobserve(entry.target);
+    }
+  });
+}, { threshold: 0.15, rootMargin: '0px' });
+
+document.querySelectorAll('.npc-card').forEach((el, i) => {
+  const delay = Math.min(i * 0.02, 0.2);
+  el.style.transition = `
+    opacity 0.3s ${delay}s ease,
+    transform 0.3s ${delay}s ease,
+    border-color 0.2s,
+    box-shadow 0.2s
+  `;
+  observer.observe(el);
+});
+
+document.querySelectorAll('.filter-btn').forEach(btn => {
+  btn.addEventListener('click', function() {
+    document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+    this.classList.add('active');
+    const filter = this.dataset.filter;
+    let visibleCount = 0;
+    document.querySelectorAll('.npc-card').forEach(card => {
+      const zone = card.dataset.zone || '';
+      if (filter === 'all' || zone === filter) {
+        card.style.display = '';
+        visibleCount++;
+      } else {
+        card.style.display = 'none';
+      }
+    });
+    document.getElementById('no-results').classList.toggle('visible', visibleCount === 0);
+  });
+});
+
+const inputEl = document.getElementById('search-input');
+const overlayEl = document.getElementById('search-results-overlay');
+
+const searchData = [
+  { title: 'Blacksmith Conrad', section: 'NPCs', excerpt: 'Walled City armorer who reads soldiers. Knows which ones come back and which ones don\'t.' },
+  { title: 'Draft Officer', section: 'NPCs', excerpt: 'Issues the Mercenary\'s mission. Honest about knowing nothing above his pay grade.' },
+  { title: 'Librarian Scholar', section: 'NPCs', excerpt: 'Gives the real history of Caligo quietly, then walks away as if he said nothing remarkable.' },
+  { title: 'Confession Booth Witnesses', section: 'NPCs', excerpt: 'Civilians whispering the human cost of the Church\'s experiments in the dark.' },
+  { title: 'Tavern Keeper — The Gilded Anchor', section: 'NPCs', excerpt: 'Twenty years of harbor intelligence. Reads storms. Reads Konrad. Offers the second ale for free.' },
+  { title: 'Harbor Captain', section: 'NPCs', excerpt: 'Will take passage to Cultist Island. Full fare up front. Three of seven ships came back with fewer crew.' },
+  { title: 'Guild Master', section: 'NPCs', excerpt: 'Warns Konrad against investigation. Knows what he knows. Has made different calculations about the same truth.' },
+  { title: 'Tribe Elder', section: 'NPCs', excerpt: 'Twelve fighters left. Notices Ignis stopped at the watchtower. Trusts him based on sixty seconds.' },
+  { title: 'Tribe Chief', section: 'NPCs', excerpt: 'Gives the Wind Essence. A promise, not a gift. Bring her back when it is done, if you can.' },
+  { title: 'Cult Priest', section: 'NPCs', excerpt: 'Ignis listened for four minutes before entering the island. That listening is the beginning of everything.' },
+  { title: 'Imprisoned Experiment Subject', section: 'NPCs', excerpt: 'Father Calum knew their name. The way a manufacturer knows a production number.' },
+  { title: 'Church Attendant', section: 'NPCs', excerpt: 'Reports adverse reactions. Files the paperwork. Between the harm and the authority with insufficient leverage at either end.' },
+];
+
+function escapeHtml(str) {
+  return str.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+function highlightMatch(text, q) {
+  const idx = text.toLowerCase().indexOf(q);
+  if (idx < 0) return escapeHtml(text);
+  return escapeHtml(text.slice(0,idx)) + '<mark class="search-highlight">' + escapeHtml(text.slice(idx, idx+q.length)) + '</mark>' + escapeHtml(text.slice(idx+q.length));
+}
+
+function performSearch() {
+  const q = inputEl.value.trim().toLowerCase();
+  overlayEl.innerHTML = '';
+
+  let visibleCount = 0;
+  document.querySelectorAll('.npc-card').forEach(card => {
+    const searchStr = (card.dataset.search || '') + ' ' + (card.querySelector('.npc-name')?.textContent || '');
+    const activeFilter = document.querySelector('.filter-btn.active')?.dataset.filter || 'all';
+    const zone = card.dataset.zone || '';
+    const zoneMatch = activeFilter === 'all' || zone === activeFilter;
+    const textMatch = !q || q.length < 2 || searchStr.toLowerCase().includes(q);
+
+    if (zoneMatch && textMatch) {
+      card.style.display = '';
+      visibleCount++;
+    } else {
+      card.style.display = 'none';
+    }
+  });
+
+  document.getElementById('no-results').classList.toggle('visible', visibleCount === 0 && q.length >= 2);
+
+  if (!q || q.length < 2) { overlayEl.classList.remove('visible'); return; }
+
+  const results = searchData.filter(item =>
+    item.title.toLowerCase().includes(q) || item.excerpt.toLowerCase().includes(q)
+  ).slice(0, 7);
+
+  if (!results.length) {
+    overlayEl.innerHTML = '<div class="search-no-result">No results for "' + escapeHtml(q) + '"</div>';
+  } else {
+    results.forEach(item => {
+      const div = document.createElement('div');
+      div.className = 'search-result-item';
+      div.innerHTML = `<div class="sr-title">${highlightMatch(item.title, q)} <span style="font-size:9px;color:var(--text-dim);margin-left:6px;">${item.section}</span></div><div class="sr-excerpt">${highlightMatch(item.excerpt.slice(0,80)+'…', q)}</div>`;
+      div.onclick = () => { overlayEl.classList.remove('visible'); };
+      overlayEl.appendChild(div);
+    });
+  }
+  overlayEl.classList.add('visible');
+}
+
+inputEl.addEventListener('input', performSearch);
+inputEl.addEventListener('keydown', e => { if (e.key === 'Escape') { overlayEl.classList.remove('visible'); inputEl.blur(); } });
+document.addEventListener('click', e => {
+  if (!e.target.closest('.search-wrap') && !e.target.closest('#search-results-overlay')) {
+    overlayEl.classList.remove('visible');
+  }
+});
+</script>
+</body>
+</html>

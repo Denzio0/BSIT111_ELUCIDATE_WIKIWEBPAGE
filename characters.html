@@ -1,0 +1,1423 @@
+<!-- ============================================================
+  ELUCIDATE RPG WIKI — WordPress Custom HTML Block
+  WordPress-Compatible Version (Twenty Twenty-Five theme)
+
+  CHANGES FROM ORIGINAL:
+  1. Removed <!DOCTYPE html>, <html>, <head>, <title> — not needed inside WP block
+  2. Removed global *, html, body resets — these fight WordPress theme styles
+  3. Removed body::before noise texture — position:fixed on body pseudo-elements
+     breaks inside WP containers and causes z-index stacking chaos
+  4. Moved CSS custom properties from :root to #elucidate-wiki-root — scoped to
+     avoid leaking into or conflicting with WP theme variables
+  5. Removed position:fixed from .site-header — fixed positioning inside a WP
+     Custom HTML block doesn't anchor to the viewport correctly; reverted to
+     position:sticky with a top:0 fallback so the header stays visible
+  6. Removed padding-top:56px from .wiki-layout — was compensating for the fixed
+     header; no longer needed with sticky positioning
+  7. Added width:100%;max-width:100%;overflow-x:hidden to .wiki-layout and
+     #elucidate-wiki-root — prevents the layout from overflowing the WP column
+  8. Scoped a, a:hover colour rules under #elucidate-wiki-root — prevents
+     overriding WP theme link colours globally
+  9. Added box-sizing:border-box reset scoped to #elucidate-wiki-root * only —
+     safe reset that doesn't touch WP elements outside the block
+  10. Added explicit neutralisation of common WP theme overrides on .entry-content
+      that reset p margins, ul/li styles, and img max-width
+  11. Removed duplicate .wiki-layout rule (was declared twice — lines 232 & 239)
+  12. Removed min-height:100vh from .wiki-layout — caused excessive whitespace
+      inside the WP content column
+  13. Fixed .main-content overflow:hidden → overflow:visible — hidden was clipping
+      sticky sidebar and search overlay inside the WP container
+  14. Added .search-wrap input font-family fallback — WP resets font on inputs
+  15. Added filter-btn cursor and font resets — WP themes reset button styles
+============================================================ -->
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Merriweather:ital,wght@0,300;0,400;0,700;0,900;1,300;1,400&family=Cinzel:wght@400;600;700;900&family=Crimson+Text:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
+
+<style>
+/* ── SCOPED ROOT: all custom properties live here, not on :root ── */
+#elucidate-wiki-root {
+  --bg-deepest:    #080608;
+  --bg-dark:       #0e0b0f;
+  --bg-mid:        #140f16;
+  --bg-surface:    #1c1520;
+  --bg-elevated:   #221829;
+  --bg-card:       #1a1220;
+  --border-faint:  rgba(180,140,80,0.12);
+  --border-dim:    rgba(180,140,80,0.25);
+  --border-gold:   rgba(180,140,80,0.55);
+  --gold:          #b8922a;
+  --gold-bright:   #d4a83c;
+  --gold-pale:     #e8c96a;
+  --gold-muted:    #8a6a1e;
+  --crimson:       #8b1a1a;
+  --crimson-bright:#b02020;
+  --caligo:        #800000, #4b0082;
+  --caligo-bright: #5a2e8a;
+  --caligo-pale:   #8b5cbf;
+  --lumen:         #c8a84a;
+  --text-primary:  #e8dcc8;
+  --text-secondary:#c8b898;
+  --text-muted:    #9a8a72;
+  --text-dim:      #706050;
+  --white:         #f2ead8;
+  --shadow-deep: 0 8px 40px rgba(0,0,0,0.8);
+  --shadow-card: 0 4px 20px rgba(0,0,0,0.6);
+  --glow-gold: 0 0 20px rgba(184,146,42,0.3);
+  --glow-caligo: 0 0 20px rgba(90,46,138,0.4);
+
+  /* Base font & colour scoped to wrapper */
+  font-family: 'Merriweather', 'Cambria', Georgia, serif;
+  background: var(--bg-deepest);
+  color: var(--text-primary);
+  font-size: 14px;
+  line-height: 1.7;
+  width: 100%;
+  max-width: 100%;
+  overflow-x: hidden;
+  display: block;
+  position: relative;
+}
+
+/* ── Scoped box-sizing reset — only inside our block ── */
+#elucidate-wiki-root *,
+#elucidate-wiki-root *::before,
+#elucidate-wiki-root *::after {
+  box-sizing: border-box;
+}
+
+/* ── Neutralise common WP theme overrides inside our block ── */
+#elucidate-wiki-root p { margin: 0 0 12px; }
+#elucidate-wiki-root p:last-child { margin-bottom: 0; }
+#elucidate-wiki-root ul, #elucidate-wiki-root ol { margin: 0; padding: 0; }
+#elucidate-wiki-root img { max-width: none; height: auto; }
+#elucidate-wiki-root button { font-family: inherit; cursor: pointer; }
+
+/* ── Scoped link colours ── */
+#elucidate-wiki-root a { color: var(--gold); text-decoration: none; transition: color 0.2s; }
+#elucidate-wiki-root a:hover { color: var(--gold-pale); }
+
+/* scrollbar — scoped; won't affect rest of WP page */
+#elucidate-wiki-root ::-webkit-scrollbar { width: 6px; }
+#elucidate-wiki-root ::-webkit-scrollbar-track { background: var(--bg-deepest); }
+#elucidate-wiki-root ::-webkit-scrollbar-thumb { background: var(--gold-muted); border-radius: 3px; }
+
+/* ── HEADER: switched from position:fixed to position:sticky ──
+   fixed inside a WP Custom HTML block anchors to viewport wrong;
+   sticky keeps it at the top of the scroll within the block's container */
+.site-header {
+  position: sticky;
+  top: 0;
+  left: 0; right: 0;
+  z-index: 1000;
+  background: rgba(8,6,8,0.96);
+  border-bottom: 1px solid var(--border-gold);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  height: 56px;
+  display: flex;
+  align-items: center;
+  padding: 0 20px;
+  gap: 16px;
+  box-shadow: 0 2px 30px rgba(0,0,0,0.8);
+  /* Ensure header sits above WP theme elements */
+  isolation: isolate;
+}
+
+.header-logo-wrap {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-shrink: 0;
+}
+
+.site-logo-img {
+  width: 36px;
+  height: 36px;
+  object-fit: contain;
+}
+
+.header-site-name {
+  font-family: 'Cinzel', serif;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--gold-pale);
+  letter-spacing: 1.5px;
+  line-height: 1.2;
+  text-transform: uppercase;
+}
+.header-site-name span {
+  display: block;
+  font-size: 9px;
+  color: var(--text-muted);
+  letter-spacing: 2px;
+  font-weight: 400;
+}
+
+.header-nav {
+  display: flex;
+  gap: 4px;
+  align-items: center;
+  margin-left: 12px;
+  flex: 1;
+}
+
+.header-nav a {
+  font-family: 'Cinzel', serif;
+  font-size: 10px;
+  letter-spacing: 1px;
+  color: var(--text-secondary);
+  padding: 5px 10px;
+  border: 1px solid transparent;
+  border-radius: 2px;
+  transition: all 0.2s;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+.header-nav a:hover {
+  color: var(--gold-pale);
+  border-color: var(--border-dim);
+  background: rgba(184,146,42,0.08);
+}
+.header-nav a.active {
+  color: var(--gold-pale);
+  border-color: var(--border-gold);
+  background: rgba(184,146,42,0.1);
+}
+
+.header-right {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-left: auto;
+  flex-shrink: 0;
+}
+
+.search-wrap {
+  display: flex;
+  align-items: center;
+  border: 1px solid var(--border-dim);
+  border-radius: 3px;
+  overflow: hidden;
+  background: var(--bg-mid);
+  transition: border-color 0.2s;
+}
+.search-wrap:focus-within {
+  border-color: var(--gold);
+  box-shadow: 0 0 8px rgba(184,146,42,0.2);
+}
+.search-wrap input {
+  background: transparent;
+  border: none;
+  outline: none;
+  color: var(--text-primary);
+  font-family: 'Merriweather', Georgia, serif; /* explicit fallback for WP reset */
+  font-size: 11px;
+  padding: 6px 10px;
+  width: 180px;
+  /* WP may reset these on input */
+  -webkit-appearance: none;
+  appearance: none;
+  border-radius: 0;
+  box-shadow: none;
+}
+.search-wrap input::placeholder { color: var(--text-dim); }
+.search-wrap button {
+  background: var(--bg-elevated);
+  border: none;
+  border-left: 1px solid var(--border-dim);
+  color: var(--gold);
+  padding: 6px 10px;
+  cursor: pointer;
+  font-size: 12px;
+  transition: background 0.2s;
+  font-family: inherit;
+  line-height: normal;
+  -webkit-appearance: none;
+  appearance: none;
+}
+.search-wrap button:hover { background: rgba(184,146,42,0.15); }
+
+/* Search overlay: was position:fixed (viewport-anchored) — breaks inside WP block.
+   Changed to position:absolute relative to #elucidate-wiki-root.
+   The root wrapper has position:relative so this anchors correctly. */
+#search-results-overlay {
+  display: none;
+  position: absolute;
+  top: 57px; right: 20px;
+  width: 340px;
+  max-height: 400px;
+  overflow-y: auto;
+  background: var(--bg-elevated);
+  border: 1px solid var(--border-gold);
+  border-radius: 4px;
+  z-index: 999;
+  box-shadow: var(--shadow-deep);
+}
+#search-results-overlay.visible { display: block; }
+.search-result-item {
+  padding: 10px 14px;
+  border-bottom: 1px solid var(--border-faint);
+  cursor: pointer;
+  transition: background 0.15s;
+}
+.search-result-item:hover { background: rgba(184,146,42,0.1); }
+.search-result-item .sr-title {
+  font-family: 'Cinzel', serif;
+  font-size: 11px;
+  color: var(--gold-pale);
+  letter-spacing: 0.5px;
+}
+.search-result-item .sr-excerpt {
+  font-size: 11px;
+  color: var(--text-muted);
+  margin-top: 2px;
+  line-height: 1.5;
+}
+.search-no-result {
+  padding: 14px;
+  font-size: 12px;
+  color: var(--text-muted);
+  font-style: italic;
+  text-align: center;
+}
+
+/* ── LAYOUT: remove padding-top (no longer needed, header is sticky not fixed)
+   remove min-height:100vh (causes blank space in WP column)
+   add width:100% to prevent overflow past WP container ── */
+.wiki-layout {
+  display: grid;
+  grid-template-columns: 210px 1fr;
+  width: 100%;
+  max-width: 100%;
+}
+
+.sidebar {
+  background: var(--bg-dark); border-right: 1px solid var(--border-faint);
+  position: sticky; top: 56px; height: calc(100vh - 56px);
+  overflow-y: auto; padding: 16px 0; z-index: 100;
+  /* Ensure sidebar doesn't overflow WP block */
+  min-width: 0;
+}
+.sidebar-logo-mini { padding: 0 14px 14px; border-bottom: 1px solid var(--border-faint); margin-bottom: 12px; text-align: center; }
+.sidebar-logo-mini .sb-title { font-family: 'Cinzel', serif; font-size: 11px; color: var(--gold); letter-spacing: 2px; text-transform: uppercase; }
+.sidebar-logo-mini .sb-sub { font-size: 9px; color: var(--text-muted); letter-spacing: 1px; margin-top: 2px; }
+.sidebar-heading { font-family: 'Cinzel', serif; font-size: 9px; letter-spacing: 2px; text-transform: uppercase; color: var(--text-muted); padding: 6px 14px 4px; border-top: 1px solid var(--border-faint); }
+.sidebar ul { list-style: none; }
+.sidebar ul li a {
+  display: flex; align-items: center; gap: 8px;
+  padding: 6px 14px 6px 16px; color: var(--text-secondary);
+  font-size: 12px; font-family: 'Crimson Text', serif;
+  border-left: 2px solid transparent; transition: all 0.2s; letter-spacing: 0.3px;
+}
+.sidebar ul li a .sb-icon { width: 14px; text-align: center; font-size: 12px; opacity: 0.7; }
+.sidebar ul li a:hover { background: rgba(184,146,42,0.07); border-left-color: var(--gold-muted); color: var(--gold-pale); }
+.sidebar ul li a.active-nav { background: rgba(184,146,42,0.12); border-left-color: var(--gold); color: var(--gold-pale); font-weight: 600; }
+.sidebar-divider { height: 1px; background: var(--border-faint); margin: 8px 12px; }
+
+.sidebar-ms-widget { margin: 12px 14px; padding: 10px 12px; background: var(--bg-elevated); border: 1px solid var(--border-faint); border-radius: 3px; }
+.sidebar-ms-widget .ms-label { font-family: 'Cinzel', serif; font-size: 9px; color: var(--text-muted); letter-spacing: 1.5px; text-transform: uppercase; margin-bottom: 6px; }
+.ms-bar-track { height: 4px; background: var(--bg-mid); border-radius: 2px; overflow: hidden; margin-bottom: 4px; }
+.ms-bar-fill { height: 100%; width: 30%; background: linear-gradient(90deg, var(--caligo), var(--caligo-bright)); border-radius: 2px; animation: ms-pulse 3s ease-in-out infinite alternate; }
+@keyframes ms-pulse { from { opacity: 0.6; } to { opacity: 1; } }
+.ms-bar-text { font-size: 9px; color: var(--text-dim); text-align: right; }
+
+/* overflow:hidden changed to overflow:visible — hidden was clipping the
+   search overlay and sticky sidebar when inside WP's content column */
+.main-content { background: var(--bg-deepest); position: relative; overflow: visible; min-width: 0; }
+
+.page-hero {
+  padding: 60px clamp(20px, 5vw, 60px) 50px;
+  background:
+    radial-gradient(ellipse 70% 60% at 80% 40%, rgba(58,26,92,0.3) 0%, transparent 65%),
+    radial-gradient(ellipse 50% 50% at 10% 80%, rgba(139,26,26,0.15) 0%, transparent 60%),
+    var(--bg-deepest);
+  border-bottom: 1px solid var(--border-faint);
+  position: relative;
+  overflow: hidden;
+}
+.page-hero::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--gold), transparent);
+  opacity: 0.5;
+}
+.page-hero-tag { font-family: 'Cinzel', serif; font-size: 9px; letter-spacing: 4px; text-transform: uppercase; color: var(--gold-muted); margin-bottom: 14px; display: flex; align-items: center; gap: 12px; }
+.page-hero-tag::before, .page-hero-tag::after { content: ''; display: block; height: 1px; width: 40px; background: var(--gold-muted); opacity: 0.6; }
+.page-hero-title { font-family: 'Cinzel', serif; font-size: clamp(28px, 4vw, 52px); font-weight: 900; color: var(--white); letter-spacing: 2px; text-shadow: 0 4px 40px rgba(184,146,42,0.3); margin-bottom: 14px; }
+.page-hero-title .accent { color: var(--gold-pale); }
+.page-hero-sub { font-family: 'Crimson Text', serif; font-size: 16px; font-style: italic; color: var(--text-secondary); max-width: 600px; line-height: 1.7; margin-bottom: 20px; }
+.page-hero-line { width: 80px; height: 2px; background: linear-gradient(90deg, var(--gold), transparent); margin-bottom: 20px; }
+
+.filter-bar {
+  display: flex; align-items: center; gap: 10px;
+  padding: 18px clamp(16px, 5vw, 60px); border-bottom: 1px solid var(--border-faint);
+  background: var(--bg-dark); flex-wrap: wrap;
+}
+.filter-label { font-family: 'Cinzel', serif; font-size: 9px; letter-spacing: 2px; text-transform: uppercase; color: var(--text-muted); }
+.filter-btn {
+  font-family: 'Cinzel', serif; font-size: 9px; letter-spacing: 1px;
+  text-transform: uppercase; color: var(--text-secondary);
+  background: transparent; border: 1px solid var(--border-faint);
+  padding: 5px 12px; border-radius: 2px; cursor: pointer;
+  transition: all 0.2s;
+  /* WP theme resets: restore appearance */
+  -webkit-appearance: none;
+  appearance: none;
+  line-height: normal;
+}
+.filter-btn:hover { color: var(--gold-pale); border-color: var(--border-dim); background: rgba(184,146,42,0.07); }
+.filter-btn.active { color: var(--gold-pale); border-color: var(--border-gold); background: rgba(184,146,42,0.1); }
+
+.characters-section { padding: 50px clamp(16px, 5vw, 60px); position: relative; z-index: 1; }
+
+.char-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border-faint);
+  margin-bottom: 50px;
+  position: relative;
+  transition: border-color 0.3s, box-shadow 0.3s;
+  overflow: hidden;
+  opacity: 0;
+  transform: translateY(24px);
+  transition: opacity 0.6s ease, transform 0.6s ease, border-color 0.3s, box-shadow 0.3s;
+}
+.char-card.revealed { opacity: 1; transform: translateY(0); }
+.char-card:hover { border-color: var(--border-gold); box-shadow: 0 4px 30px rgba(184,146,42,0.12); }
+
+.char-card::before {
+  content: '';
+  position: absolute; top: 0; left: 0; right: 0;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, var(--gold), transparent);
+  opacity: 0; transition: opacity 0.3s;
+}
+.char-card:hover::before { opacity: 1; }
+
+.char-card[data-char="ignis"] { --char-color: #d4803c; --char-glow: rgba(212,128,60,0.15); }
+.char-card[data-char="funeris"] { --char-color: #8b5cbf; --char-glow: rgba(139,92,191,0.15); }
+.char-card[data-char="pluvia"] { --char-color: #4a9abf; --char-glow: rgba(74,154,191,0.15); }
+.char-card[data-char="konrad"] { --char-color: #b8922a; --char-glow: rgba(184,146,42,0.15); }
+.char-card[data-char="calum"] { --char-color: #c8c8c8; --char-glow: rgba(200,200,200,0.1); }
+
+.char-card[data-char="ignis"]::before { background: linear-gradient(90deg, transparent, #d4803c, transparent); }
+.char-card[data-char="funeris"]::before { background: linear-gradient(90deg, transparent, #8b5cbf, transparent); }
+.char-card[data-char="pluvia"]::before { background: linear-gradient(90deg, transparent, #4a9abf, transparent); }
+.char-card[data-char="konrad"]::before { background: linear-gradient(90deg, transparent, var(--gold), transparent); }
+.char-card[data-char="calum"]::before { background: linear-gradient(90deg, transparent, #c8c8c8, transparent); }
+
+.char-card-header {
+  display: grid;
+  grid-template-columns: minmax(100px, 140px) minmax(100px, 140px) 1fr;
+  gap: 0;
+  min-height: 220px;
+}
+
+.char-portrait-wrap {
+  background: var(--bg-mid);
+  border-right: 1px solid var(--border-faint);
+  display: flex; flex-direction: column;
+  align-items: center; justify-content: flex-end;
+  padding: 16px 12px 12px;
+  position: relative; overflow: hidden;
+}
+.char-portrait-wrap::after {
+  content: '';
+  position: absolute; bottom: 0; left: 0; right: 0;
+  height: 60px;
+  background: linear-gradient(to top, var(--bg-card), transparent);
+}
+.char-portrait-wrap img {
+  width: 100%; max-width: 200px;
+  height: 500px; object-fit: cover;
+  border: 1px solid var(--border-dim);
+  display: block;
+  filter: sepia(20%) brightness(0.9);
+  transition: filter 0.3s;
+}
+.char-card:hover .char-portrait-wrap img { filter: sepia(0%) brightness(1); }
+.char-portrait-label {
+  font-family: 'Cinzel', serif; font-size: 8px;
+  letter-spacing: 2px; color: var(--text-dim);
+  text-transform: uppercase; margin-top: 8px;
+  position: relative; z-index: 1;
+}
+
+.char-sprite-wrap {
+  background: var(--bg-surface);
+  border-right: 1px solid var(--border-faint);
+  display: flex; flex-direction: column;
+  align-items: center; justify-content: flex-end;
+  padding: 16px 30px 12px;
+  position: relative; overflow: hidden;
+}
+.char-sprite-wrap::before {
+  content: '';
+  position: absolute; inset: 0;
+  background: radial-gradient(ellipse 80% 80% at 50% 60%, var(--char-glow, rgba(184,146,42,0.08)), transparent);
+}
+.char-sprite-wrap img {
+  width: auto; max-width: 90px;
+  height: 160px; object-fit: contain;
+  display: block;
+  filter: brightness(0.85) contrast(1.05);
+  transition: filter 0.3s, transform 0.3s;
+  position: relative; z-index: 3;
+  image-rendering: pixelated;
+}
+.char-card:hover .char-sprite-wrap img { filter: brightness(1) contrast(1); transform: translateY(-4px); }
+.char-sprite-label {
+  font-family: 'Cinzel', serif; font-size: 8px;
+  letter-spacing: 2px; color: var(--text-dim);
+  text-transform: uppercase; margin-top: 8px;
+  position: relative; z-index: 1;
+}
+
+.char-info {
+  padding: 24px 28px;
+  display: flex; flex-direction: column; justify-content: flex-start;
+}
+
+.char-faction-tag {
+  font-family: 'Cinzel', serif; font-size: 9px; letter-spacing: 3px;
+  text-transform: uppercase; margin-bottom: 8px;
+  color: var(--char-color, var(--gold));
+  display: flex; align-items: center; gap: 8px;
+}
+.char-faction-tag::after { content: ''; flex: 1; height: 1px; background: var(--char-color, var(--gold)); opacity: 0.25; }
+
+.char-name {
+  font-family: 'Cinzel', serif; font-size: 26px; font-weight: 900;
+  color: var(--white); letter-spacing: 1px; margin-bottom: 4px;
+  text-shadow: 0 2px 20px rgba(184,146,42,0.2);
+}
+.char-true-name {
+  font-family: 'Crimson Text', serif; font-size: 13px; font-style: italic;
+  color: var(--text-muted); margin-bottom: 14px;
+}
+.char-true-name strong { color: var(--char-color, var(--gold)); font-style: normal; }
+
+.char-stats {
+  display: flex; gap: 20px; flex-wrap: wrap;
+  margin-bottom: 16px;
+}
+.char-stat {
+  display: flex; flex-direction: column; gap: 2px;
+}
+.char-stat-label { font-family: 'Cinzel', serif; font-size: 8px; letter-spacing: 2px; text-transform: uppercase; color: var(--text-dim); }
+.char-stat-val { font-family: 'Merriweather', serif; font-size: 11px; color: var(--text-secondary); }
+
+.char-ms-bar-wrap { margin-bottom: 16px; }
+.char-ms-label { font-family: 'Cinzel', serif; font-size: 8px; letter-spacing: 2px; text-transform: uppercase; color: var(--text-dim); margin-bottom: 5px; }
+.char-ms-track { height: 3px; background: var(--bg-mid); border-radius: 2px; overflow: hidden; width: 200px; }
+.char-ms-fill { height: 100%; background: linear-gradient(90deg, var(--caligo), var(--caligo-bright)); border-radius: 2px; }
+
+.char-role-badge {
+  display: inline-block;
+  font-family: 'Cinzel', serif; font-size: 9px; letter-spacing: 1.5px;
+  text-transform: uppercase; padding: 4px 10px;
+  border: 1px solid var(--char-color, var(--border-gold));
+  color: var(--char-color, var(--gold-pale));
+  background: rgba(0,0,0,0.3); border-radius: 2px;
+}
+
+.char-excerpt {
+  font-family: 'Crimson Text', serif; font-size: 14px; font-style: italic;
+  color: var(--text-secondary); margin-top: 12px; line-height: 1.7;
+  border-left: 2px solid var(--char-color, var(--gold-muted));
+  padding-left: 12px; max-width: 480px;
+}
+
+.char-lore-toggle {
+  display: flex; align-items: center; gap: 16px;
+  padding: 12px 28px;
+  border-top: 1px solid var(--border-faint);
+  cursor: pointer; transition: background 0.2s;
+  user-select: none;
+}
+.char-lore-toggle:hover { background: rgba(184,146,42,0.04); }
+.char-lore-toggle-label { font-family: 'Cinzel', serif; font-size: 9px; letter-spacing: 2px; text-transform: uppercase; color: var(--text-muted); flex: 1; }
+.char-lore-toggle-icon { font-size: 11px; color: var(--gold-muted); transition: transform 0.3s; }
+.char-lore-toggle.open .char-lore-toggle-icon { transform: rotate(180deg); }
+
+.char-lore-body {
+  display: none;
+  padding: 28px 28px 32px;
+  border-top: 1px solid var(--border-faint);
+  background: rgba(0,0,0,0.2);
+}
+.char-lore-body.open { display: block; }
+
+.lore-section { margin-bottom: 28px; }
+.lore-section:last-child { margin-bottom: 0; }
+.lore-section-title {
+  font-family: 'Cinzel', serif; font-size: 10px; letter-spacing: 3px;
+  text-transform: uppercase; color: var(--gold-muted);
+  margin-bottom: 12px; display: flex; align-items: center; gap: 10px;
+}
+.lore-section-title::after { content: ''; flex: 1; height: 1px; background: var(--border-faint); }
+.lore-section p { font-family: 'Merriweather', serif; font-size: 13px; color: var(--text-secondary); line-height: 1.9; margin-bottom: 12px; }
+.lore-section p:last-child { margin-bottom: 0; }
+.lore-section p strong { color: var(--gold-pale); font-weight: 600; }
+.lore-section p em { color: var(--text-muted); }
+
+.lore-quote {
+  margin: 18px 0;
+  padding: 14px 18px;
+  border-left: 3px solid var(--char-color, var(--gold-muted));
+  background: rgba(0,0,0,0.3);
+  font-family: 'Crimson Text', serif; font-size: 15px;
+  font-style: italic; color: var(--text-secondary); line-height: 1.7;
+}
+.lore-quote cite { display: block; margin-top: 8px; font-size: 11px; color: var(--text-dim); font-style: normal; font-family: 'Cinzel', serif; letter-spacing: 1px; }
+
+.paths-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; margin-top: 14px; }
+.path-card { padding: 14px 16px; background: var(--bg-elevated); border: 1px solid var(--border-faint); border-radius: 2px; }
+.path-card-label { font-family: 'Cinzel', serif; font-size: 9px; letter-spacing: 2px; text-transform: uppercase; color: var(--text-dim); margin-bottom: 6px; }
+.path-card-name { font-family: 'Cinzel', serif; font-size: 12px; color: var(--gold-pale); margin-bottom: 8px; }
+.path-card p { font-size: 12px; color: var(--text-muted); line-height: 1.6; }
+
+.section-divider { display: flex; align-items: center; gap: 16px; padding: 0 clamp(16px, 5vw, 60px); }
+.section-divider .div-line { flex: 1; height: 1px; background: linear-gradient(90deg, transparent, var(--border-gold), transparent); }
+.section-divider .div-icon { color: var(--gold-muted); font-size: 14px; }
+
+.site-footer {
+  background: var(--bg-dark); border-top: 1px solid var(--border-faint);
+  padding: 32px clamp(16px, 5vw, 60px);
+  position: relative; z-index: 1;
+}
+.footer-inner {
+  max-width: 1100px;
+  margin: 0 auto;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 16px;
+}
+.footer-logo-block {}
+.footer-logo-title { font-family: 'Cinzel', serif; font-size: 13px; font-weight: 700; color: var(--gold-pale); letter-spacing: 2px; text-transform: uppercase; }
+.footer-logo-sub { font-size: 10px; color: var(--text-dim); margin-top: 3px; letter-spacing: 0.5px; }
+.footer-links { display: flex; gap: 20px; flex-wrap: wrap; }
+.footer-links a { font-family: 'Cinzel', serif; font-size: 9px; letter-spacing: 1.5px; color: var(--text-muted); text-transform: uppercase; transition: color 0.2s; }
+.footer-links a:hover { color: var(--gold); }
+.footer-copy { font-size: 10px; color: var(--text-muted); letter-spacing: 0.5px; }
+.footer-copy span { color: var(--text-secondary); }
+.footer-ornament { text-align: center; margin-top: 20px; padding-top: 16px; border-top: 1px solid var(--border-faint); font-family: 'Cinzel', serif; font-size: 9px; letter-spacing: 3px; color: var(--text-muted); text-transform: uppercase; }
+
+.sidebar-section { margin-bottom: 6px; }
+
+@keyframes fadeInUp { from { opacity: 0; transform: translateY(24px); } to { opacity: 1; transform: translateY(0); } }
+
+.no-results { text-align: center; padding: 60px 20px; color: var(--text-muted); font-family: 'Crimson Text', serif; font-size: 16px; font-style: italic; display: none; }
+.no-results.visible { display: block; }
+
+/* ── WP-specific: .entry-content resets that can break inner layout ──
+   Twenty Twenty-Five sets max-width on .entry-content children;
+   we override for our block specifically */
+.wp-block-html #elucidate-wiki-root,
+.entry-content .wp-block-html #elucidate-wiki-root {
+  max-width: 100% !important;
+  width: 100% !important;
+  padding: 0 !important;
+  margin: 0 !important;
+}
+
+/* ── RESPONSIVE: 900px breakpoint (same as original) +
+   extra 1100px breakpoint for WP full-width containers ── */
+@media (max-width: 1100px) {
+  .char-card-header { grid-template-columns: minmax(90px, 120px) minmax(90px, 120px) 1fr; }
+}
+
+@media (max-width: 900px) {
+  .wiki-layout { grid-template-columns: 1fr; }
+  .sidebar { display: none; }
+  .page-hero, .characters-section, .filter-bar { padding-left: 24px; padding-right: 24px; }
+  .char-card-header { grid-template-columns: 120px 1fr; }
+  .char-sprite-wrap { display: none; }
+  .paths-grid { grid-template-columns: 1fr; }
+  .footer-inner { flex-direction: column; align-items: flex-start; gap: 12px; }
+  .footer-copy { text-align: left; }
+}
+
+@media (max-width: 600px) {
+  .site-header { padding: 0 12px; gap: 8px; }
+  .header-nav { display: none; }
+  .search-wrap input { width: 130px; }
+  .char-card-header { grid-template-columns: 100px 1fr; }
+  .char-name { font-size: 20px; }
+  .page-hero-title { font-size: clamp(22px, 6vw, 36px); }
+  .paths-grid { grid-template-columns: 1fr; }
+  .section-divider { padding: 0 16px; }
+  .site-footer { padding: 24px 16px; }
+}
+</style>
+
+<!-- ═══════════════════════════════════════════════════════════
+  ALL CONTENT BELOW IS THE CUSTOM HTML BLOCK BODY.
+  Everything is wrapped in #elucidate-wiki-root for CSS scoping.
+  Paste everything from <div id="elucidate-wiki-root"> onward
+  into your WordPress Custom HTML block.
+══════════════════════════════════════════════════════════════ -->
+
+<div id="elucidate-wiki-root">
+
+<header class="site-header">
+  <div class="header-logo-wrap">
+    <img src="http://elucidate.unaux.com/wp-content/uploads/2026/04/ELUCIDATE-WEBSITE-EYE-LOGO.png" alt="Elucidate RPG Wiki Logo" class="site-logo-img">
+    <div class="header-site-name">
+      Elucidate RPG
+      <span>OFFICIAL WIKI</span>
+    </div>
+  </div>
+  <nav class="header-nav">
+    <a href="#">Home</a>
+    <a href="characters.html" class="active">Characters</a>
+    <a href="npcs.html">NPCs</a>
+    <a href="items.html">Items</a>
+    <a href="environments.html">Environments</a>
+    <a href="lore.html">Lore</a>
+    <a href="developers.html">Developers</a>
+    <a href="fanart.html">Fan Art</a>
+    <a href="download.html">Download</a>
+  </nav>
+  <div class="header-right">
+    <div class="search-wrap">
+      <input type="text" id="search-input" placeholder="Search wiki…" autocomplete="off">
+      <button onclick="performSearch()">⌕</button>
+    </div>
+    <img src="http://elucidate.unaux.com/wp-content/uploads/2026/04/ELUCIDATE-LOGO-WITH-BG-2.png" alt="Elucidate RPG DLC Logo" class="site-logo-img" style="display:none;">
+  </div>
+</header>
+
+<div id="search-results-overlay"></div>
+
+<div class="wiki-layout">
+
+  <aside class="sidebar">
+    <div class="sidebar-logo-mini">
+      <div class="sb-title">Elucidate Wiki</div>
+      <div class="sb-sub">DLC · Complete Guide</div>
+    </div>
+
+    <div class="sidebar-section">
+      <div class="sidebar-heading">Navigation</div>
+      <ul>
+        <li><a href="index.html"><span class="sb-icon">⌂</span> Home</a></li>
+        <li><a href="characters.html" class="active-nav"><span class="sb-icon">⚔</span> Characters</a></li>
+        <li><a href="npcs.html"><span class="sb-icon">👤</span> NPCs</a></li>
+        <li><a href="items.html"><span class="sb-icon">🗡</span> Items</a></li>
+        <li><a href="environments.html"><span class="sb-icon">🗺</span> Environments</a></li>
+        <li><a href="lore.html"><span class="sb-icon">📜</span> Lore</a></li>
+      </ul>
+    </div>
+
+    <div class="sidebar-divider"></div>
+
+    <div class="sidebar-section">
+      <div class="sidebar-heading">Community</div>
+      <ul>
+        <li><a href="developers.html"><span class="sb-icon">🛠</span> Developers</a></li>
+        <li><a href="fanart.html"><span class="sb-icon">🎨</span> Fan Art</a></li>
+        <li><a href="download.html"><span class="sb-icon">↓</span> Download</a></li>
+      </ul>
+    </div>
+
+    <div class="sidebar-divider"></div>
+
+    <div class="sidebar-ms-widget">
+      <div class="ms-label">Mind State System</div>
+      <div class="ms-bar-track"><div class="ms-bar-fill"></div></div>
+      <div class="ms-bar-text">Stability: 30%</div>
+    </div>
+
+    <div class="sidebar-section" style="padding: 8px 14px;">
+      <div style="font-family:'Cinzel',serif;font-size:9px;color:var(--text-dim);letter-spacing:1px;text-transform:uppercase;margin-bottom:6px;">Playable Characters</div>
+      <ul style="list-style:none;">
+        <li style="margin-bottom:2px;"><a href="characters.html" style="font-size:11px;color:var(--text-muted);padding:3px 0;border:none;display:block;">↳ Lucidus / Ignis</a></li>
+        <li style="margin-bottom:2px;"><a href="characters.html" style="font-size:11px;color:var(--text-muted);padding:3px 0;border:none;display:block;">↳ Funeris</a></li>
+        <li style="margin-bottom:2px;"><a href="characters.html" style="font-size:11px;color:var(--text-muted);padding:3px 0;border:none;display:block;">↳ Pluvia</a></li>
+        <li style="margin-bottom:2px;"><a href="characters.html" style="font-size:11px;color:var(--text-muted);padding:3px 0;border:none;display:block;">↳ Konrad</a></li>
+        <li><a href="characters.html" style="font-size:11px;color:var(--text-muted);padding:3px 0;border:none;display:block;">↳ Father Calum</a></li>
+      </ul>
+    </div>
+  </aside>
+
+  <main class="main-content">
+
+    <section class="page-hero">
+      <div class="page-hero-tag">Elucidate RPG · DLC</div>
+      <h1 class="page-hero-title">Playable <span class="accent">Characters</span></h1>
+      <div class="page-hero-line"></div>
+      <p class="page-hero-sub">Five orphaned experiments. Five Mind States. Five paths shaped by a truth they were trained never to find. Every choice is irreversible. Every ending is earned.</p>
+    </section>
+
+    <div class="filter-bar">
+      <span class="filter-label">Filter</span>
+      <button class="filter-btn active" data-filter="all">All Characters</button>
+      <button class="filter-btn" data-filter="church">Church-Aligned</button>
+      <button class="filter-btn" data-filter="cult">Cult-Aligned</button>
+      <button class="filter-btn" data-filter="neutral">Independent</button>
+    </div>
+
+    <section class="characters-section" id="characters-list">
+
+      <!-- ── IGNIS / MERCENARY ── -->
+      <article class="char-card" data-char="ignis" data-tags="church neutral" data-search="ignis lucidus mercenary experiment i-3 blunderbuss rebellion obedience">
+        <div class="char-card-header">
+          <div class="char-portrait-wrap">
+            <img src="http://elucidate.unaux.com/wp-content/uploads/2026/04/Copy-of-elucidate_character_portrait_mercenary.png" alt="Character Portrait — Ignis / Lucidus">
+            <div class="char-portrait-label">Portrait</div>
+          </div>
+		  
+		  <div class="char-sprite-wrap">
+		  <img
+			id="char-sprite-ignis"
+			src="http://elucidate.unaux.com/wp-content/uploads/2026/04/Copy-of-elucidate_atk_sprite_mercenary_down_001.png"
+			alt="Character Idle Sprite — Frame 1"
+			class="char-sprite-img">
+		  <div class="char-sprite-label">Idle</div>
+		</div>
+
+          <div class="char-info">
+            <div class="char-faction-tag">Mercenary · Church of Lumen</div>
+            <div class="char-name">Lucidus</div>
+            <div class="char-true-name">Real Name <strong>Ignis</strong> · True Name Suppressed · <strong>Experiment Subject I-3</strong></div>
+            <div class="char-stats">
+			  <div class="char-stat"><div class="char-stat-label">Body</div><div class="char-stat-val">100</div></div>
+			  <div class="char-stat"><div class="char-stat-label">STR</div><div class="char-stat-val">30</div></div>
+			  <div class="char-stat"><div class="char-stat-label">AGI</div><div class="char-stat-val">12</div></div>
+			  <div class="char-stat"><div class="char-stat-label">Mind State</div><div class="char-stat-val">20</div></div>
+			  <div class="char-stat"><div class="char-stat-label">MS Resistance</div><div class="char-stat-val">2 / 3</div></div>
+              <div class="char-stat"><div class="char-stat-label">Starting Zone</div><div class="char-stat-val">Walled City</div></div>
+              <div class="char-stat"><div class="char-stat-label">Weapons</div><div class="char-stat-val">Blunderbuss · Makeshift Spear</div></div>
+            </div>
+            <div class="char-ms-bar-wrap">
+              <div class="char-ms-label">MS Resistance</div>
+              <div class="char-ms-track"><div class="char-ms-fill" style="width:40%"></div></div>
+            </div>
+            <span class="char-role-badge">Obedience · Rebellion · Insanity</span>
+            <div class="char-excerpt">"I always knew something was wrong with the mission. I felt it from the moment he said 'you were trained well.' But knowing something is wrong and being willing to act on it are two separate things — and the distance between them is the whole distance of a person's character."</div>
+          </div>
+        </div>
+
+        <div class="char-lore-toggle" onclick="toggleLore(this)">
+          <span class="char-lore-toggle-label">Full Character Lore — Origin · Conflict · Endings</span>
+          <span class="char-lore-toggle-icon">▾</span>
+        </div>
+
+        <div class="char-lore-body">
+          <div class="lore-section">
+            <div class="lore-section-title">Origin & The Orphanage</div>
+            <p>Before there was a soldier, there was a child. A child with no name the world remembered, taken from an orphanage at approximately nine years of age, loaded into a Church carriage that smelled of incense and iron, and driven toward a facility beneath the Theocratic Capital where the Church of Lumen conducted its most classified operations. He was not told where he was going. He was told he was <strong>special</strong>. He believed it — because he was nine years old and had no one, and being chosen felt better than being nothing.</p>
+            <p>The Church called their program <strong>Vindication Lumen</strong> — the deliberate engineering of soldiers capable of withstanding the psychological corruption of the Zones of Terrors, where Caligo's ambient influence fractured the minds of ordinary men. Most subjects failed. Most were expelled as defects or worse. The boy who entered the facility as a nameless orphan emerged as <strong>Experiment Subject I-3</strong>, designated <em>Lucidus</em> — a word meaning 'clear,' chosen because the Church required their finest instrument to be uncomplicated. He was the most stable result they had ever produced. His Mind State resistance, his physical enhancement, his capacity to function in high-terror zones without psychological fracture — all were considered extraordinary achievements of the program.</p>
+            <p>What the Church took from him in exchange is less documented but more devastating: his name. His past. The memory of why his hands knew how to hold a weapon before the war ever gave them reason to. <strong>Ignis</strong> — meaning fire — was buried beneath the designation. He spent his entire adult life not knowing it existed.</p>
+          </div>
+
+          <div class="lore-section">
+            <div class="lore-section-title">Connection to Caligo & Vindication Lumen</div>
+            <p>Caligo the Formless does not act with intention. It does not pursue Ignis. It does not hunt him. But its influence saturates the world's broken zones, and the Church built Ignis specifically to walk through that influence without being consumed by it. This is the paradox at the center of his existence: <strong>he was made from the very darkness he was trained to fight</strong>. The enhancement that makes him resistant to Caligo's corruption required controlled exposure to it during the program. He carries Caligo's fingerprints in his nervous system, in the way his body processes fear differently from ordinary men, in the way the Eldritch Horrors seem to pause when they encounter him — as if recognizing something familiar.</p>
+            <p>The Fragments of Caligo — physical concentrations of the Formless One's ambient power — are the nominal objective of his mission. He is sent to collect them for the Church. What he does not know at mission start is that <em>the Church does not intend to contain Caligo's influence. They intend to monopolize it.</em> His mission, completed faithfully, would hand a corrupt institution absolute dominance over the darkness that shapes the world.</p>
+          </div>
+
+          <div class="lore-section">
+            <div class="lore-section-title">The Mind State System & Psychological Architecture</div>
+            <p>Ignis's MS resistance of 2/5 places him in moderate territory — capable of withstanding considerable psychological pressure but acutely vulnerable in doubled-rate zones like the Home Village, where the ruins of his own past act as environmental horror. His resistance was not built for grief. It was built to suppress it. The deeper the player takes him into his own history, the more the suppression strains.</p>
+            <p>The Shaman Pluvia, when saved in the Tribe Area rescue, provides a 30% reduction to MS growth rate for the remainder of the playthrough. Her stabilizing presence is not a mechanical abstraction — it is the first relationship Ignis has formed where someone sees him clearly and chooses to remain anyway. The Mind State system registers that as structurally significant. Her loss — in Path C's failed rescue — is the single largest non-Zone MS event in the game, because it represents the collapse of the one thing that was genuinely his.</p>
+          </div>
+
+          <div class="lore-section">
+            <div class="lore-section-title">Key Relationships</div>
+            <p><strong>Father Calum</strong> — Mission-giver, final antagonist, creator. The man who designed the program that made Ignis is also the man who sent him on the mission that would undo it. Calum looks at Ignis the way someone looks at a tool they are satisfied with — not with warmth, but with the particular satisfaction of engineering that worked. In Path B, Ignis faces him as a boss. The fight is not about rage. It is about the distance between knowing something is wrong and being willing to act on it.</p>
+            <p><strong>Konrad the Merchant</strong> — The truth-giver. A man who watched the Church carriages arrive at the orphanage when he was sixteen years old, was too afraid to act, and spent the next twenty years trying to walk back toward that moment. He is the one who tells Ignis his real name. The scene in the Port City guild hall is the narrative's fulcrum — everything before it is motion, everything after it is choice.</p>
+            <p><strong>Pluvia the Shaman</strong> — The stabilizer. She saw him coming three weeks before he arrived. She knew what he was looking for before he did. The grief she identifies in him — the kind that reaches toward suffering the way a plant reaches toward light — is the buried memory of the orphanage, surfacing in behavior patterns the Church suppressed but could never fully erase.</p>
+          </div>
+
+          <div class="lore-section">
+            <div class="lore-section-title">Paths & Endings</div>
+            <div class="paths-grid">
+              <div class="path-card">
+                <div class="path-card-label">Path A</div>
+                <div class="path-card-name">Obedience's Cost</div>
+                <p>Ignores Konrad's revelation. Completes the mission. Delivers all Fragments. Father Calum reveals the truth of what the cultists were — fellow orphan experiments, children from the same home. The victory is total. The self does not survive it. Mind State reaches 100. A hollow soldier for a hollow cause.</p>
+              </div>
+              <div class="path-card">
+                <div class="path-card-label">Path B</div>
+                <div class="path-card-name">Revolution — The Church Falls</div>
+                <p>Believes Konrad. Returns to the Theocratic Capital not as a soldier of the Church but as its end. Defeats Father Calum in the Grand Cathedral. Discovers his true name: Ignis. The fire in the name finally has a purpose. The hardest path. The most expensive victory. The one that means something.</p>
+              </div>
+              <div class="path-card">
+                <div class="path-card-label">Path C</div>
+                <div class="path-card-name">Consumed by Caligo</div>
+                <p>The Shaman dies in the failed rescue. No companion. No modifier. MS climbs without ceiling through Port City and Cultist Island. At 100, he is not slain by the Cult. He is absorbed. The darkness does not attack him — it fills the space left by a shattered identity. A man who forgot who he was and found nothing to replace it with.</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="lore-section">
+            <div class="lore-section-title">Symbolic & Philosophical Meaning</div>
+            <p><em>Ignis</em> means fire. <em>Lucidus</em> means clear. The Church renamed him to make him uncomplicated — a fire with no fuel of its own, burning only at their direction. The game's central question, embodied in his arc, is whether a person built to be a tool can become something that belongs entirely to itself. Path B answers yes. It costs everything to get there. The cost is, the narrative argues, the point — because things worth having do not come without it.</p>
+            <div class="lore-quote">
+              "My name is Ignis. You took that from me when I was a child who couldn't stop you. I'm not a child anymore. And this ends here — not because I'm angry. Because it is the right thing to do, and you taught me, whatever else you taught me, to finish what I start."
+              <cite>— Ignis, confronting Father Calum, Ending B</cite>
+            </div>
+          </div>
+        </div>
+      </article>
+
+      <div class="section-divider" style="margin-bottom: 40px;">
+        <div class="div-line"></div><div class="div-icon">✦</div><div class="div-line"></div>
+      </div>
+
+      <!-- ── FUNERIS / CULTIST ── -->
+      <article class="char-card" data-char="funeris" data-tags="cult" data-search="funeris cultist experiment f-7 caligo sensitivity defect betrayal loyalty">
+        <div class="char-card-header">
+          <div class="char-portrait-wrap">
+            <img src="http://elucidate.unaux.com/wp-content/uploads/2026/04/Copy-of-elucidate_character_portrait_cultist.png" alt="Character Portrait — Funeris">
+            <div class="char-portrait-label">Portrait</div>
+          </div>
+		  
+		<div class="char-sprite-wrap">
+		  <img
+			id="char-sprite-funeris"
+			src="http://elucidate.unaux.com/wp-content/uploads/2026/04/Copy-of-elucidate_sprite_cultist_hood_001-5.png"
+			alt="Character Idle Sprite — Frame 1"
+			class="char-sprite-img"
+		  >
+		  <div class="char-sprite-label">Idle</div>
+		</div>
+		  
+          <div class="char-info">
+            <div class="char-faction-tag">Cultist · Cult of Caligo</div>
+            <div class="char-name">Funeris</div>
+            <div class="char-true-name">Name means <strong>Funeral</strong> · The Church's word when they discarded her · <strong>Experiment Subject F-7</strong></div>
+            <div class="char-stats">
+			  <div class="char-stat"><div class="char-stat-label">Body</div><div class="char-stat-val">100</div></div>
+			  <div class="char-stat"><div class="char-stat-label">STR</div><div class="char-stat-val">18</div></div>
+			  <div class="char-stat"><div class="char-stat-label">AGI</div><div class="char-stat-val">8</div></div>
+			  <div class="char-stat"><div class="char-stat-label">Mind State</div><div class="char-stat-val">10</div></div>
+			  <div class="char-stat"><div class="char-stat-label">MS Resistance</div><div class="char-stat-val">3 / 3</div></div>
+              <div class="char-stat"><div class="char-stat-label">Starting Zone</div><div class="char-stat-val">Cultist Island</div></div>
+              <div class="char-stat"><div class="char-stat-label">Weapons</div><div class="char-stat-val">Cultist Dagger · Crossbow</div></div>
+            </div>
+            <div class="char-ms-bar-wrap">
+              <div class="char-ms-label">MS Resistance</div>
+              <div class="char-ms-track"><div class="char-ms-fill" style="width:60%"></div></div>
+            </div>
+            <span class="char-role-badge">Loyalty · Betrayal · Collapse</span>
+            <div class="char-excerpt">"The cult says I am free. But I am still doing exactly what someone else built me to do. Someone else's purpose in someone else's war. That is not freedom. That is just a different cage."</div>
+          </div>
+        </div>
+
+        <div class="char-lore-toggle" onclick="toggleLore(this)">
+          <span class="char-lore-toggle-label">Full Character Lore — Origin · Conflict · Endings</span>
+          <span class="char-lore-toggle-icon">▾</span>
+        </div>
+
+        <div class="char-lore-body">
+          <div class="lore-section">
+            <div class="lore-section-title">Origin — The Defect They Made</div>
+            <p>The Church took her from the same orphanage. The same carriages. The same promise that she was special. She was seven years old. She was enrolled in the Vindication Lumen program alongside the child who would become Ignis, alongside the child who would become Father Calum a generation earlier, alongside the others whose names the program assigned and the world forgot. The procedure worked differently in her. Her Caligo sensitivity — the biological ability to perceive and respond to Caligo's ambient influence — developed far beyond what the Church's protocols could manage. Where other subjects became resistant to the Zones of Terrors, she became <em>fluent</em> in them. She could feel wrongness before it was visible. She could sense Eldritch Horror movement before it registered to any other human perception.</p>
+            <p>The Church called this a defect. The official record reads: <em>Experiment Subject F-7. Outcome assessment: unstable. Integration failure — Caligo sensitivity exceeded manageable parameters. Recommendation: termination or field expulsion. Decision: expulsion authorized.</em> She was nine years old. Termination or expulsion were the two options they weighed. They chose expulsion only because it was cheaper. She was put in a cart, driven to the edge of a city she did not know, and left.</p>
+          </div>
+
+          <div class="lore-section">
+            <div class="lore-section-title">Survival & The Cult</div>
+            <p>Three years of surviving alone — in cities that did not know her, in systems that had no category for a child expelled from a secret government experiment. She carried nothing from the program except the sensitivity they had declared worthless. It was the most useful thing she owned. She could feel danger before it arrived. She could navigate the ambient wrongness of Caligo-corrupted zones when others fled screaming. She had been discarded for being too good at the one thing the Church had tried to train into everyone else.</p>
+            <p>At approximately age twelve, she found fire. An old building. What felt like one more place that would not be safe. And then someone handed her bread without asking for anything in return. It was the first time in three years that someone had given her something without wanting something back. She stayed. The Cult of Caligo was assembled, in part, from people exactly like her — failed experiments, expelled subjects, children told they were defects who had found each other in the shadow of the institution that had discarded them. The Cult Leader recognized what the Church had called her defect and renamed it: <strong>attunement</strong>. A gift, not a failure. A key, not a broken piece.</p>
+            <p>She believed him. For years, she believed him entirely. And then the Forbidden Subterranean Labyrinth showed her the file.</p>
+          </div>
+
+          <div class="lore-section">
+            <div class="lore-section-title">Caligo & The Sensitivity</div>
+            <p>Funeris does not worship Caligo the way the Cult's rituals frame it. She experiences it the way one experiences weather — as a constant condition of her environment rather than a deity to be appeased. In the Zones of Terrors, while other characters struggle to perceive what they are facing, she already knows. The Manifestations do not frighten her in the conventional sense; they are familiar in the way a storm is familiar to someone who has always lived near the coast. The problem is that familiarity and safety are not the same thing. <strong>Being fluent in a language does not make the language kind.</strong></p>
+            <p>Her MS resistance of 1/5 — the lowest in the game — reflects this precisely. She is the most attuned to Caligo and simultaneously the most vulnerable to its accumulating influence. The game's mechanics argue that sensitivity and stability are not the same resource. You can perceive everything clearly and still be destroyed by the weight of perceiving it.</p>
+          </div>
+
+          <div class="lore-section">
+            <div class="lore-section-title">Key Relationships</div>
+            <p><strong>The Cult Leader</strong> — Authority figure, ideological father, eventual antagonist. He gave her a name for what she was. He gave the sensitivity a purpose, a place in a cosmology, a reason to exist rather than a reason to despair. That he was also using her — using her attunement as an instrument for the Cult's ritual agenda — does not undo what he gave her. Path B requires her to hold both truths at once: gratitude and betrayal. The Labyrinth revelation forces the accounting.</p>
+            <p><strong>Ignis the Mercenary</strong> — Parallel protagonist, unwitting mirror. They share the same orphanage. They were processed through the same program. He was labeled a success; she was labeled a failure. He spent his adult life serving the institution that made him; she spent hers resisting it. In the game's architecture, they are two possible responses to the same origin. The Mercenary encounters her as an enemy on Cultist Island without knowing what she is. She faces him as an invader without knowing what they share.</p>
+            <p><strong>Father Calum</strong> — Her original creator. The man who ran the program. In Path B, her confrontation with Calum is more complicated than Ignis's because she has spent her entire life defining herself against the Church's verdict, which means the Church has been the organizing principle of her identity even in opposition. Defeating that principle requires her to find something else to organize around — something that is hers, not a reaction.</p>
+          </div>
+
+          <div class="lore-section">
+            <div class="lore-section-title">Paths & Endings</div>
+            <div class="paths-grid">
+              <div class="path-card">
+                <div class="path-card-label">Path A</div>
+                <div class="path-card-name">Caligo's Design</div>
+                <p>Accepts the Cult's purpose. Completes the ritual. Gains true, formless power. Loses the last threads of her former self. The girl the Church threw away is gone. What remains belongs to everything and nothing. She wanted to belong somewhere. Now she does — entirely, irrevocably, at enormous personal cost.</p>
+              </div>
+              <div class="path-card">
+                <div class="path-card-label">Path B</div>
+                <div class="path-card-name">Identity Reclaimed</div>
+                <p>Refuses the Cult's purpose after the Labyrinth revelation. Escapes. Gathers evidence against both Church and Cult. Returns to confront the Cult Leader. At the end, she carries only what is truly hers — her name, her sensitivity, her choice. Redemption earned through painful knowledge and more painful action.</p>
+              </div>
+              <div class="path-card">
+                <div class="path-card-label">Path C</div>
+                <div class="path-card-name">A Hollow Vessel</div>
+                <p>MS reaches 100, typically in the Zones of Terrors or at the Labyrinth revelation. Identity collapses. She does not become evil — she ceases to be anyone. Indistinguishable from the Eldritch Horrors she feared. The Church discarded her twice: once as a defect, and once as a memory she was supposed to be.</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="lore-section">
+            <div class="lore-section-title">Symbolic & Philosophical Meaning</div>
+            <p>Funeris carries a name that was meant to be an ending — the Church's clinical word for a failed investment. She reclaimed it. In her, the game's central thematic interrogation is most explicit: <strong>who owns the meaning of what you are?</strong> The Church said defective. The Cult said attuned. Both were describing the same person for their own purposes. Path B is her answer: neither. The self is not a diagnosis and not a role. It is the capacity to choose what the sensitivity means, rather than having it chosen by whoever needs a weapon that week.</p>
+            <div class="lore-quote">
+              "If the Church made me to be a weapon for them, and the Cult wants me to be a weapon for Caligo, then have I ever had a single moment — one moment — of being something other than a weapon for someone else's war?"
+              <cite>— Funeris, alone in the Forbidden Subterranean Labyrinth</cite>
+            </div>
+          </div>
+        </div>
+      </article>
+
+      <div class="section-divider" style="margin-bottom: 40px;">
+        <div class="div-line"></div><div class="div-icon">⬡</div><div class="div-line"></div>
+      </div>
+
+      <!-- ── PLUVIA / SHAMAN ── -->
+      <article class="char-card" data-char="pluvia" data-tags="neutral" data-search="pluvia shaman foresight tribe wind essence visions guide">
+        <div class="char-card-header">
+          <div class="char-portrait-wrap">
+            <img src="http://elucidate.unaux.com/wp-content/uploads/2026/04/Copy-of-elucidate_character_portrait_shaman-1.png" alt="Character Portrait — Pluvia">
+            <div class="char-portrait-label">Portrait</div>
+          </div>
+		  
+		<div class="char-sprite-wrap">
+		  <img
+			id="char-sprite-pluvia"
+			src="http://elucidate.unaux.com/wp-content/uploads/2026/04/elucidate_attack_shaman_down_001.png"
+			alt="Character Idle Sprite — Frame 1"
+			class="char-sprite-img"
+		  >
+		  <div class="char-sprite-label">Idle</div>
+		</div>
+		  
+          <div class="char-info">
+            <div class="char-faction-tag">Shaman · Tribe — Independent</div>
+            <div class="char-name">Pluvia</div>
+            <div class="char-true-name">The Seer · Keeper of  <strong> Wind Essence</strong> · The Shaman of the <strong>Seekers Tribe</strong></div>
+            <div class="char-stats">
+			  <div class="char-stat"><div class="char-stat-label">Body</div><div class="char-stat-val">80</div></div>
+			  <div class="char-stat"><div class="char-stat-label">STR</div><div class="char-stat-val">15</div></div>
+			  <div class="char-stat"><div class="char-stat-label">AGI</div><div class="char-stat-val">8</div></div>
+			  <div class="char-stat"><div class="char-stat-label">Mind State</div><div class="char-stat-val">20</div></div>
+			  <div class="char-stat"><div class="char-stat-label">MS Resistance</div><div class="char-stat-val">2/ 3</div></div>
+              <div class="char-stat"><div class="char-stat-label">Starting Zone</div><div class="char-stat-val">Tribe Settlement</div></div>
+              <div class="char-stat"><div class="char-stat-label">Ability</div><div class="char-stat-val">Foresight (Active/Passive)</div></div>
+            </div>
+            <div class="char-ms-bar-wrap">
+              <div class="char-ms-label">MS Resistance (effective)</div>
+              <div class="char-ms-track"><div class="char-ms-fill" style="width:40%"></div></div>
+            </div>
+            <span class="char-role-badge">Guide · Withdraw · Lost in Visions</span>
+            <div class="char-excerpt">"There is a grief in you, soldier, that is older than any of your wounds. It reaches toward people who are suffering the way a plant reaches toward light — not because it chose to, because it cannot help it. That grief is going to matter before this is over."</div>
+          </div>
+        </div>
+
+        <div class="char-lore-toggle" onclick="toggleLore(this)">
+          <span class="char-lore-toggle-label">Full Character Lore — Origin · Conflict · Endings</span>
+          <span class="char-lore-toggle-icon">▾</span>
+        </div>
+
+        <div class="char-lore-body">
+          <div class="lore-section">
+            <div class="lore-section-title">Origin & The Foresight</div>
+            <p>Pluvia traces to the same orphanage as the others, though her connection to it is different in nature. Where Ignis was taken into the Vindication Lumen program and Funeris was expelled from it, Pluvia's sensitivity developed differently — not as a mechanical Caligo-attuned enhancement but as something the Church classified as Foresight, an ability to perceive probable futures. The program could not contain it. She was removed from the facility and eventually found her way to the Tribe, where her ability was recognized not as a weapon but as a responsibility. She has lived among the Tribe for thirty years. She has never chosen to leave. Until Ignis arrives.</p>
+            <p>She sees him coming three weeks before he does. A soldier with one eye and a Blunderbuss, standing at the edge of a burning perimeter, deciding whether to go in or wait. In her vision, he goes in. She knows he will, because she can see the shape of his grief — older than the war, carried so long he has confused it with his natural posture. She has been waiting to meet him with a kind of resigned clarity that is not resignation at all but acceptance of what must be done.</p>
+          </div>
+
+          <div class="lore-section">
+            <div class="lore-section-title">The Foresight Mechanic & Its Cost</div>
+            <p>Foresight is Pluvia's defining ability and her defining vulnerability simultaneously. Active use reveals enemy positions, trap locations, and hidden information — each use costs +10 MS. As her Mind State rises, the precision of Foresight degrades: clear two-second images become fragmented five-second sequences that raise more questions than they answer. At MS 75+, visions become indistinguishable from hallucination. At MS 100, the visions become permanent reality — she can no longer locate the boundary between what is and what might be. <strong>She wanders. She cannot return to the present tense.</strong></p>
+            <p>She describes Foresight as standing in a river: leaning into the current instead of against it. The problem, she notes, is that if you lean into the current too long, you forget which way the flow is. The game uses her mechanically to externalize a psychological principle that applies to all characters: <em>perceiving reality clearly does not make you immune to being consumed by it.</em></p>
+          </div>
+
+          <div class="lore-section">
+            <div class="lore-section-title">Relationship to Caligo & the World</div>
+            <p>Pluvia's Foresight is distinct from Funeris's Caligo sensitivity in that it is not inherently tied to the Formless One's influence — it emerged from the program's experimentation but evolved beyond it. She can perceive futures that Caligo does not shape. This makes her uniquely dangerous to both the Church and the Cult, who prefer their instruments to be legible within their respective cosmologies. <strong>She is neither the Church's soldier nor the Cult's weapon.</strong> She is a woman who can see what they are both walking toward, and who chooses — at enormous personal cost — to walk beside the person most likely to make something different happen.</p>
+          </div>
+
+          <div class="lore-section">
+            <div class="lore-section-title">Paths & Endings</div>
+            <div class="paths-grid">
+              <div class="path-card">
+                <div class="path-card-label">Path A</div>
+                <div class="path-card-name">The Guide</div>
+                <p>Joins the Mercenary after rescue. Spends Foresight to keep him stable. Watches the war from beside him rather than from a distance. The cost is cumulative — every vision spent on him is a piece of her present she cannot reclaim. She knew this going in. She went in anyway.</p>
+              </div>
+              <div class="path-card">
+                <div class="path-card-label">Path B</div>
+                <div class="path-card-name">Withdraw</div>
+                <p>Chooses to remain with the Tribe. Defends what she can protect directly. The Zones of Terrors reach the eastern boundary and she enters them alone, without the anchor of translating Foresight for someone else. Visions come faster. The hole where the work used to be is very large.</p>
+              </div>
+              <div class="path-card">
+                <div class="path-card-label">Path C</div>
+                <div class="path-card-name">Lost in Visions</div>
+                <p>MS reaches 100. Foresight becomes permanent. She cannot distinguish the present from the possible. She does not know which direction the river flows. The Tribe loses their Shaman not to battle but to time — to the accumulation of seeing too much for too long without rest.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </article>
+
+      <div class="section-divider" style="margin-bottom: 40px;">
+        <div class="div-line"></div><div class="div-icon">✦</div><div class="div-line"></div>
+      </div>
+
+      <!-- ── KONRAD / MERCHANT ── -->
+      <article class="char-card" data-char="konrad" data-tags="neutral" data-search="konrad merchant truth witness port city guild investigation bartering">
+        <div class="char-card-header">
+          <div class="char-portrait-wrap">
+            <img src="http://elucidate.unaux.com/wp-content/uploads/2026/04/Copy-of-elucidate_character_portrait_merchant-1.png" alt="Character Portrait — Konrad">
+            <div class="char-portrait-label">Portrait</div>
+          </div>
+		  
+		<div class="char-sprite-wrap">
+		  <img
+			id="char-sprite-konrad"
+			src="http://elucidate.unaux.com/wp-content/uploads/2026/04/elucidate_attack_merchant_down_001.png"
+			alt="Character Idle Sprite — Frame 1"
+			class="char-sprite-img"
+		  >
+		  <div class="char-sprite-label">Idle</div>
+		</div>
+		  
+          <div class="char-info">
+            <div class="char-faction-tag">Merchant · Port City — Witness</div>
+            <div class="char-name">Konrad</div>
+            <div class="char-true-name">The Merchant Who Walked Away · <strong>Twenty Years of Guilt Made Useful</strong></div>
+            <div class="char-stats">
+			  <div class="char-stat"><div class="char-stat-label">Body</div><div class="char-stat-val">70</div></div>
+			  <div class="char-stat"><div class="char-stat-label">STR</div><div class="char-stat-val">10</div></div>
+			  <div class="char-stat"><div class="char-stat-label">AGI</div><div class="char-stat-val">10</div></div>
+			  <div class="char-stat"><div class="char-stat-label">Mind State</div><div class="char-stat-val">30</div></div>
+			  <div class="char-stat"><div class="char-stat-label">MS Resistance</div><div class="char-stat-val">3/ 3</div></div>
+              <div class="char-stat"><div class="char-stat-label">Starting Zone</div><div class="char-stat-val">Port City</div></div>
+              <div class="char-stat"><div class="char-stat-label">Ability</div><div class="char-stat-val">Bartering (Passive)</div></div>
+            </div>
+            <div class="char-ms-bar-wrap">
+              <div class="char-ms-label">MS Resistance</div>
+              <div class="char-ms-track"><div class="char-ms-fill" style="width:60%"></div></div>
+            </div>
+            <span class="char-role-badge">Reveal Truth · Escape · Paranoia</span>
+            <div class="char-excerpt">"I walked away from that orphanage fence when I was sixteen and afraid. I am not sixteen anymore, and I am running out of ways to pretend the fear is still an excuse."</div>
+          </div>
+        </div>
+
+        <div class="char-lore-toggle" onclick="toggleLore(this)">
+          <span class="char-lore-toggle-label">Full Character Lore — Origin · Conflict · Endings</span>
+          <span class="char-lore-toggle-icon">▾</span>
+        </div>
+
+        <div class="char-lore-body">
+          <div class="lore-section">
+            <div class="lore-section-title">Origin — The Witness</div>
+            <p>Konrad was not taken. He was not experimented on. He was not expelled or designated or enhanced. He was sixteen years old and he lived two streets from the orphanage on The Hill, and he watched the Church carriages arrive and depart for three years, and he watched which children climbed in and which children never came back the same. He watched a child he is now certain was Ignis — approximately nine years old, small for his age, loaded into a carriage that smelled of incense — and he was afraid, and he walked away. He has been walking back toward that moment ever since.</p>
+            <p>Konrad is unique among the five playable characters in that his connection to the orphanage is not biological but moral. He carries no experimental alterations. He carries twenty years of compound interest on a debt he chose not to pay when he had the chance, and the interest has become something he can feel going but cannot name. His character arc is not about recovering a lost identity. It is about the slower, stranger work of deciding that what you failed to do twenty years ago is still worth doing now, even if you are the only one who will ever know you tried.</p>
+          </div>
+
+          <div class="lore-section">
+            <div class="lore-section-title">The Investigation & Caligo's Shadow</div>
+            <p>Konrad's investigation into the Church's procurement practices is the game's most detailed study of how corruption hides in plain language. The documents he reviews reference <em>subject acquisition through institutional partnerships with charitable organizations</em>. They list <em>viable subject transport</em> under the heading <em>Charitable Operations</em>. They describe children in the language of logistics. The MS cost of reading each document in the Merchant Guild Hall is not incidental — the game registers that the administrative framing of atrocity is somehow worse than direct description, because it means someone sat down and chose those words deliberately.</p>
+            <p>Caligo's influence touches Konrad's story indirectly but pervasively. The Church's entire experimental program was designed around Caligo — around creating soldiers who could function in its corrupted zones. Every document Konrad reads is, at its core, a document about how far a human institution will go to control something that cannot be controlled. He understands this without ever encountering a Fragment directly. The horror, for him, is legible in the paperwork.</p>
+          </div>
+
+          <div class="lore-section">
+            <div class="lore-section-title">Paths & Endings</div>
+            <div class="paths-grid">
+              <div class="path-card">
+                <div class="path-card-label">Path A</div>
+                <div class="path-card-name">Reveal Truth</div>
+                <p>Pursues every lead. Infiltrates the Theocratic Capital. Tells Ignis his real name. Becomes a confirmed ally in the final battle. The most expensive path in MS terms. The most complete act of walking back toward the moment he abandoned.</p>
+              </div>
+              <div class="path-card">
+                <div class="path-card-label">Path B</div>
+                <div class="path-card-name">Escape</div>
+                <p>Books passage. Leaves a partial note — enough to be found, not enough to be actionable. Survives. Prospers. The haunting is the price. He walked away again, and he knows it, and he will spend the rest of his life calculating whether survival justified it.</p>
+              </div>
+              <div class="path-card">
+                <div class="path-card-label">Path C</div>
+                <div class="path-card-name">Paranoia</div>
+                <p>MS exceeds 75 during investigation. Sees conspiracy in the gaps between conspiracies. Cannot stop pulling the thread even when the thread becomes a trap. The courage that was once his principle becomes a compulsion he cannot distinguish from obsession.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </article>
+
+      <div class="section-divider" style="margin-bottom: 40px;">
+        <div class="div-line"></div><div class="div-icon">⬡</div><div class="div-line"></div>
+      </div>
+
+      <!-- ── FATHER CALUM / PRIEST ── -->
+      <article class="char-card" data-char="calum" data-tags="church" data-search="father calum priest experiment c-1 administrator church control redemption descent">
+        <div class="char-card-header">
+          <div class="char-portrait-wrap">
+            <img src="http://elucidate.unaux.com/wp-content/uploads/2026/04/Copy-of-elucidate_character_portrait_priest-4.png" alt="Character Portrait — Father Calum">
+            <div class="char-portrait-label">Portrait</div>
+          </div>
+		  
+		<div class="char-sprite-wrap">
+		  <img
+			id="char-sprite-calum"
+			src="http://elucidate.unaux.com/wp-content/uploads/2026/04/elucidate_attack_priest_down_001.png"
+			alt="Character Idle Sprite — Frame 1"
+			class="char-sprite-img"
+		  >
+		  <div class="char-sprite-label">Idle</div>
+		</div>
+		  
+          <div class="char-info">
+            <div class="char-faction-tag">Priest · Church of Lumen — Administrator</div>
+            <div class="char-name">Father Calum</div>
+            <div class="char-true-name"><strong>Experiment Subject C-1</strong> · First Fully Successful Result · Became the System</div>
+            <div class="char-stats">
+			  <div class="char-stat"><div class="char-stat-label">Body</div><div class="char-stat-val">100</div></div>
+			  <div class="char-stat"><div class="char-stat-label">STR</div><div class="char-stat-val">40</div></div>
+			  <div class="char-stat"><div class="char-stat-label">AGI</div><div class="char-stat-val">8</div></div>
+			  <div class="char-stat"><div class="char-stat-label">Mind State</div><div class="char-stat-val">0</div></div>
+			  <div class="char-stat"><div class="char-stat-label">MS Resistance</div><div class="char-stat-val">1/ 3</div></div>
+              <div class="char-stat"><div class="char-stat-label">Starting Zone</div><div class="char-stat-val">Port City</div></div>
+              <div class="char-stat"><div class="char-stat-label">Ability</div><div class="char-stat-val">Pseudohealing</div></div>
+            </div>
+            <div class="char-ms-bar-wrap">
+              <div class="char-ms-label">MS Resistance</div>
+              <div class="char-ms-track"><div class="char-ms-fill" style="width:20%; background: linear-gradient(90deg,#aaa,#eee)"></div></div>
+            </div>
+            <span class="char-role-badge">Control · Redemption · Descent</span>
+            <div class="char-excerpt">"I said 'let them rest.' I used to say 'acknowledge the loss.' Before that, I said 'record the fatality.' The language has gotten gentler as the years have passed. I am not sure if that means I have become more humane or more practiced at making inhumanity comfortable."</div>
+          </div>
+        </div>
+
+        <div class="char-lore-toggle" onclick="toggleLore(this)">
+          <span class="char-lore-toggle-label">Full Character Lore — Origin · Conflict · Endings</span>
+          <span class="char-lore-toggle-icon">▾</span>
+        </div>
+
+        <div class="char-lore-body">
+          <div class="lore-section">
+            <div class="lore-section-title">Origin — The First Success</div>
+            <p>Father Calum was Subject C-1. The first child to survive the Vindication Lumen enhancement without catastrophic psychological fracture. The program was built on the foundation of his survival — every subsequent procedure was modeled on what worked in him. He was nine years old when it began. He was not told what he was being put through. He was told he was special. He believed it, because he was nine and he needed to, and then he survived what the others did not, and the Church promoted him and told him his survival was proof the program worked, and he started telling the next group of children that they were special.</p>
+            <p>He has been the origin and the echo of the same sentence for thirty years. The sentence is: <em>you are lucky to be here.</em> None of them ever were.</p>
+          </div>
+
+          <div class="lore-section">
+            <div class="lore-section-title">The Administrator's Logic</div>
+            <p>Father Calum's MS resistance of 1/3 is the highest in the game. He is not immune to psychological damage — the Records Archive triggers MS +8 even in him — but he has thirty years of practice at setting aside similar thoughts, and the shelf, as he notes, is becoming very full. His character arc is about the slow, terrible accumulation of suppressed accounting. Each decision to continue the program was made with the same internal logic: the failure points are valuable, the successes justify the failures, progress requires loss. He has said these things approximately three hundred times. He has never, until the game's present moment, seriously asked whether he has ever said them and been wrong.</p>
+            <p>In his private journal, the third entry — dated two weeks before the game begins — ends mid-sentence: <em>If I had known then what the first failure would look like — if I had seen Subject F-7's face when we told her she was being expelled — I wonder if I would have—</em> The sentence does not finish. The game does not finish it for him. That is the question his arc is asking: <strong>would he have stopped?</strong></p>
+          </div>
+
+          <div class="lore-section">
+            <div class="lore-section-title">Paths & Endings</div>
+            <div class="paths-grid">
+              <div class="path-card">
+                <div class="path-card-label">Path A</div>
+                <div class="path-card-name">Control</div>
+                <p>Closes the ledger. Returns to the planning room. The program continues. He has made this choice before and he will make it again. The suppression holds — he is very good at this. The shelf grows heavier and he does not acknowledge it.</p>
+              </div>
+              <div class="path-card">
+                <div class="path-card-label">Path B</div>
+                <div class="path-card-name">Redemption</div>
+                <p>Orders an investigation. Goes to the Home Village. Stands in the ruins of the orphanage. Says, quietly, to no one: <em>I am sorry. It is too late and it is not enough and it is the truest thing I have said in thirty years.</em> Redemption earned not through action but through finally stopping the suppression long enough to feel what he has done.</p>
+              </div>
+              <div class="path-card">
+                <div class="path-card-label">Path C</div>
+                <div class="path-card-name">Descent</div>
+                <p>MS exceeds 90. The rational control fractures. He does not break from guilt — he breaks from the effort of refusing to feel it. Obsessive experiment acceleration, driven by a desperate need to prove the program works before doubt can finish its work. He becomes the thing he built the program to prevent: a mind consumed by what it was trying to master.</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="lore-section">
+            <div class="lore-section-title">Symbolic & Philosophical Meaning</div>
+            <p>Calum is the game's most uncomfortable character because his logic is internally coherent. He survived something terrible and concluded that survival justified the system that produced it. He administered harm at institutional scale and called it progress. He is not monstrous in the spectacular sense — he is monstrous in the bureaucratic sense, which is the more accurate kind. His redemption, if it comes, is quiet and costly and entirely private. <strong>The most he can do is stop.</strong> He cannot undo. The game does not offer him the option of undoing. It only offers him the option of stopping, and the question of whether that is enough is one the narrative refuses to answer on his behalf.</p>
+            <div class="lore-quote">
+              "C-1. Calum. First fully successful experiment. I survived, and then I continued administering the same procedure to the children who came after me. I looked at their faces and I saw my own face and I kept going."
+              <cite>— Father Calum, alone in the Records Archive</cite>
+            </div>
+          </div>
+        </div>
+      </article>
+
+      <div class="no-results" id="no-results">No characters match your search.</div>
+
+    </section>
+
+    <footer class="site-footer">
+      <div class="footer-inner">
+        <div class="footer-logo-block">
+          <div class="footer-logo-title">Elucidate RPG</div>
+          <div class="footer-logo-sub">Pamantasan ng Lungsod ng Maynila · BS Information Technology</div>
+        </div>
+        <div class="footer-links">
+          <a href="characters.html">Characters</a>
+          <a href="lore.html">Lore</a>
+          <a href="items.html">Items</a>
+          <a href="environments.html">Environments</a>
+          <a href="developers.html">Developers</a>
+        </div>
+        <div class="footer-copy">
+          <span>©2026. Elucidate RPG DLC. All Rights Reserved.<br>
+          Made by Group WOZ (BSIT 1-3). · Powered by FGC UNAUX</span>
+        </div>
+      </div>
+      <div class="footer-ornament">
+        ✦ &nbsp; Between what you were told and what is true — that distance is everything &nbsp; ✦
+      </div>
+    </footer>
+
+  </main>
+</div>
+
+<script>
+function toggleLore(toggleEl) {
+  const card = toggleEl.closest('.char-card');
+  const body = card.querySelector('.char-lore-body');
+  const isOpen = body.classList.contains('open');
+  body.classList.toggle('open', !isOpen);
+  toggleEl.classList.toggle('open', !isOpen);
+}
+
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      entry.target.classList.add('revealed');
+      observer.unobserve(entry.target);
+    }
+  });
+}, { threshold: 0.05, rootMargin: '0px 0px -40px 0px' });
+
+document.querySelectorAll('.char-card').forEach((el, i) => {
+  el.style.transitionDelay = (i * 0.08) + 's';
+  observer.observe(el);
+});
+
+document.querySelectorAll('.filter-btn').forEach(btn => {
+  btn.addEventListener('click', function() {
+    document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+    this.classList.add('active');
+    const filter = this.dataset.filter;
+    document.querySelectorAll('.char-card').forEach(card => {
+      const tags = card.dataset.tags || '';
+      if (filter === 'all' || tags.includes(filter)) {
+        card.style.display = '';
+      } else {
+        card.style.display = 'none';
+      }
+    });
+  });
+});
+
+const inputEl = document.getElementById('search-input');
+const overlayEl = document.getElementById('search-results-overlay');
+
+const searchData = [
+  { title: 'Ignis / Lucidus — Mercenary', section: 'Characters', excerpt: 'Subject I-3. Most stable experiment. Enhanced physically. True name suppressed. Three paths.', href: 'characters.html#ignis' },
+  { title: 'Funeris — Cultist', section: 'Characters', excerpt: 'Subject F-7. Expelled at nine. Lowest MS resistance. Attuned to Caligo. Three paths.', href: 'characters.html#funeris' },
+  { title: 'Pluvia — Shaman', section: 'Characters', excerpt: 'Foresight ability. Starting MS 30. Sees the Mercenary three weeks before he arrives.', href: 'characters.html#pluvia' },
+  { title: 'Konrad — Merchant', section: 'Characters', excerpt: 'Witness to the orphanage. Twenty years of guilt made into a case against the Church.', href: 'characters.html#konrad' },
+  { title: 'Father Calum — Priest', section: 'Characters', excerpt: 'Subject C-1. First success. Became the administrator. MS Resistance 5/5. The man who made them all.', href: 'characters.html#calum' },
+];
+
+(function() {
+
+  var SPRITE_FRAME_DURATION = 1000; 
+
+  var SPRITE_SETS = {
+    'char-sprite-ignis':   ['http://elucidate.unaux.com/wp-content/uploads/2026/04/Copy-of-elucidate_atk_sprite_mercenary_down_001.png', 'http://elucidate.unaux.com/wp-content/uploads/2026/04/elucidate_mercenary_sprite_idle_up.png', 'http://elucidate.unaux.com/wp-content/uploads/2026/04/elucidate_mercenary_sprite_idle_right.png', 'http://elucidate.unaux.com/wp-content/uploads/2026/04/elucidate_mercenary_sprite_idle_left.png',],
+	
+    'char-sprite-funeris': ['http://elucidate.unaux.com/wp-content/uploads/2026/04/Copy-of-elucidate_sprite_cultist_hood_001-5.png', 'http://elucidate.unaux.com/wp-content/uploads/2026/04/elucidate_sprite_cultist_up_001.png', 'http://elucidate.unaux.com/wp-content/uploads/2026/04/elucidate_sprite_cultist_right_004.png', 'http://elucidate.unaux.com/wp-content/uploads/2026/04/elucidate_sprite_cultist_left_003.png'],
+	
+    'char-sprite-pluvia':  ['http://elucidate.unaux.com/wp-content/uploads/2026/04/elucidate_attack_shaman_down_001.png', 'http://elucidate.unaux.com/wp-content/uploads/2026/04/Copy-of-elucidate_sprite_shaman_up_001.png', 'http://elucidate.unaux.com/wp-content/uploads/2026/04/Copy-of-elucidate_sprite_shaman_right_004.png', 'http://elucidate.unaux.com/wp-content/uploads/2026/04/Copy-of-elucidate_sprite_shaman_left_003.png'],
+	
+    'char-sprite-konrad':  ['http://elucidate.unaux.com/wp-content/uploads/2026/04/elucidate_attack_merchant_down_001.png', 'http://elucidate.unaux.com/wp-content/uploads/2026/04/elucidate_attack_merchant_up_002.png', 'http://elucidate.unaux.com/wp-content/uploads/2026/04/elucidate_attack_merchant_right_002.png', 'http://elucidate.unaux.com/wp-content/uploads/2026/04/Copy-of-elucidate_sprite_merchant_left_001.png'],
+	
+    'char-sprite-calum':   ['http://elucidate.unaux.com/wp-content/uploads/2026/04/elucidate_attack_priest_down_001.png', 'http://elucidate.unaux.com/wp-content/uploads/2026/04/Copy-of-elucidate_sprite_priest_up.png', 'http://elucidate.unaux.com/wp-content/uploads/2026/04/Copy-of-elucidate_sprite_priest_right.png', 'http://elucidate.unaux.com/wp-content/uploads/2026/04/Copy-of-elucidate_sprite_priest_left.png']
+  };
+
+  var frameCounters = {};
+
+  Object.keys(SPRITE_SETS).forEach(function(id) {
+    var el = document.getElementById(id);
+    if (!el) return;
+
+    frameCounters[id] = 0;
+
+    setInterval(function() {
+      var frames = SPRITE_SETS[id];
+      frameCounters[id] = (frameCounters[id] + 1) % frames.length;
+      var nextFrame = frames[frameCounters[id]];
+
+      el.src = nextFrame;
+      el.alt = 'Character Idle Sprite — Frame ' + (frameCounters[id] + 1);
+    }, SPRITE_FRAME_DURATION);
+  });
+
+})();
+
+
+function escapeHtml(str) {
+  return str.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+function highlightMatch(text, q) {
+  const idx = text.toLowerCase().indexOf(q);
+  if (idx < 0) return escapeHtml(text);
+  return escapeHtml(text.slice(0,idx)) + '<mark class="search-highlight">' + escapeHtml(text.slice(idx, idx+q.length)) + '</mark>' + escapeHtml(text.slice(idx+q.length));
+}
+
+function performSearch() {
+  const q = inputEl.value.trim().toLowerCase();
+  overlayEl.innerHTML = '';
+
+  const cards = document.querySelectorAll('.char-card');
+  const noResults = document.getElementById('no-results');
+  let visibleCount = 0;
+
+  cards.forEach(card => {
+    const searchStr = (card.dataset.search || '') + ' ' + (card.querySelector('.char-name')?.textContent || '');
+    if (!q || q.length < 2 || searchStr.toLowerCase().includes(q)) {
+      card.style.display = '';
+      visibleCount++;
+    } else {
+      card.style.display = 'none';
+    }
+  });
+
+  noResults.classList.toggle('visible', visibleCount === 0 && q.length >= 2);
+
+  if (!q || q.length < 2) { overlayEl.classList.remove('visible'); return; }
+
+  const results = searchData.filter(item =>
+    item.title.toLowerCase().includes(q) || item.excerpt.toLowerCase().includes(q)
+  ).slice(0, 6);
+
+  if (!results.length) {
+    overlayEl.innerHTML = '<div class="search-no-result">No results for "' + escapeHtml(q) + '"</div>';
+  } else {
+    results.forEach(item => {
+      const div = document.createElement('div');
+      div.className = 'search-result-item';
+      div.innerHTML = `<div class="sr-title">${highlightMatch(item.title, q)} <span style="font-size:9px;color:var(--text-dim);margin-left:6px;">${item.section}</span></div><div class="sr-excerpt">${highlightMatch(item.excerpt.slice(0,80)+'…', q)}</div>`;
+      div.onclick = () => { window.location.href = item.href; overlayEl.classList.remove('visible'); };
+      overlayEl.appendChild(div);
+    });
+  }
+  overlayEl.classList.add('visible');
+}
+
+inputEl.addEventListener('input', performSearch);
+inputEl.addEventListener('keydown', e => { if (e.key === 'Escape') { overlayEl.classList.remove('visible'); inputEl.blur(); } });
+document.addEventListener('click', e => {
+  if (!e.target.closest('.search-wrap') && !e.target.closest('#search-results-overlay')) {
+    overlayEl.classList.remove('visible');
+  }
+});
+</script>
+
+</div><!-- /#elucidate-wiki-root -->

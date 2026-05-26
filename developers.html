@@ -1,0 +1,783 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Developers — Elucidate RPG Wiki</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Merriweather:ital,wght@0,300;0,400;0,700;0,900;1,300;1,400&family=Cinzel:wght@400;600;700;900&family=Crimson+Text:ital,wght@0,400;0,600;1,400&display=swap');
+
+:root {
+  --bg-deepest:    #080608;
+  --bg-dark:       #0e0b0f;
+  --bg-mid:        #140f16;
+  --bg-surface:    #1c1520;
+  --bg-elevated:   #221829;
+  --bg-card:       #1a1220;
+  --border-faint:  rgba(180,140,80,0.12);
+  --border-dim:    rgba(180,140,80,0.25);
+  --border-gold:   rgba(180,140,80,0.55);
+  --gold:          #b8922a;
+  --gold-bright:   #d4a83c;
+  --gold-pale:     #e8c96a;
+  --gold-muted:    #8a6a1e;
+  --crimson:       #8b1a1a;
+  --crimson-bright:#b02020;
+  --caligo:        #D31616;
+  --caligo-bright: #D31616;
+  --caligo-pale:   #8b5cbf;
+  --lumen:         #c8a84a;
+  --text-primary:  #e8dcc8;
+  --text-secondary:#c8b898;
+  --text-muted:    #9a8a72;
+  --text-dim:      #706050;
+  --white:         #f2ead8;
+  --shadow-deep:   0 8px 40px rgba(0,0,0,0.8);
+  --shadow-card:   0 4px 20px rgba(0,0,0,0.6);
+  --glow-gold:     0 0 20px rgba(184,146,42,0.3);
+  --glow-caligo:   0 0 20px rgba(90,46,138,0.4);
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: 'Merriweather', 'Cambria', Georgia, serif;
+  background: var(--bg-deepest);
+  color: var(--text-primary);
+  font-size: 14px;
+  line-height: 1.7;
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.03'/%3E%3C/svg%3E");
+  pointer-events: none;
+  z-index: 0;
+  opacity: 0.4;
+}
+
+a { color: var(--gold); text-decoration: none; transition: color 0.2s; }
+a:hover { color: var(--gold-pale); }
+
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: var(--bg-deepest); }
+::-webkit-scrollbar-thumb { background: var(--gold-muted); border-radius: 3px; }
+
+.site-header {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  z-index: 1000;
+  background: rgba(8,6,8,0.96);
+  border-bottom: 1px solid var(--border-gold);
+  backdrop-filter: blur(12px);
+  height: 56px;
+  display: flex;
+  align-items: center;
+  padding: 0 20px;
+  gap: 16px;
+  box-shadow: 0 2px 30px rgba(0,0,0,0.8);
+}
+
+.header-logo-wrap {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-shrink: 0;
+}
+
+.site-logo-img {
+  width: 36px;
+  height: 36px;
+  object-fit: contain;
+}
+
+.header-site-name {
+  font-family: 'Cinzel', serif;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--gold-pale);
+  letter-spacing: 1.5px;
+  line-height: 1.2;
+  text-transform: uppercase;
+}
+.header-site-name span {
+  display: block;
+  font-size: 9px;
+  color: var(--text-muted);
+  letter-spacing: 2px;
+  font-weight: 400;
+}
+
+.header-nav {
+  display: flex;
+  gap: 4px;
+  align-items: center;
+  margin-left: 12px;
+  flex: 1;
+}
+
+.header-nav a {
+  font-family: 'Cinzel', serif;
+  font-size: 10px;
+  letter-spacing: 1px;
+  color: var(--text-secondary);
+  padding: 5px 10px;
+  border: 1px solid transparent;
+  border-radius: 2px;
+  transition: all 0.2s;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+.header-nav a:hover {
+  color: var(--gold-pale);
+  border-color: var(--border-dim);
+  background: rgba(184,146,42,0.08);
+}
+.header-nav a.active {
+  color: var(--gold-pale);
+  border-color: var(--border-gold);
+  background: rgba(184,146,42,0.1);
+}
+
+.header-right {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-left: auto;
+  flex-shrink: 0;
+}
+
+.search-wrap:focus-within { border-color: var(--gold); box-shadow: 0 0 8px rgba(184,146,42,0.2); }
+.search-wrap input {
+  background: transparent; border: none; outline: none;
+  color: var(--text-primary); font-family: 'Merriweather', serif;
+  font-size: 11px; padding: 6px 10px; width: 180px;
+}
+.search-wrap input::placeholder { color: var(--text-dim); }
+.search-wrap button {
+  background: var(--bg-elevated); border: none;
+  border-left: 1px solid var(--border-dim); color: var(--gold);
+  padding: 6px 10px; cursor: pointer; font-size: 12px; transition: background 0.2s;
+}
+.search-wrap button:hover { background: rgba(184,146,42,0.15); }
+
+#search-results-overlay {
+  display: none; position: fixed; top: 57px; right: 20px;
+  width: 340px; max-height: 400px; overflow-y: auto;
+  background: var(--bg-elevated); border: 1px solid var(--border-gold);
+  border-radius: 4px; z-index: 999; box-shadow: var(--shadow-deep);
+}
+#search-results-overlay.visible { display: block; }
+.search-result-item { padding: 10px 14px; border-bottom: 1px solid var(--border-faint); cursor: pointer; transition: background 0.15s; }
+.search-result-item:hover { background: rgba(184,146,42,0.1); }
+.search-result-item .sr-title { font-family: 'Cinzel', serif; font-size: 11px; color: var(--gold-pale); letter-spacing: 0.5px; }
+.search-result-item .sr-excerpt { font-size: 11px; color: var(--text-muted); margin-top: 2px; line-height: 1.5; }
+.search-no-result { padding: 14px; font-size: 12px; color: var(--text-muted); font-style: italic; text-align: center; }
+.search-highlight { background: rgba(184,146,42,0.3); color: var(--gold-pale); border-radius: 2px; padding: 0 1px; }
+
+.wiki-layout {
+  display: grid;
+  grid-template-columns: 210px 1fr;
+  min-height: 100vh;
+  padding-top: 56px;
+}
+
+.sidebar {
+  background: var(--bg-dark); border-right: 1px solid var(--border-faint);
+  position: sticky; top: 56px; height: calc(100vh - 56px);
+  overflow-y: auto; padding: 16px 0; z-index: 100;
+}
+.sidebar-logo-mini { padding: 0 14px 14px; border-bottom: 1px solid var(--border-faint); margin-bottom: 12px; text-align: center; }
+.sidebar-logo-mini .sb-title { font-family: 'Cinzel', serif; font-size: 11px; color: var(--gold); letter-spacing: 2px; text-transform: uppercase; }
+.sidebar-logo-mini .sb-sub { font-size: 9px; color: var(--text-muted); letter-spacing: 1px; margin-top: 2px; }
+.sidebar-heading { font-family: 'Cinzel', serif; font-size: 9px; letter-spacing: 2px; text-transform: uppercase; color: var(--text-muted); padding: 6px 14px 4px; border-top: 1px solid var(--border-faint); }
+.sidebar ul { list-style: none; }
+.sidebar ul li a {
+  display: flex; align-items: center; gap: 8px;
+  padding: 6px 14px 6px 16px; color: var(--text-secondary);
+  font-size: 12px; font-family: 'Crimson Text', serif;
+  border-left: 2px solid transparent; transition: all 0.2s; letter-spacing: 0.3px;
+}
+.sidebar ul li a .sb-icon { width: 14px; text-align: center; font-size: 12px; opacity: 0.7; }
+.sidebar ul li a:hover { background: rgba(184,146,42,0.07); border-left-color: var(--gold-muted); color: var(--gold-pale); }
+.sidebar ul li a.active-nav { background: rgba(184,146,42,0.12); border-left-color: var(--gold); color: var(--gold-pale); font-weight: 600; }
+.sidebar-divider { height: 1px; background: var(--border-faint); margin: 8px 12px; }
+
+.sidebar-ms-widget { margin: 12px 14px; padding: 10px 12px; background: var(--bg-elevated); border: 1px solid var(--border-faint); border-radius: 3px; }
+.sidebar-ms-widget .ms-label { font-family: 'Cinzel', serif; font-size: 9px; color: var(--text-muted); letter-spacing: 1.5px; text-transform: uppercase; margin-bottom: 6px; }
+.ms-bar-track { height: 4px; background: var(--bg-mid); border-radius: 2px; overflow: hidden; margin-bottom: 4px; }
+.ms-bar-fill { height: 100%; width: 90%; background: linear-gradient(90deg, var(--caligo), var(--caligo-bright)); border-radius: 2px; animation: ms-pulse 3s ease-in-out infinite alternate; }
+@keyframes ms-pulse { from { opacity: 0.6; } to { opacity: 1; } }
+.ms-bar-text { font-size: 9px; color: var(--text-dim); text-align: right; }
+
+
+.main-content { background: var(--bg-deepest); position: relative; overflow: hidden; }
+section { position: relative; z-index: 1; }
+
+.page-banner {
+  padding: 56px 60px 40px;
+  background:
+    radial-gradient(ellipse 60% 80% at 90% 30%, rgba(90,46,138,0.25) 0%, transparent 60%),
+    radial-gradient(ellipse 50% 50% at 10% 70%, rgba(139,26,26,0.15) 0%, transparent 55%),
+    var(--bg-deepest);
+  border-bottom: 1px solid var(--border-faint);
+  position: relative;
+}
+.page-banner::before {
+  content: '';
+  position: absolute; top: 0; left: 0; right: 0; height: 1px;
+  background: linear-gradient(90deg, transparent, var(--gold), transparent);
+  opacity: 0.5;
+}
+.page-banner-tag {
+  font-family: 'Cinzel', serif; font-size: 10px; letter-spacing: 4px;
+  text-transform: uppercase; color: var(--gold-muted); margin-bottom: 14px;
+  display: flex; align-items: center; gap: 12px;
+}
+.page-banner-tag::before, .page-banner-tag::after {
+  content: ''; display: block; height: 1px; width: 30px;
+  background: var(--gold-muted); opacity: 0.6;
+}
+.page-banner-title {
+  font-family: 'Cinzel', serif;
+  font-size: clamp(28px, 4vw, 48px); font-weight: 900;
+  color: var(--gold-pale); letter-spacing: 3px; text-transform: uppercase; line-height: 1.1;
+  text-shadow: 0 0 40px rgba(184,146,42,0.3);
+  margin-bottom: 10px;
+}
+.page-banner-sub {
+  font-family: 'Crimson Text', serif; font-style: italic;
+  color: var(--text-muted); font-size: 14px; letter-spacing: 0.5px;
+}
+.breadcrumb { font-family: 'Cinzel', serif; font-size: 10px; color: var(--text-dim); letter-spacing: 1px; margin-top: 18px; }
+.breadcrumb a { color: var(--text-dim); }
+.breadcrumb a:hover { color: var(--gold); }
+.breadcrumb span { color: var(--gold-muted); margin: 0 6px; }
+
+.section-wrap { padding: 50px 60px; }
+.section-wrap + .section-wrap { padding-top: 0; }
+
+.section-header {
+  display: flex; align-items: center; gap: 16px; margin-bottom: 32px;
+}
+.section-header-line {
+  flex: 1; height: 1px;
+  background: linear-gradient(90deg, var(--border-dim), transparent);
+}
+.section-header-title {
+  font-family: 'Cinzel', serif; font-size: 11px; font-weight: 700;
+  color: var(--gold); letter-spacing: 3px; text-transform: uppercase;
+}
+
+.dev-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 24px;
+  margin-bottom: 20px;
+}
+
+.dev-card {
+  height: auto !important; /* Forces the card to grow with the text */
+  display: flex;
+  flex-direction: column;
+}
+
+.dev-card::before {
+  content: '';
+  position: absolute; top: 0; left: 0; right: 0; height: 2px;
+  background: linear-gradient(90deg, transparent, var(--gold-muted), transparent);
+  opacity: 0;
+  transition: opacity 0.3s;
+}
+.dev-card:hover {
+  border-color: var(--border-gold);
+  box-shadow: 0 8px 30px rgba(0,0,0,0.6), 0 0 20px rgba(184,146,42,0.1);
+  transform: translateY(-4px);
+}
+.dev-card:hover::before { opacity: 1; }
+
+.dev-card-photo {
+  width: 100%;
+  height: 350px;
+  background: var(--bg-mid);
+  border-bottom: 1px solid var(--border-faint);
+}
+
+.dev-card-photo img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: top center;
+}
+
+.dev-card:hover .dev-card-photo img { transform: scale(1.05); }
+.dev-photo-placeholder {
+  width: 100%; height: 300px;
+  background: linear-gradient(135deg, var(--bg-mid) 0%, var(--bg-elevated) 100%);
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  gap: 8px; border-bottom: 1px solid var(--border-faint);
+}
+.dev-photo-placeholder .ph-icon { font-size: 48px; opacity: 0.2; }
+.dev-photo-placeholder .ph-text { font-family: 'Cinzel', serif; font-size: 9px; color: var(--text-dim); letter-spacing: 2px; text-transform: uppercase; }
+
+.dev-card-body {
+  padding: 24px;
+  flex-grow: 1; /* Ensures the body fills the remaining space */
+}
+
+.dev-card-role {
+  font-family: 'Cinzel', serif; font-size: 9px; letter-spacing: 2px;
+  text-transform: uppercase; color: var(--gold-muted); margin-bottom: 6px;
+}
+.dev-card-name {
+  font-family: 'Cinzel', serif; font-size: 15px; font-weight: 700;
+  color: var(--gold-pale); letter-spacing: 1px; line-height: 1.3; margin-bottom: 4px;
+}
+.dev-card-email {
+  font-family: 'Crimson Text', serif; font-size: 12px;
+  color: var(--text-muted); margin-bottom: 12px;
+}
+.dev-card-email a { color: var(--caligo-pale); font-size: 12px; }
+.dev-card-email a:hover { color: var(--gold-pale); }
+.dev-card-divider { height: 1px; background: var(--border-faint); margin: 12px 0; }
+
+.dev-card-desc {
+  font-size: 13px;
+  line-height: 1.6;
+  text-align: justify; /* Optional: adds a cleaner "dossier" look */
+}
+
+.dev-card-tags { display: flex; flex-wrap: wrap; gap: 5px; margin-top: 12px; }
+.dev-tag {
+  font-family: 'Cinzel', serif; font-size: 8px; letter-spacing: 1px;
+  text-transform: uppercase; color: var(--text-dim);
+  border: 1px solid var(--border-faint); border-radius: 2px;
+  padding: 2px 6px; background: var(--bg-elevated);
+  transition: all 0.2s;
+}
+.dev-card:hover .dev-tag { border-color: var(--border-dim); color: var(--text-muted); }
+
+.ack-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 24px; }
+.ack-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border-faint);
+  border-radius: 4px; padding: 28px 30px;
+  position: relative; overflow: hidden;
+  transition: border-color 0.3s, box-shadow 0.3s;
+}
+.ack-card::after {
+  content: '✦';
+  position: absolute; bottom: 16px; right: 20px;
+  font-size: 24px; color: var(--gold-muted); opacity: 0.1;
+}
+.ack-card:hover { border-color: var(--border-dim); box-shadow: var(--shadow-card); }
+.ack-type {
+  font-family: 'Cinzel', serif; font-size: 9px; letter-spacing: 2px;
+  text-transform: uppercase; color: var(--gold-muted); margin-bottom: 10px;
+  display: flex; align-items: center; gap: 8px;
+}
+.ack-type::before { content: ''; display: block; width: 20px; height: 1px; background: var(--gold-muted); opacity: 0.5; }
+.ack-name { font-family: 'Cinzel', serif; font-size: 14px; font-weight: 700; color: var(--gold-pale); margin-bottom: 12px; }
+.ack-message { font-family: 'Crimson Text', serif; font-style: italic; font-size: 14px; color: var(--text-secondary); line-height: 1.7; }
+
+.rate-section {
+  background: var(--bg-card);
+  border: 1px solid var(--border-faint);
+  border-radius: 4px; padding: 40px 44px;
+  text-align: center; position: relative; overflow: hidden;
+}
+.rate-section::before {
+  content: '';
+  position: absolute; top: 0; left: 0; right: 0; height: 2px;
+  background: linear-gradient(90deg, transparent, var(--gold), transparent);
+}
+.rate-title {
+  font-family: 'Cinzel', serif; font-size: 20px; font-weight: 700;
+  color: var(--gold-pale); letter-spacing: 2px; text-transform: uppercase;
+  margin-bottom: 12px;
+}
+.rate-desc {
+  font-family: 'Crimson Text', serif; font-size: 14px;
+  color: var(--text-secondary); max-width: 500px; margin: 0 auto 28px;
+  line-height: 1.7;
+}
+.btn {
+  display: inline-block;
+  font-family: 'Cinzel', serif; font-size: 11px; letter-spacing: 2px;
+  text-transform: uppercase; color: var(--bg-deepest);
+  background: linear-gradient(135deg, var(--gold), var(--gold-bright));
+  border: none; padding: 12px 32px; border-radius: 2px; cursor: pointer;
+  transition: all 0.25s;
+  box-shadow: 0 4px 15px rgba(184,146,42,0.3);
+}
+.btn:hover {
+  background: linear-gradient(135deg, var(--gold-bright), var(--gold-pale));
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(184,146,42,0.45);
+  color: var(--bg-deepest);
+}
+.btn:active { transform: translateY(0); }
+
+.site-footer {
+  background: var(--bg-dark); border-top: 1px solid var(--border-faint);
+  padding: 32px 60px; position: relative; z-index: 1;
+}
+.footer-inner {
+  max-width: 1100px; margin: 0 auto;
+  display: flex; justify-content: space-between; align-items: center;
+  flex-wrap: wrap; gap: 16px;
+}
+.footer-logo-block {}
+.footer-logo-title { font-family: 'Cinzel', serif; font-size: 13px; font-weight: 700; color: var(--gold-pale); letter-spacing: 2px; text-transform: uppercase; }
+.footer-logo-sub { font-size: 10px; color: var(--text-dim); margin-top: 3px; letter-spacing: 0.5px; }
+.footer-links { display: flex; gap: 20px; flex-wrap: wrap; }
+.footer-links a { font-family: 'Cinzel', serif; font-size: 9px; letter-spacing: 1.5px; color: var(--text-muted); text-transform: uppercase; transition: color 0.2s; }
+.footer-links a:hover { color: var(--gold); }
+.footer-copy { font-size: 10px; color: var(--text-muted); letter-spacing: 0.5px; }
+.footer-copy span { color: var(--text-secondary); }
+.footer-ornament { text-align: center; margin-top: 20px; padding-top: 16px; border-top: 1px solid var(--border-faint); font-family: 'Cinzel', serif; font-size: 9px; letter-spacing: 3px; color: var(--text-muted); text-transform: uppercase; }
+
+
+.reveal { opacity: 0; transform: translateY(18px); transition: opacity 0.5s ease, transform 0.5s ease; }
+.reveal.visible { opacity: 1; transform: translateY(0); }
+
+</style>
+</head>
+<body>
+
+<header class="site-header">
+  <div class="header-logo-wrap">
+    <img src="http://elucidate.unaux.com/wp-content/uploads/2026/04/ELUCIDATE-WEBSITE-EYE-LOGO.png" alt="Elucidate RPG Wiki Logo" class="site-logo-img">
+    <div class="header-site-name">
+      Elucidate RPG
+      <span>OFFICIAL WIKI</span>
+    </div>
+  </div>
+  <nav class="header-nav">
+    <a href="#">Home</a>
+    <a href="characters.html">Characters</a>
+    <a href="npcs.html">NPCs</a>
+    <a href="items.html">Items</a>
+    <a href="environments.html">Environments</a>
+    <a href="lore.html" >Lore</a>
+    <a href="developers.html" class="active">Developers</a>
+    <a href="fanart.html">Fan Art</a>
+    <a href="download.html">Download</a>
+  </nav>
+  <div class="header-right">
+    <div class="search-wrap">
+      <input type="text" id="search-input" placeholder="Search wiki…" autocomplete="off">
+      <button onclick="performSearch()">⌕</button>
+    </div>
+    <img src="http://elucidate.unaux.com/wp-content/uploads/2026/04/ELUCIDATE-LOGO-WITH-BG-2.png" alt="Elucidate RPG DLC Logo" class="site-logo-img" style="display:none;">
+  </div>
+</header>
+
+<div id="search-results-overlay"></div>
+
+<div class="wiki-layout">
+
+   <aside class="sidebar">
+    <div class="sidebar-logo-mini">
+      <div class="sb-title">Elucidate Wiki</div>
+      <div class="sb-sub">DLC · Complete Guide</div>
+    </div>
+
+    <div class="sidebar-section">
+      <div class="sidebar-heading">Navigation</div>
+      <ul>
+        <li><a href="index.html"><span class="sb-icon">⌂</span> Home</a></li>
+        <li><a href="characters.html"><span class="sb-icon">⚔</span> Characters</a></li>
+        <li><a href="npcs.html"><span class="sb-icon">👤</span> NPCs</a></li>
+        <li><a href="items.html"><span class="sb-icon">🗡</span> Items</a></li>
+        <li><a href="environments.html"><span class="sb-icon">🗺</span> Environments</a></li>
+        <li><a href="lore.html"><span class="sb-icon">📜</span> Lore</a></li>
+      </ul>
+    </div>
+
+    <div class="sidebar-divider"></div>
+
+    <div class="sidebar-section">
+      <div class="sidebar-heading">Community</div>
+      <ul>
+        <li><a href="developers.html"class="active-nav" ><span class="sb-icon">🛠</span> Developers</a></li>
+        <li><a href="fanart.html"><span class="sb-icon">🎨</span> Fan Art</a></li>
+        <li><a href="download.html"><span class="sb-icon">↓</span> Download</a></li>
+      </ul>
+    </div>
+	
+	<div class="sidebar-divider"></div>
+
+		<div class="sidebar-ms-widget">
+		  <div class="ms-label">Mind State</div>
+		  <div class="ms-bar-track"><div class="ms-bar-fill"></div></div>
+		  <div class="ms-bar-text">Unƨɟɒdlɘ</div>
+		</div>
+	  </aside>
+
+
+  <main class="main-content">
+
+    <div class="page-banner">
+      <div class="page-banner-tag">Group WOZ</div>
+      <div class="page-banner-title">Developers</div>
+      <div class="page-banner-sub">The minds behind Elucidate Role-Playing Game and its Downloadable Content — A GROUP FROM BSIT 1-3, PLM CISTM</div>
+      <div class="breadcrumb">
+        <a href="index.html">Home</a><span>›</span>Developers
+      </div>
+    </div>
+
+    <section class="section-wrap">
+      <div class="section-header">
+        <div class="section-header-title">Meet the Team</div>
+        <div class="section-header-line"></div>
+      </div>
+      <div class="dev-grid" id="dev-grid">
+
+        <div class="dev-card reveal">
+          <div class="dev-photo-placeholder">
+            <img src="https://media.discordapp.net/attachments/1491985815436267683/1494178297532256296/images_2.jpg?ex=69e1a97a&is=69e057fa&hm=d4b1642ffe003f2d0db1f8ce5a9af0e435ed5bed29b9e76105adb499b7f1b8fa&=&format=webp&width=431&height=455" alt="Developer Photo" style="width:100%;height:100%;object-fit:cover;" onerror="this.parentElement.innerHTML='<div class=\'ph-icon\'>👤</div><div class=\'ph-text\'>Photo</div>'">
+          </div>
+          <div class="dev-card-body">
+            <div class="dev-card-role">Lead Programmer / Researcher</div>
+            <div class="dev-card-name">John Alwyn D.A. Vallite</div>
+            <div class="dev-card-email"><a href="mailto:jadavallite2025@plm.edu.ph">jadavallite2025@plm.edu.ph</a></div>
+            <div class="dev-card-divider"></div>
+            <div class="dev-card-desc">Researcher from BSIT 1-3 with experience in academic and competitive IT environments. Serves as the Game Head Developer and official representative for the PLM–UMAK IT Skills Olympics. Demonstrates strong proficiency in Python, Java, C++, PHP, HTML5, and JavaScript. 
+			<br>
+			<br>
+			Led the full backend development of Elucidate RPG, handling core systems including class architecture, game logic, physics implementation, and functional design. Responsible for building scalable structures, optimizing system performance, and ensuring stable integration between gameplay mechanics and backend processes. Shows capability in managing complex systems and delivering functional, efficient solutions in game development projects.</div>
+            <div class="dev-card-tags">
+              <span class="dev-tag">Python</span>
+              <span class="dev-tag">JavaScript</span>
+              <span class="dev-tag">HTML5</span>
+              <span class="dev-tag">PHP</span>
+			  <span class="dev-tag">Pygame</span>
+			  <span class="dev-tag">Backend Development/span>
+            </div>
+          </div>
+        </div>
+		
+        <div class="dev-card reveal">
+          <div class="dev-photo-placeholder">
+            <img src="https://media.discordapp.net/attachments/1491985815436267683/1494178884185227335/Re_Zero_Light_Novel_43_11.webp?ex=69e1aa06&is=69e05886&hm=6280927c58a19b0198aa9ad78ac0b9863be7deeb97dfb1b2dbca34aa96f22725&=&format=webp&width=385&height=547" alt="Developer Photo" style="width:100%;height:100%;object-fit:cover;" onerror="this.parentElement.innerHTML='<div class=\'ph-icon\'>👤</div><div class=\'ph-text\'>Photo</div>'">
+          </div>
+          <div class="dev-card-body">
+            <div class="dev-card-role">Developer / Researcher</div>
+            <div class="dev-card-name">Ivan Rafael G. Capulong</div>
+            <div class="dev-card-email"><a href="mailto:irgcapulong2025@plm.edu.ph">irgcapulong2025@plm.edu.ph</a></div>
+            <div class="dev-card-divider"></div>
+            <div class="dev-card-desc">Researcher from BSIT 1-3 with foundational experience in Computer Systems Servicing, including hardware troubleshooting and basic networking. Possesses knowledge in maintaining system performance and resolving technical issues in both hardware and network environments.
+			<br>
+			<br>
+			Contributed to the development of Elucidate RPG through asset management and game design. Handled loading, saving, and verification of game assets to ensure system consistency and reliability. Responsible for designing all game characters, including sprite creation and visual concepts, while also preparing documentation papers to support development processes and project organization.</div>
+            <div class="dev-card-tags">
+              <span class="dev-tag">Hardware</span>
+              <span class="dev-tag">HTML5</span>
+			  <span class="dev-tag">Figma</span>
+              <span class="dev-tag">Asset Designing</span>
+			  <span class="dev-tag">CSS</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="dev-card reveal">
+          <div class="dev-photo-placeholder">
+            <img src="https://static0.gamerantimages.com/wordpress/wp-content/uploads/2024/01/higuruma-death-yuji-jujutsu-kaisen-jjk-247.png?q=70&fit=crop&w=825&dpr=1" alt="Developer Photo" style="width:100%;height:100%;object-fit:cover;" onerror="this.parentElement.innerHTML='<div class=\'ph-icon\'>👤</div><div class=\'ph-text\'>Photo</div>'">
+          </div>
+          <div class="dev-card-body">
+            <div class="dev-card-role">Developer / Researcher</div>
+            <div class="dev-card-name">Marc Roden D. Famero</div>
+            <div class="dev-card-email"><a href="mailto:mrdfamero2025@plm.edu.ph">mrdfamero2025@plm.edu.ph</a></div>
+            <div class="dev-card-divider"></div>
+            <div class="dev-card-desc">Researcher from BSIT 1-3 with skills in videography and basic web design. Demonstrates experience in managing creative and technical tasks within academic projects.
+			<br>
+			<br>
+			Served as the lead for the documentation process, overseeing the development of Chapters 1 to 3 with focus on structure, clarity, and completeness. Led the front-end design and lore expansion for Elucidate RPG, ensuring consistency between visual design and narrative elements. Designed and developed the Elucidate Web-Based Wiki, covering all major pages from the index to the download section. Also handled team file management, organizing assets and documents to support efficient collaboration and workflow.</div>
+            <div class="dev-card-tags">
+              <span class="dev-tag">HTML5</span>
+              <span class="dev-tag">CSS</span>
+              <span class="dev-tag">Web Design</span>
+			  <span class="dev-tag">Java Script</span>
+			  <span class="dev-tag">WordPress</span>
+			  <span class="dev-tag">Front-End Development</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="dev-card reveal">
+          <div class="dev-photo-placeholder">
+            <img src="https://static0.cbrimages.com/wordpress/wp-content/uploads/2023/05/musashi-training-vagabond.jpg?q=50&fit=crop&w=825&dpr=1.5" alt="Developer Photo" style="width:100%;height:100%;object-fit:cover;" onerror="this.parentElement.innerHTML='<div class=\'ph-icon\'>👤</div><div class=\'ph-text\'>Photo</div>'">
+          </div>
+          <div class="dev-card-body">
+            <div class="dev-card-role">Developer / Researcher</div>
+            <div class="dev-card-name">Gabrielle Keira R. Tinoko</div>
+            <div class="dev-card-email"><a href="mailto:gkrtinoko2025@plm.edu.ph">gkrtinoko2025@plm.edu.ph</a></div>
+            <div class="dev-card-divider"></div>
+            <div class="dev-card-desc">Researcher from BSIT 1-3 with proficiency in CSS, C++, and operations management.Contributed to interface programming and supported overall project coordination to maintain organized workflows and task alignment. Participated in the development of Chapters 1 to 3, ensuring content accuracy and structured presentation. Served as the main multimedia designer, responsible for music selection, OST direction, and background audio design to enhance user experience.
+			<br>
+			<br>
+			Led the design of the itemization and crafting system for Elucidate RPG, including materials, accessories, armors, potions, and books. Also contributed to lore expansion, aligning game systems with narrative elements to create a consistent and immersive experience.</div>
+            <div class="dev-card-tags">
+              <span class="dev-tag">CSS</span>
+              <span class="dev-tag">C++</span>
+              <span class="dev-tag">Operations</span>
+			  <span class="dev-tag">Multimedia</span>
+			  <span class="dev-tag">Asset Design</span>
+			  <span class="dev-tag">Figma</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="dev-card reveal">
+          <div class="dev-photo-placeholder">
+            <img src="https://i.redd.it/iaui7nlcyzg41.jpg" alt="Developer Photo" style="width:100%;height:100%;object-fit:cover;" onerror="this.parentElement.innerHTML='<div class=\'ph-icon\'>👤</div><div class=\'ph-text\'>Photo</div>'">
+          </div>
+          <div class="dev-card-body">
+            <div class="dev-card-role">Lead Developer / Researcher</div>
+            <div class="dev-card-name">Jose Gabriel K. Baterbonia</div>
+            <div class="dev-card-email"><a href="mailto:jgkbaterbonia2025@plm.edu.ph">jgkbaterbonia2025@plm.edu.ph</a></div>
+            <div class="dev-card-divider"></div>
+            <div class="dev-card-desc">Researcher from BSIT 1-3 under PLM CISTM with experience in project documentation and programming contributions. Demonstrates ability to manage both technical and organizational aspects of development tasks.
+			<br>
+			<br>
+			Handled project documentation with focus on structure, formatting, and content alignment. Applied drag-and-drop design techniques in both documentation and web interfaces to improve layout and usability. Contributed to asset verification, loading systems, and map validation processes to ensure accuracy, consistency, and proper integration within the project.</div>
+            <div class="dev-card-tags">
+              <span class="dev-tag">Python</span>
+              <span class="dev-tag">C++</span>
+              <span class="dev-tag">Documentation</span>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <section class="section-wrap" style="padding-top:0;">
+      <div class="section-header">
+        <div class="section-header-title">Acknowledgements</div>
+        <div class="section-header-line"></div>
+      </div>
+      <div class="ack-grid">
+
+        <div class="ack-card reveal">
+          <div class="ack-type">Friend Acknowledgment</div>
+          <div class="ack-name">Maximillian Kurt De Leon</div>
+          <div class="ack-message">
+            We extend our heartfelt gratitude to our dear friend for the unwavering support, encouragement, and camaraderie throughout this project. Your presence made the journey lighter and more meaningful.
+          </div>
+        </div>
+
+        <div class="ack-card reveal">
+          <div class="ack-type">Professor Acknowledgment</div>
+          <div class="ack-name">Prof. Marilou B. Mangrobang, MPA, MIT</div>
+          <div class="ack-message">
+            Our sincere appreciation goes to our professor whose guidance, expertise, and patience have been instrumental in shaping this project. Thank you for believing in our capabilities and pushing us toward excellence.
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <section class="section-wrap" style="padding-top:0; padding-bottom: 60px;">
+      <div class="section-header">
+        <div class="section-header-title">Rate &amp; Suggestions</div>
+        <div class="section-header-line"></div>
+      </div>
+      <div class="rate-section reveal">
+        <div class="rate-title">Rate and Suggestions</div>
+        <div class="rate-desc">
+          We value your feedback on Elucidate RPG and its DLC. Please take a moment to rate the game and share any suggestions or comments to help us improve future builds and updates.
+        </div>
+        <a href="https://docs.google.com/forms/d/e/1FAIpQLSfm4NG2MSFb_70hxthK6vTZtddUYbYSkgOtg7aRkBfhiApX2Q/viewform?usp=dialog" class="btn">Submit Feedback</a>
+      </div>
+    </section>
+
+     <footer class="site-footer">
+      <div class="footer-inner">
+        <div class="footer-logo-block">
+          <div class="footer-logo-title">Elucidate RPG</div>
+          <div class="footer-logo-sub">Pamantasan ng Lungsod ng Maynila · BS Information Technology</div>
+        </div>
+        <div class="footer-links">
+          <a href="characters.html">Characters</a>
+          <a href="lore.html">Lore</a>
+          <a href="items.html">Items</a>
+          <a href="environments.html">Environments</a>
+          <a href="developers.html">Developers</a>
+        </div>
+        <div class="footer-copy">
+          <span>©2026. Elucidate RPG DLC. All Rights Reserved.<br>
+          Made by Group WOZ (BSIT 1-3). · Powered by FGC UNAUX</span>
+        </div>
+      </div>
+      <div class="footer-ornament">
+        ✦ &nbsp; Between what you were told and what is true — that distance is everything &nbsp; ✦
+      </div>
+    </footer>
+
+  </main>
+</div>
+
+<script>
+const inputEl   = document.getElementById('search-input');
+const overlayEl = document.getElementById('search-results-overlay');
+
+const searchIndex = [
+  { title: 'Jose Gabriel K. Baterbonia', section: 'Developer', excerpt: 'Lead Developer. Researcher BSIT 1-3. Python, C++, Documentation.', href: '#dev-grid' },
+  { title: 'Ivan Rafael G. Capulong', section: 'Developer', excerpt: 'Researcher BSIT 1-3. Hardware, Networking, CSS.', href: '#dev-grid' },
+  { title: 'Marc Roden D. Famero', section: 'Developer', excerpt: 'Researcher BSIT 1-3. Videography, Photoshop, Web Design.', href: '#dev-grid' },
+  { title: 'Gabrielle Keira R. Tinoko', section: 'Developer', excerpt: 'Researcher BSIT 1-3. CSS, C++, Operations Management.', href: '#dev-grid' },
+  { title: 'John Alwyn D.A. Vallite', section: 'Developer', excerpt: 'Lead Programmer. Full stack developer. Python, JavaScript, HTML5, Machine Learning.', href: '#dev-grid' },
+  { title: 'Acknowledgements', section: 'Credits', excerpt: 'Friend and professor acknowledgments for the project.', href: '#' },
+  { title: 'Rate and Suggestions', section: 'Feedback', excerpt: 'Submit your feedback and suggestions for the game.', href: '#' },
+];
+
+function escapeHtml(str) {
+  return str.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+function highlightMatch(text, q) {
+  const idx = text.toLowerCase().indexOf(q);
+  if (idx < 0) return escapeHtml(text);
+  return escapeHtml(text.slice(0, idx)) +
+    '<mark class="search-highlight">' + escapeHtml(text.slice(idx, idx + q.length)) + '</mark>' +
+    escapeHtml(text.slice(idx + q.length));
+}
+function performSearch() {
+  const q = inputEl.value.trim().toLowerCase();
+  overlayEl.innerHTML = '';
+  if (!q || q.length < 2) { overlayEl.classList.remove('visible'); return; }
+  const results = searchIndex.filter(item =>
+    item.title.toLowerCase().includes(q) ||
+    item.excerpt.toLowerCase().includes(q) ||
+    item.section.toLowerCase().includes(q)
+  ).slice(0, 10);
+  if (!results.length) {
+    overlayEl.innerHTML = '<div class="search-no-result">No results for "' + escapeHtml(q) + '"</div>';
+  } else {
+    results.forEach(item => {
+      const div = document.createElement('div');
+      div.className = 'search-result-item';
+      div.innerHTML = `<div class="sr-title">${highlightMatch(item.title, q)} <span style="font-size:9px;color:var(--text-dim);margin-left:6px;">${item.section}</span></div><div class="sr-excerpt">${highlightMatch(item.excerpt.slice(0,80) + '…', q)}</div>`;
+      div.onclick = () => { if (item.href.startsWith('#')) { const el = document.querySelector(item.href); if (el) el.scrollIntoView({ behavior: 'smooth' }); } else window.location.href = item.href; overlayEl.classList.remove('visible'); };
+      overlayEl.appendChild(div);
+    });
+  }
+  overlayEl.classList.add('visible');
+}
+inputEl.addEventListener('input', performSearch);
+inputEl.addEventListener('keydown', e => { if (e.key === 'Escape') { overlayEl.classList.remove('visible'); inputEl.blur(); } });
+document.addEventListener('click', e => { if (!e.target.closest('.search-wrap') && !e.target.closest('#search-results-overlay')) overlayEl.classList.remove('visible'); });
+
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(entry => { if (entry.isIntersecting) entry.target.classList.add('visible'); });
+}, { threshold: 0.08, rootMargin: '0px 0px -30px 0px' });
+document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+</script>
+</body>
+</html>
